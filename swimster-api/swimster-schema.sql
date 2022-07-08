@@ -7,7 +7,6 @@ CREATE TABLE users (
     address         TEXT NOT NULL,
     date_of_birth   DATE NOT NULL,
     password        TEXT NOT NULL,
-    profile_image   TEXT,
     created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
     is_admin        BOOLEAN NOT NULL DEFAULT FALSE
 );
