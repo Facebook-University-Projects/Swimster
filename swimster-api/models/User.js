@@ -4,9 +4,37 @@ const { SALT_WORK_FACTOR } = require('../config')
 const { UnauthorizedError, BadRequestError } = require('../utils/error')
 
 class User {
+    static async publicUserInfo(user) {
+        return {
+            id: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            phoneNumber: user.phone_number,
+            address: user.address,
+            createdAt: user.created_at,
+        }
+    }
+
     static async login(credentials) {
-        // take the user's email and password and compare it to the db's password
+        // take the user's email and password
+        const requiredFields = ["email", "password"]
+
         // edge cases: missing fields, user doesn't exist
+        requiredFields.forEach(field => {
+            if (!credentials.hasOwnProperty(field)) {
+                throw new BadRequestError(`Missing ${field} in request body.`)
+            }
+        })
+
+        const user = await this.fetchUserByEmail(credentials.email)
+        if (user) {
+            // compare user's inputted password to the db's password, if any
+            const isValidPassword = await bcrypt.compare(credentials.password, user.password)
+            if (isValidPassword) return this.publicUserInfo(user)
+        }
+
+        throw new UnauthorizedError("Incorrect email and\/or password.")
     }
 
     static async register(credentials) {
@@ -62,7 +90,7 @@ class User {
         ])
 
         const user = result.rows[0]
-        return user
+        return this.publicUserInfo(user)
     }
 
     static async fetchUserByEmail(email) {
