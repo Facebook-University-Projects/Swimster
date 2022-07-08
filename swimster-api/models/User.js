@@ -1,4 +1,6 @@
 const db = require('../db')
+const bcrypt = require('bcrypt')
+const { SALT_WORK_FACTOR } = require('../config')
 const { UnauthorizedError, BadRequestError } = require('../utils/error')
 
 class User {
@@ -31,6 +33,10 @@ class User {
         if (existingUser) throw new BadRequestError(`The email ${credentials.email} already exists!`)
 
         // hash the user's password
+        const hashedPassword = await bcrypt.hash(credentials.password, SALT_WORK_FACTOR)
+
+        // convert email to all lower case before storing in db
+        const lowercaseEmail = credentials.email.toLowerCase()
 
         // create a new user object and return its info
         const result = await db.query(`
@@ -44,15 +50,15 @@ class User {
                 password
             )
             VALUES ($1, $2, $3, $4, $5, $6, $7)
-            RETURNING id, first_name, last_name, email, phone_number, address, date_of_birth, password, created_at, is_admin;
+            RETURNING id, first_name, last_name, email, phone_number, address, date_of_birth, created_at;
         `, [
             credentials.firstName,
             credentials.lastName,
-            credentials.email.toLowerCase(),
+            lowercaseEmail,
             credentials.phoneNumber,
             credentials.address,
             credentials.dateOfBirth,
-            credentials.password
+            hashedPassword,
         ])
 
         const user = result.rows[0]

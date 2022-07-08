@@ -2,6 +2,7 @@ require('dotenv').config()
 require('colors')
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001
+const SALT_WORK_FACTOR = 13
 
 const getDatabaseUri = () => {
     const dbUser = process.env.DATABASE_USER || "postgres"
@@ -19,5 +20,6 @@ console.log("Database URI: ".blue, getDatabaseUri())
 
 module.exports = {
     PORT,
+    SALT_WORK_FACTOR,
     getDatabaseUri,
 }
