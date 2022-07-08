@@ -4,5 +4,5 @@ const { PORT } =  require('./config')
 require('dotenv').config()
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server listening on port ${PORT}`)
+  console.log(`🚀 Server listening on port ${PORT}!`)
 })

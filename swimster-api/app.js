@@ -3,7 +3,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 const { NotFoundError } = require('./utils/error')
-const authRouter = require('./routes/auth')
+const authRoutes = require('./routes/auth')
 
 const app = express()
 
@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(cors())
 
 /* ROUTES */
-app.use('/auth', authRouter)
+app.use('/auth', authRoutes)
 
 /* health check */
 app.get('/', (req, res) => {
