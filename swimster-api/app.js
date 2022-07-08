@@ -1,20 +1,22 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+
 const { NotFoundError } = require('./utils/error')
+const authRoutes = require('./routes/auth')
 
 const app = express()
 
-/* MIDDLEWARE */
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(cors())
 
 /* ROUTES */
+app.use('/auth', authRoutes)
 
 /* health check */
 app.get('/', (req, res) => {
-    return res.status(200).json({
+    return res.status(200).send({
         ping: "pong",
     })
 })
