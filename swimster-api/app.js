@@ -4,6 +4,7 @@ const cors = require('cors')
 
 const { NotFoundError } = require('./utils/error')
 const authRoutes = require('./routes/auth')
+const listingRoutes = require('./routes/listings')
 
 const app = express()
 
@@ -13,6 +14,7 @@ app.use(cors())
 
 /* ROUTES */
 app.use('/auth', authRoutes)
+app.use('/listings', listingRoutes)
 
 /* health check */
 app.get('/', (req, res) => {

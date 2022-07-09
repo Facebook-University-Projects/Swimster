@@ -13,6 +13,7 @@ CREATE TABLE users (
 
 CREATE TABLE listings (
     id                  SERIAL PRIMARY KEY,
+    host_id             INT NOT NULL,
     title               TEXT NOT NULL,
     address             TEXT NOT NULL,
     description         TEXT NOT NULL,
@@ -26,7 +27,6 @@ CREATE TABLE listings (
     has_lounge_chairs   BOOLEAN NOT NULL DEFAULT FALSE,
     has_hot_tub         BOOLEAN NOT NULL DEFAULT FALSE,
     has_parking         BOOLEAN NOT NULL DEFAULT FALSE,
-    host_id             INT NOT NULL,
     images              TEXT NOT NULL,
     created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY (host_id) REFERENCES users(id) ON DELETE CASCADE
