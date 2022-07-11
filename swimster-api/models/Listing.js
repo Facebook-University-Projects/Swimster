@@ -1,8 +1,8 @@
 const db = require('../db')
-const { UnauthorizedError, BadRequestError } = require('../utils/error')
+const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/error')
 
 class Listing {
-    static async createListing({ newListing }) {
+    static async createListing({ newListing, user }) {
         // take the listing name, address, description, price, totalGuests, poolType, amenities, images
         const requiredFields = [
             "title",
@@ -51,7 +51,7 @@ class Listing {
                 $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
             )
             RETURNING id,
-            $1 AS "host_id",
+            host_id,
             title,
             address,
             description,
@@ -68,7 +68,7 @@ class Listing {
             images,
             created_at;
         `, [
-            "rmart@fb.com",
+            user.email,
             newListing.title,
             newListing.address,
             newListing.description,
@@ -87,6 +87,59 @@ class Listing {
 
         const listing = result.rows[0]
         return listing
+    }
+
+    static async fetchListings() {
+        // fetches all listings w/ broad info
+        const result = await db.query(`
+            SELECT  listings.id,
+                    listings.host_id,
+                    listings.title,
+                    listings.address,
+                    listings.price,
+                    listings.total_guests,
+                    listings.images
+            FROM listings;
+        `)
+
+        const allListings = result.rows
+        return allListings
+    }
+
+    static async fetchListingById(listingId) {
+        // fetches a single listing by id w/ detailed info
+        // also returns host info to display
+        const result = await db.query(`
+            SELECT  listing.id,
+                    listing.host_id,
+                    host.first_name,
+                    host.last_name,
+                    host.email,
+                    host.phone_number,
+                    listing.title,
+                    listing.address,
+                    listing.description,
+                    listing.price,
+                    listing.total_guests,
+                    listing.pool_type,
+                    listing.has_bbq_grill,
+                    listing.has_internet,
+                    listing.has_bathroom,
+                    listing.has_towels,
+                    listing.has_lounge_chairs,
+                    listing.has_hot_tub,
+                    listing.has_parking,
+                    listing.images,
+                    listing.created_at
+            FROM listings AS listing
+            JOIN users AS host ON host.id = listing.host_id
+            WHERE listing.id = $1;
+        `, [listingId])
+
+        const listing = result.rows[0]
+        if (listing?.title) return listing
+
+        throw new NotFoundError("No listing found.")
     }
 }
 

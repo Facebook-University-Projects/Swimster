@@ -12,8 +12,8 @@ router.post('/login', async (req, res, next) => {
         // creates a JWT for specific user to authorize authed user
         const token = createUserJwt(user)
         return res.status(200).json({ user, token })
-    } catch (err) {
-        next(err)
+    } catch (error) {
+        next(error)
     }
 })
 
@@ -25,8 +25,8 @@ router.post('/register', async (req, res, next) => {
         // creates a JWT for specific user to authorize authed user
         const token = createUserJwt(user)
         return res.status(201).json({ user, token })
-    } catch (err) {
-        next(err)
+    } catch (error) {
+        next(error)
     }
 })
 
@@ -37,7 +37,7 @@ router.get('/me', requiresAuth, async (req, res, next) => {
         const clientUserInfo = User.publicUserInfo(user)
         return res.status(200).json({ user: clientUserInfo })
     } catch (error) {
-        next(err)
+        next(error)
     }
 })
 

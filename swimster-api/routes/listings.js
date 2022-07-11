@@ -1,37 +1,41 @@
 const express = require('express')
 const Listing = require('../models/Listing')
+const { requiresAuth } = require('../middleware/security')
 
 const router = express.Router()
 
-router.post('/', async (req, res, next) => {
-    // creates a new listing
+router.post('/', requiresAuth, async (req, res, next) => {
     try {
-        // const user = res.locals.user
+        // creates a new listing
+        const user = res.locals.user
         const listing = await Listing.createListing({
             newListing: req.body,
-            // user: user,
+            user: user,
         })
         return res.status(201).json({ listing })
-    } catch (err) {
-        next(err)
+    } catch (error) {
+        next(error)
     }
 })
 
-router.get('/', async (req, res, next) => {
-    // fetches all listings
+router.get('/', requiresAuth, async (req, res, next) => {
     try {
-
-    } catch (err) {
-        next(err)
+        // fetches all listings
+        const listings = await Listing.fetchListings()
+        return res.status(200).json({ listings })
+    } catch (error) {
+        next(error)
     }
 })
 
-router.get('/:listingId', async (req, res, next) => {
-    // fetches a listing by id
+router.get('/:listingId', requiresAuth, async (req, res, next) => {
     try {
-
-    } catch (err) {
-        next(err)
+        // fetches a listing by id
+        const listingId = req.params.listingId
+        const listing = await Listing.fetchListingById(listingId)
+        return res.status(200).json({ listing })
+    } catch (error) {
+        return next(error)
     }
 })
 
