@@ -3,16 +3,23 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 const { NotFoundError } = require('./utils/error')
+const { extractUserFromJwt } = require('./middleware/security')
 const authRoutes = require('./routes/auth')
+const listingRoutes = require('./routes/listings')
 
 const app = express()
 
-app.use(morgan('tiny'))
-app.use(express.json())
 app.use(cors())
+app.use(express.json())
+app.use(morgan('tiny'))
+
+// for every request, checks if Bearer token exists
+// if it does, attach decoded user to res header
+app.use(extractUserFromJwt)
 
 /* ROUTES */
 app.use('/auth', authRoutes)
+app.use('/listings', listingRoutes)
 
 /* health check */
 app.get('/', (req, res) => {

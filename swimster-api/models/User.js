@@ -4,7 +4,7 @@ const { SALT_WORK_FACTOR } = require('../config')
 const { UnauthorizedError, BadRequestError } = require('../utils/error')
 
 class User {
-    static async publicUserInfo(user) {
+    static publicUserInfo(user) {
         return {
             id: user.id,
             firstName: user.first_name,
