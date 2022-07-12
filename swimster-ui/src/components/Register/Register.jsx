@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 import { useRegistrationForm } from '../../hooks/useRegistrationForm'
 import { style } from './style'
 
@@ -68,7 +69,7 @@ const Register = ({ user, setUser }) => {
                         {...register("confirmPassword")}
                     />
                     <p className={style.toLogin}>
-                        Already have an account? <span className={style.loginLink}>Log in.</span>
+                        Already have an account? <Link to="/login"><span className={style.loginLink}>Log in.</span></Link>
                     </p>
                     <br></br>
                     <br></br>
