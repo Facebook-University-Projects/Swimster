@@ -6,7 +6,6 @@ export const style = {
     inputElement: 'rounded-md p-3 bg-gray-200',
     fullInput: 'col-span-2',
     toLogin: 'ml-1 text-sm',
-    loginLink: 'text-blue-400',
-    submitButton: 'bg-indigo-500 w-2/5 py-2 rounded-lg text-white',
-
+    loginLink: 'text-blue-400 cursor-pointer',
+    submitButton: 'bg-indigo-500 col-span-2 py-2 rounded-lg text-white cursor-pointer',
 }

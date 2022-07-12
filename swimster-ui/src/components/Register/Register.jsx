@@ -1,21 +1,26 @@
 import * as React from 'react'
+import { useRegistrationForm } from '../../hooks/useRegistrationForm'
 import { style } from './style'
 
-const Register = () => {
+const Register = ({ user, setUser }) => {
+    const { form, error, isProcessing, register, handleSubmit, onSubmit } = useRegistrationForm({ user, setUser })
+
     return (
         <div className={style.register}>
             <div className={style.formContainer}>
                 <h1 className={style.formHeader}>First of Many.</h1>
-                <div className={style.userDetails}>
+                <form className={style.userDetails} onSubmit={handleSubmit(onSubmit)}>
                     <input
                         className={style.inputElement}
                         type="text"
                         placeholder="First"
+                        {...register("firstName")}
                     />
                     <input
                         className={style.inputElement}
                         type="text"
                         placeholder="Last"
+                        {...register("lastName")}
                     />
                     <input
                         className={
@@ -23,6 +28,7 @@ const Register = () => {
                         }
                         type="email"
                         placeholder="Email"
+                        {...register("email")}
                     />
                     <input
                         className={
@@ -30,38 +36,44 @@ const Register = () => {
                         }
                         type=""
                         placeholder="Address"
+                        {...register("address")}
                     />
                     <input
                         className={style.inputElement}
                         type="tel"
                         placeholder="Phone Number"
+                        {...register("phoneNumber")}
                     />
                     <input
                         className={style.inputElement}
                         type="date"
                         placeholder="Date of Birth"
+                        {...register("dateOfBirth")}
                     />
                     <br></br>
                     <input
                         className={
                             `${style.inputElement} ${style.fullInput}`
                         }
-                        type="text"
+                        type="password"
                         placeholder="Password"
+                        {...register("password")}
                     />
                     <input
                         className={
                             `${style.inputElement} ${style.fullInput}`
                         }
-                        type="text"
+                        type="password"
                         placeholder="Confirm Password"
+                        {...register("confirmPassword")}
                     />
                     <p className={style.toLogin}>
                         Already have an account? <span className={style.loginLink}>Log in.</span>
                     </p>
-                </div>
-                <br></br>
-                <button className={style.submitButton}>Sign Up</button>
+                    <br></br>
+                    <br></br>
+                    <input type="submit" className={style.submitButton} value="Sign Up"/>
+                </form>
             </div>
         </div>
     )
