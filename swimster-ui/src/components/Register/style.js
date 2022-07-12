@@ -7,6 +7,6 @@ export const style = {
     fullInput: 'col-span-2',
     toLogin: 'ml-1 text-sm',
     loginLink: 'text-blue-400',
-    submitButton: 'bg-indigo-500 w-2/5 py-2 rounded-lg text-white'
+    submitButton: 'bg-indigo-500 w-2/5 py-2 rounded-lg text-white',
 
 }
