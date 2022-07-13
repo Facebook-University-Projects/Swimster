@@ -41,7 +41,7 @@ class ApiClient {
 
     async fetchListings() {
         const listings = await this.request({
-            endpoint: "listings",
+            endpoint: "listings/",
             method: "GET",
         })
         return listings
@@ -57,7 +57,7 @@ class ApiClient {
 
     async createListing(listing) {
         const createListing = await this.request({
-            endpoint: "listings",
+            endpoint: "listings/",
             method: "POST",
             data: listing
         })

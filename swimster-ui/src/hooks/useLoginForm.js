@@ -27,7 +27,6 @@ export const useLoginForm = () => {
 
         const { data, error } = await apiClient.loginUser(JSON.stringify(formattedFormData))
         if (data) {
-            console.log('data: ', data);
             setUser(data.user)
             apiClient.setToken(data.token)
         } if (error) {

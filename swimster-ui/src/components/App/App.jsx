@@ -5,6 +5,7 @@ import Login from '../Login/Login'
 import Register from '../Register/Register'
 import Navbar from '../Navbar/Navbar'
 import apiClient from '../../services/apiClient'
+import { useAuthContext } from '../../contexts/auth'
 
 const style = {
   app: 'm-0 p-0 flex flex-col h-screen'
@@ -12,14 +13,13 @@ const style = {
 
 const App = () => {
   const [listings, setListings] = useState([])
-  const [user, setUser] = useState({})
+  const { user, setUser } = useAuthContext()
   const [error, setError] = useState(null)
   const [isFetching, setIsFetching] = useState(false)
 
-
   useEffect(() => {
     const fetchUser = async () => {
-      const { data, error } = apiClient.fetchUserFromToken()
+      const { data, error } = await apiClient.fetchUserFromToken()
       if (data) setUser(data.user)
       if (error) setError(error)
     }
@@ -30,6 +30,7 @@ const App = () => {
       fetchUser()
     }
   }, [])
+
 
   const handleLogout = async () => {
     await apiClient.logoutUser()
@@ -43,8 +44,8 @@ const App = () => {
         <Navbar user={user} handleLogout={handleLogout}/>
         <Routes>
           <Route path='/' element={<Home listings={listings}/>}/>
-          <Route path='/login' element={<Login user={user} setUser={setUser}/>}/>
-          <Route path='/register' element={<Register user={user} setUser={setUser}/>}/>
+          <Route path='/login' element={<Login />}/>
+          <Route path='/register' element={<Register />}/>
         </Routes>
       </main>
     </BrowserRouter>
