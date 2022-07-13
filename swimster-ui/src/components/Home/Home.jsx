@@ -1,8 +1,17 @@
 import * as React from 'react'
 
-const Home = () => {
+const Home = ({ listings }) => {
+    if (listings.length === 0) return null
     return (
-        <div>Home</div>
+        <div>
+            {listings?.map(listing => {
+                return (
+                    <div>
+                        {listing.title}
+                    </div>
+                )
+            })}
+        </div>
     )
 }
 
