@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { useLoginForm } from '../../hooks/useLoginForm'
 import { style } from './style'
 
-const Login = ({ user, setUser }) => {
-    const { form, error, isProcessing, register, handleSubmit, onSubmit } = useLoginForm({ user, setUser })
+const Login = () => {
+    const { form, error, isProcessing, register, handleSubmit, onSubmit } = useLoginForm()
 
     return (
         <div className={style.register}>

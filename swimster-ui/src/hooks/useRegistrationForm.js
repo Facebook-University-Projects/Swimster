@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import  { useForm } from 'react-hook-form'
 import apiClient from '../services/apiClient'
+import { useAuthContext } from '../contexts/auth'
 
-export const useRegistrationForm = ({ user, setUser }) => {
+export const useRegistrationForm = () => {
+    const { user, setUser } = useAuthContext()
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm()
     const [form, setForm] = useState({})
