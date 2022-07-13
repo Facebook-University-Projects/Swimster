@@ -32,7 +32,6 @@ export const useLoginForm = () => {
         } if (error) {
             setError(error.message)
         }
-
         setIsProcessing(false)
     }
 

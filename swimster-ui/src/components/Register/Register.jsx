@@ -51,10 +51,9 @@ const Register = () => {
                         placeholder="Date of Birth"
                         {...register("dateOfBirth")}
                     />
-                    <br></br>
                     <input
                         className={
-                            `${style.inputElement} ${style.fullInput}`
+                            `${style.inputElement} ${style.fullInput} !mt-10`
                         }
                         type="password"
                         placeholder="Password"
@@ -71,8 +70,6 @@ const Register = () => {
                     <p className={style.toLogin}>
                         Already have an account? <Link to="/login"><span className={style.loginLink}>Log in.</span></Link>
                     </p>
-                    <br></br>
-                    <br></br>
                     <input type="submit" className={style.submitButton} value="Sign Up"/>
                 </form>
             </div>

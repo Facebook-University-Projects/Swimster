@@ -10,7 +10,6 @@ const Login = () => {
         <div className={style.register}>
             <div className={style.formContainer}>
                 <h1 className={style.formHeader}>Welcome Back!</h1>
-                <br></br>
                 <form className={style.userDetails} onSubmit={handleSubmit(onSubmit)}>
                     <input
                         className={
@@ -28,11 +27,8 @@ const Login = () => {
                         placeholder="Password"
                         {...register("password")}
                     />
-                    <br></br>
-                    <br></br>
                     <input type="submit" className={style.submitButton} value="Login" />
                 </form>
-                <br></br>
                 <p className={style.toLogin}>
                         Don't have an account? <Link to="/register"><span className={style.loginLink}>Sign up for free.</span></Link>
                 </p>
