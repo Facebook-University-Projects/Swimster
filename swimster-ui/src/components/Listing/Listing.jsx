@@ -24,7 +24,7 @@ const Listing = ({ listing }) => {
                 </div>
                 <div className={style.listingPrice}>
                     <h2>
-                        {price}<span className={"ml-1 text-xs"}>hour</span>
+                        ${price}<span className={"ml-1 text-xs"}>hour</span>
                     </h2>
                     <img className={"ml-auto mr-2 cursor-pointer"} src={UnlikedIcon} alt="unliked icon" />
                 </div>

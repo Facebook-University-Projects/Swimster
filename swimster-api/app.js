@@ -6,6 +6,7 @@ const { NotFoundError } = require('./utils/error')
 const { extractUserFromJwt } = require('./middleware/security')
 const authRoutes = require('./routes/auth')
 const listingRoutes = require('./routes/listings')
+const reservationRoutes = require('./routes/reservations')
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.use(extractUserFromJwt)
 /* ROUTES */
 app.use('/auth', authRoutes)
 app.use('/listings', listingRoutes)
+app.use('/reservations', reservationRoutes)
 
 /* health check */
 app.get('/', (req, res) => {
