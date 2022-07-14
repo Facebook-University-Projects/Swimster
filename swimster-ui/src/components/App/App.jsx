@@ -6,10 +6,7 @@ import Register from '../Register/Register'
 import Navbar from '../Navbar/Navbar'
 import apiClient from '../../services/apiClient'
 import { useAuthContext } from '../../contexts/auth'
-
-const style = {
-  app: 'm-0 p-0 flex flex-col h-screen'
-}
+import { style } from './style'
 
 const App = () => {
   const [listings, setListings] = useState([])

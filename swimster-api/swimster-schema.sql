@@ -37,11 +37,11 @@ CREATE TABLE reservations (
     user_id     INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     listing_id  INT NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
     date        DATE NOT NULL,
-    start_time  TIMESTAMP NOT NULL,
-    end_time    TIMESTAMP NOT NULL,
+    start_time  TIME NOT NULL,
+    end_time    TIME NOT NULL,
     guests      INT NOT NULL,
     total       BIGINT NOT NULL,
-    status      BOOLEAN NOT NULL,
+    status      BOOLEAN NOT NULL DEFAULT FALSE,
     created_at  TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
