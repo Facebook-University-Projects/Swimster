@@ -32,6 +32,19 @@ CREATE TABLE listings (
     FOREIGN KEY (host_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE reservations (
+    id          SERIAL PRIMARY KEY,
+    user_id     INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    listing_id  INT NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+    date        DATE NOT NULL,
+    start_time  TIMESTAMP NOT NULL,
+    end_time    TIMESTAMP NOT NULL,
+    guests      INT NOT NULL,
+    total       BIGINT NOT NULL,
+    status      BOOLEAN NOT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE images (
     id         SERIAL PRIMARY KEY,
     image_type      TEXT NOT NULL,
