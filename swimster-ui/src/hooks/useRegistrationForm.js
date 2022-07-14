@@ -12,8 +12,8 @@ export const useRegistrationForm = () => {
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState({})
 
+    // if user is logged in, redirect them to Home
     useEffect(() => {
-        // if user is logged in, redirect them to Home
         if (user?.email) navigate('/')
     }, [user, navigate])
 
@@ -36,6 +36,7 @@ export const useRegistrationForm = () => {
             password: formData.password,
         }
 
+        // makes api request to server backend at the /register endpoint and saves session token
         const { data, error } = await apiClient.registerUser(JSON.stringify(formattedFormData))
         if (data) {
             setUser(data.user)

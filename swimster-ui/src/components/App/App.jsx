@@ -29,8 +29,21 @@ const App = () => {
       apiClient.setToken(token)
       fetchUser()
     }
-  }, [])
+  }, [setUser])
 
+  useEffect(() =>{
+    const fetchListings = async () => {
+      setIsFetching(true)
+
+      const { data, error } = await apiClient.fetchListings()
+      if (error) setError(error)
+      if (data) setListings(data.listings)
+
+      setIsFetching(false)
+    }
+
+    fetchListings()
+  }, [])
 
   const handleLogout = async () => {
     await apiClient.logoutUser()
