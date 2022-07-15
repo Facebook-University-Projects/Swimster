@@ -87,12 +87,13 @@ class Reservation {
     static totalCalculation() {
         const durationInHours = `EXTRACT(epoch FROM ($3)::time - ($2)::time) / 3600`
         const listingPrice = `$5`
-        const feesTaken = `${listingPrice} * ${durationInHours} * ${this.FEES_RATE}`
-        const taxesTaken = `(${listingPrice} * ${durationInHours} + ${feesTaken}) * ${this.TAX_RATE}`
-        const total = `ROUND((${durationInHours} * ${listingPrice}) + ${feesTaken} + ${taxesTaken}, 2)`
+        const subtotal = `${listingPrice} * ${durationInHours}`
+        const feesTaken = `${subtotal} * ${this.FEES_RATE}`
+        const taxesTaken = `${subtotal} * ${this.TAX_RATE}`
+        const total = `ROUND(${subtotal} + ${feesTaken} + ${taxesTaken}, 2)`
         return total
     }
-
+x
     static async fetchReservationsByListingId(listingId) {
         // fetch all reservations for a single lisitng to show when user clicks on individual listing
         const result = await db.query(`
