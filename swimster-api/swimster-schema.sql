@@ -40,7 +40,7 @@ CREATE TABLE reservations (
     start_time  TIME NOT NULL,
     end_time    TIME NOT NULL,
     guests      INT NOT NULL,
-    total       BIGINT NOT NULL,
+    total       DOUBLE PRECISION NOT NULL,
     status      BOOLEAN NOT NULL DEFAULT FALSE,
     created_at  TIMESTAMP NOT NULL DEFAULT NOW()
 );

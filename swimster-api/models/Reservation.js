@@ -2,16 +2,31 @@ const db = require('../db')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/error')
 
 class Reservation {
+    static get TAX_RATE() {
+        return 0.0725
+    }
+
+    static get FEES_RATE() {
+        return 0.08
+    }
+
     static async createReservation({ newReservation, listing, user }) {
         // creates a new reservation for a pool
         const requiredFields = ["date", "startTime", "endTime", "guests"]
 
-        // edge cases: missing fields, time slot already exists in listing, outside of pool listing date ranges
+        // edge cases: missing fields, time slot already exists in listing, guests > guests_allowed, outside of pool listing date ranges
         requiredFields.forEach(field => {
             if (!newReservation.hasOwnProperty(field)) {
                 throw new BadRequestError(`Missing ${field} in request body.`)
             }
         })
+
+        if (newReservation.guests > listing.total_guests) {
+            throw new BadRequestError(`Cannot have more than ${listing.total_guests} guests.`)
+        }
+
+
+        const totalCalculatedSQLString = this.totalCalculation()
 
         const result = await db.query(`
             INSERT INTO reservations (
@@ -28,9 +43,7 @@ class Reservation {
                 ($2)::time,
                 ($3)::time,
                 $4,
-                CEIL (
-                    $5
-                ),
+                ${totalCalculatedSQLString},
                 --- subtotal = (listing_price + fees) * (end_time - start_time)
                 --- total = subtotal + (taxes_decimal * subtotal)
                 $6,
@@ -69,6 +82,15 @@ class Reservation {
         ])
         const reservation = result.rows[0]
         return reservation
+    }
+
+    static totalCalculation() {
+        const durationInHours = `EXTRACT(epoch FROM ($3)::time - ($2)::time) / 3600`
+        const listingPrice = `$5`
+        const feesTaken = `${listingPrice} * ${durationInHours} * ${this.FEES_RATE}`
+        const taxesTaken = `(${listingPrice} * ${durationInHours} + ${feesTaken}) * ${this.TAX_RATE}`
+        const total = `ROUND((${durationInHours} * ${listingPrice}) + ${feesTaken} + ${taxesTaken}, 2)`
+        return total
     }
 
     static async fetchReservationsByListingId(listingId) {
