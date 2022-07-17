@@ -1,7 +1,7 @@
 const express = require('express')
 const Reservation = require('../models/Reservation')
-const { requiresAuth } = require('../middleware/security')
 const Listing = require('../models/Listing')
+const { requiresAuth } = require('../middleware/security')
 
 const router = express.Router()
 
@@ -19,7 +19,9 @@ router.get('/listings/:listingId', requiresAuth, async (req, res, next) => {
 router.get('/', requiresAuth, async (req, res, next) => {
     try {
         // fetch all reservations created by authed user
-
+        const user = res.locals.user
+        const reservationsFromUser = await Reservation.fetchReservationsFromUser({ user })
+        return res.status(200).json({ reservationsFromUser })
     } catch (error) {
         next(error)
     }
@@ -28,7 +30,9 @@ router.get('/', requiresAuth, async (req, res, next) => {
 router.get('/listings', requiresAuth, async (req, res, next) => {
     try {
         // fetch all reservations for any user-owned listings
-
+        const user = res.locals.user
+        const reservationsFromHostListings = await Reservation.fetchReservationsFromHostListings({ user })
+        return res.status(200).json({ reservationsFromHostListings })
     } catch (error) {
         next(error)
     }

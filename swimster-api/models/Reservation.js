@@ -1,5 +1,5 @@
 const db = require('../db')
-const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/error')
+const { BadRequestError } = require('../utils/error')
 
 class Reservation {
     static get TAX_RATE() {
@@ -44,8 +44,6 @@ class Reservation {
                 ($3)::time,
                 $4,
                 ${totalCalculatedSQLString},
-                --- subtotal = (listing_price + fees) * (end_time - start_time)
-                --- total = subtotal + (taxes_decimal * subtotal)
                 $6,
                 (SELECT id FROM users WHERE users.email = $7)
             )
@@ -93,7 +91,7 @@ class Reservation {
         const total = `ROUND(${subtotal} + ${feesTaken} + ${taxesTaken}, 2)`
         return total
     }
-x
+
     static async fetchReservationsByListingId(listingId) {
         // fetch all reservations for a single lisitng to show when user clicks on individual listing
         const result = await db.query(`
@@ -120,6 +118,74 @@ x
             WHERE listing_id = $1
             ORDER BY reservations.created_at DESC;
         `, [listingId])
+
+        const reservations = result.rows
+        return reservations
+    }
+
+    static async fetchReservationsFromUser({ user }) {
+        // fetches all reservations created by user
+        const result = await db.query(`
+            SELECT  reservations.id,
+                    reservations.date,
+                    reservations.start_time,
+                    reservations.end_time,
+                    reservations.guests,
+                    reservations.total,
+                    reservations.status,
+                    reservations.created_at,
+                    users.email,
+                    (
+                        SELECT hostUsers.email
+                        FROM users AS hostUsers
+                        WHERE hostUsers.id = (
+                            SELECT listings.host_id
+                            FROM listings
+                            WHERE listings.id = listing_id
+                        )
+                    ) AS "host_email",
+                    listings.id AS "listing_id",
+                    listings.title AS "listing_title",
+                    listings.address AS "listing_address",
+                    listings.images AS "listing_images"
+            FROM reservations
+            JOIN users ON users.id = reservations.user_id
+            JOIN listings ON listings.id = reservations.listing_id
+            WHERE user_id = (SELECT id FROM users WHERE email = $1)
+            ORDER BY reservations.created_at DESC;
+        `, [user.email])
+
+        const reservations = result.rows
+        return reservations
+    }
+
+    static async fetchReservationsFromHostListings({ user }) {
+        // fetches all reservations from listings created by user
+        const result = await db.query(`
+            SELECT  reservations.id,
+                    reservations.date,
+                    reservations.start_time,
+                    reservations.end_time,
+                    reservations.guests,
+                    reservations.total,
+                    reservations.status,
+                    reservations.created_at,
+                    users.first_name,
+                    users.last_name,
+                    users.email,
+                    listings.title AS "listing_title",
+                    listings.address,
+                    listings.images
+            FROM reservations
+            JOIN users ON users.id = reservations.user_id
+            JOIN listings ON listings.id = reservations.listing_id
+            AND listings.host_id = (
+                SELECT hostUsers.id
+                FROM users AS hostUsers
+                WHERE hostUsers.email = $1
+            )
+            ORDER BY reservations.created_at DESC;
+        `, [user.email])
 
         const reservations = result.rows
         return reservations
