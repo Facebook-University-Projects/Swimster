@@ -18,3 +18,5 @@ export const AuthContextProvider = ({ children }) => {
 }
 
 export const useAuthContext = () => useContext(AuthContext)
+
+export const isUserAuthenticated = user => Boolean(user?.email)

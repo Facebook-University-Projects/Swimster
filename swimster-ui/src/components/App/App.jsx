@@ -5,6 +5,7 @@ import Login from '../Login/Login'
 import Register from '../Register/Register'
 import Navbar from '../Navbar/Navbar'
 import apiClient from '../../services/apiClient'
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import { useAuthContext } from '../../contexts/auth'
 import { style } from './style'
 
@@ -53,7 +54,13 @@ const App = () => {
       <main className={style.app}>
         <Navbar user={user} handleLogout={handleLogout}/>
         <Routes>
-          <Route path='/' element={<Home listings={listings}/>}/>
+          <Route path='/' element={
+            <ProtectedRoute element={
+              <Home listings={listings} />
+            }
+            />
+          }
+          />
           <Route path='/login' element={<Login />}/>
           <Route path='/register' element={<Register />}/>
         </Routes>
