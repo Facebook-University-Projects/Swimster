@@ -6,10 +6,7 @@ import Register from '../Register/Register'
 import Navbar from '../Navbar/Navbar'
 import apiClient from '../../services/apiClient'
 import { useAuthContext } from '../../contexts/auth'
-
-const style = {
-  app: 'm-0 p-0 flex flex-col h-screen'
-}
+import { style } from './style'
 
 const App = () => {
   const [listings, setListings] = useState([])
@@ -29,8 +26,21 @@ const App = () => {
       apiClient.setToken(token)
       fetchUser()
     }
-  }, [])
+  }, [setUser])
 
+  useEffect(() =>{
+    const fetchListings = async () => {
+      setIsFetching(true)
+
+      const { data, error } = await apiClient.fetchListings()
+      if (error) setError(error)
+      if (data) setListings(data.listings)
+
+      setIsFetching(false)
+    }
+
+    fetchListings()
+  }, [])
 
   const handleLogout = async () => {
     await apiClient.logoutUser()

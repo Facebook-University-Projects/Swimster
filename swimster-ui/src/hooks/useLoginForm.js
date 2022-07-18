@@ -12,8 +12,8 @@ export const useLoginForm = () => {
     const [error, setError] = useState({})
     const [form, setForm] = useState({})
 
+    // if user is logged in, redirect them to Home
     useEffect(() => {
-        // if user is logged in, redirect them to Home
         if (user?.email) navigate('/')
     }, [user, navigate])
 
@@ -25,6 +25,7 @@ export const useLoginForm = () => {
             password: formData.password,
         }
 
+        // makes api request to server backend at the /login endpoint and saves session token
         const { data, error } = await apiClient.loginUser(JSON.stringify(formattedFormData))
         if (data) {
             setUser(data.user)

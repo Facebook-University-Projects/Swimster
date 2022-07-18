@@ -1,41 +1,47 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/auth'
-
-const style = {
-    navbar: 'bg-indigo-50 h-14',
-    links: 'flex'
-}
+import { style } from './style'
 
 const Navbar = ({ handleLogout }) => {
     const { user } = useAuthContext()
 
     return (
         <div className={style.navbar}>
-            <ul className={style.links}>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
+            <Link to="/">
+                <div className={style.logoContainer}>
+                    <img className={style.logoImg} src="https://www.kindpng.com/picc/m/156-1565640_transparent-pool-party-png-transparent-background-pool-float.png" alt="" />
+                    <h1 className={style.logoTitle}>Swimster</h1>
+                </div>
+            </Link>
+            <div className={style.links}>
                 {user?.email ? (
                     <>
-                    <li>
-                        <span>{user.email}</span>
-                    </li>
-                    <li>
-                        <span onClick={handleLogout}>Logout</span>
-                    </li>
+                        <button className={style.linkButton}>
+                            List your Pool
+                        </button>
+                        <h3 className={style.link}>
+                            Hey {user.firstName}!
+                        </h3>
+                        <button className={style.linkButton} onClick={handleLogout}>
+                            Logout
+                        </button>
                     </>
                 ) : (
                     <>
-                    <li>
-                        <Link to="/login">Login</Link>
-                    </li>
-                    <li>
-                        <Link to="/register">Sign Up</Link>
-                    </li>
+                        <Link to="/login">
+                            <button className={style.linkButton}>
+                                Login
+                            </button>
+                        </Link>
+                        <Link to="/register">
+                            <button className={style.linkButton}>
+                                Register
+                            </button>
+                        </Link>
                     </>
                 )}
-            </ul>
+            </div>
         </div>
     )
 }
