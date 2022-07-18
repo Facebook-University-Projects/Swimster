@@ -3,10 +3,12 @@ const { BadRequestError } = require('../utils/error')
 
 class Reservation {
     static get TAX_RATE() {
+        // currently California's state tax
         return 0.0725
     }
 
     static get FEES_RATE() {
+        // arbitrary value estimated relative to Airbnb's 14% service fee rate
         return 0.08
     }
 
@@ -83,6 +85,7 @@ class Reservation {
     }
 
     static totalCalculation() {
+        // cleanup of total calculation using placeholder values from SQL query string
         const durationInHours = `EXTRACT(epoch FROM ($3)::time - ($2)::time) / 3600`
         const listingPrice = `$5`
         const subtotal = `${listingPrice} * ${durationInHours}`

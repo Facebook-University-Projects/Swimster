@@ -41,6 +41,7 @@ CREATE TABLE reservations (
     end_time    TIME NOT NULL,
     guests      INT NOT NULL,
     total       DOUBLE PRECISION NOT NULL,
+    --- this value detects whether or not user is in reservation session
     status      BOOLEAN NOT NULL DEFAULT FALSE,
     created_at  TIMESTAMP NOT NULL DEFAULT NOW()
 );
