@@ -1,3 +1,6 @@
+--- reservation session
+CREATE TYPE status AS ENUM ('DRAFT', 'PENDING_CONFIRMATION', 'CONFIRMED', 'ARCHIVED');
+
 CREATE TABLE users (
     id              SERIAL PRIMARY KEY,
     first_name      TEXT NOT NULL,
@@ -33,17 +36,18 @@ CREATE TABLE listings (
 );
 
 CREATE TABLE reservations (
-    id          SERIAL PRIMARY KEY,
-    user_id     INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    listing_id  INT NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
-    date        DATE NOT NULL,
-    start_time  TIME NOT NULL,
-    end_time    TIME NOT NULL,
-    guests      INT NOT NULL,
-    total       DOUBLE PRECISION NOT NULL,
+    id                  SERIAL PRIMARY KEY,
+    user_id             INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    listing_id          INT NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+    reservation_date    DATE NOT NULL,
+    start_time          TIME NOT NULL,
+    end_time            TIME NOT NULL,
+    guests              INT NOT NULL,
+    total               NUMERIC NOT NULL,
     --- this value detects whether or not user is in reservation session
-    status      BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at  TIMESTAMP NOT NULL DEFAULT NOW()
+    reservation_status  status NOT NULL DEFAULT 'DRAFT',
+    created_at  TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at  TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE images (
