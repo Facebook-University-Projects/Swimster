@@ -9,11 +9,12 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import CreatePool from '../CreatePool/CreatePool'
 import ListingDetail from '../ListingDetail/ListingDetail'
 import { useAuthContext } from '../../contexts/auth'
+import { useListingsContext } from '../../contexts/listings'
 import { style } from './style'
 
 const App = () => {
-  const [listings, setListings] = useState([])
-  const { user, setUser } = useAuthContext()
+  const { user, setUser, isUserAuthenticated } = useAuthContext()
+  const { handlers: listingsHandlers } = useListingsContext()
   const [error, setError] = useState(null)
   const [isFetching, setIsFetching] = useState(false)
 
@@ -31,19 +32,13 @@ const App = () => {
     }
   }, [setUser])
 
-  useEffect(() =>{
+  useEffect(() => {
     const fetchListings = async () => {
-      setIsFetching(true)
-
-      const { data, error } = await apiClient.fetchListings()
-      if (error) setError(error)
-      if (data?.listings) setListings(data.listings)
-
-      setIsFetching(false)
+      await listingsHandlers.fetchListings()
     }
 
     fetchListings()
-  }, [])
+  }, [isUserAuthenticated])
 
   const handleLogout = async () => {
     await apiClient.logoutUser()
@@ -58,14 +53,14 @@ const App = () => {
         <Routes>
           <Route path='/' element={
             <ProtectedRoute element={
-              <Home listings={listings} />
+              <Home />
             }
             />
           }
           />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/createpool' element={<CreatePool listings={listings} setListings={setListings} />} />
+          <Route path='/createpool' element={<CreatePool />} />
           <Route path='/listings/:listingId' element={<ListingDetail />} />
         </Routes>
       </main>

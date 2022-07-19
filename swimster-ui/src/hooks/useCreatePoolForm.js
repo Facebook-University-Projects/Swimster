@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import apiClient from '../services/apiClient'
+import { useListingsContext } from '../contexts/listings'
 
-export const useCreatePoolForm = ({ listings, setListings }) => {
+export const useCreatePoolForm = () => {
     const navigate = useNavigate()
+    const { listings, setListings } = useListingsContext()
     const { register, handleSubmit } = useForm()
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState({})
