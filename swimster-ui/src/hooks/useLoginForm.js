@@ -10,7 +10,6 @@ export const useLoginForm = () => {
     const { register, handleSubmit } = useForm()
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState({})
-    const [form, setForm] = useState({})
 
     // if user is logged in, redirect them to Home
     useEffect(() => {
@@ -37,7 +36,6 @@ export const useLoginForm = () => {
     }
 
     return {
-        form,
         error,
         isProcessing,
         register,

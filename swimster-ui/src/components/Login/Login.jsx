@@ -4,7 +4,7 @@ import { useLoginForm } from '../../hooks/useLoginForm'
 import { style } from './style'
 
 const Login = () => {
-    const { form, error, isProcessing, register, handleSubmit, onSubmit } = useLoginForm()
+    const { error, isProcessing, register, handleSubmit, onSubmit } = useLoginForm()
 
     return (
         <div className={style.login}>

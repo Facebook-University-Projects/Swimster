@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import apiClient from '../../services/apiClient'
+import * as React from 'react'
+import { useCreatePoolForm } from '../../hooks/useCreatePoolForm'
 
 const style = {
     createPool: 'flex-1 flex justify-around items-center border-2',
@@ -19,45 +17,7 @@ const style = {
 }
 
 const CreatePool = ({ listings, setListings }) => {
-    const navigate = useNavigate()
-    const { register, handleSubmit } = useForm()
-    const [isProcessing, setIsProcessing] = useState(false)
-    const [error, setError] = useState({})
-    const [selectedImages, setSelectedImages] = useState([])
-
-    const onSubmit = async (formData) => {
-        setIsProcessing(true)
-
-        // amenities value will be changed in milestone 2
-        const formattedFormData = {
-            title: formData.title,
-            address: formData.address,
-            description: formData.description,
-            price: formData.price,
-            totalGuests: formData.totalGuests,
-            poolType: formData.poolType,
-            hasBbqGrill: false,
-            hasInternet: false,
-            hasBathroom: false,
-            hasTowels: false,
-            hasLoungeChairs: false,
-            hasHotTub: false,
-            hasParking: false,
-            images: formData.images
-        }
-
-        // makes api request to server at listings/ endpoint
-        const { data, error } = await apiClient.createListing(
-            JSON.stringify(formattedFormData)
-        )
-        if (data?.listing) {
-            setListings([...listings, data.listing])
-            navigate('/')
-        }
-        if (error) setError(error.message)
-
-        setIsProcessing(false)
-    }
+    const { error, isProcessing, register, handleSubmit, onSubmit } = useCreatePoolForm({ listings, setListings })
 
     return (
         <div className={style.createPool}>

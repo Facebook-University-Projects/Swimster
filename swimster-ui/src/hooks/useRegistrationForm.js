@@ -8,7 +8,6 @@ export const useRegistrationForm = () => {
     const { user, setUser } = useAuthContext()
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm()
-    const [form, setForm] = useState({})
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState({})
 
@@ -49,7 +48,6 @@ export const useRegistrationForm = () => {
     }
 
     return {
-        form,
         error,
         isProcessing,
         register,
