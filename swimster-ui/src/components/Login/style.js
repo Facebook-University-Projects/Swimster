@@ -1,5 +1,5 @@
 export const style = {
-    register: 'flex-1 flex justify-center items-center',
+    login: 'flex-1 flex justify-center items-center',
     formContainer: 'bg-gray-100 w-1/4 p-10 flex flex-col items-center rounded-lg shadow-lg',
     formHeader: 'font-semibold text-3xl',
     userDetails: 'flex flex-col w-11/12 space-y-4 mt-10',
