@@ -4,12 +4,15 @@ import './index.css'
 import App from './components/App/App'
 import reportWebVitals from './reportWebVitals'
 import { AuthContextProvider } from './contexts/auth'
+import { ListingsContextProvider } from './contexts/listings'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <AuthContextProvider>
-      <App />
+      <ListingsContextProvider>
+        <App />
+      </ListingsContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );

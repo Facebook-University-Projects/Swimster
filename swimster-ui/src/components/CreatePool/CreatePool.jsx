@@ -16,8 +16,8 @@ const style = {
     submitButton: 'bg-blue-700 col-span-3  w-1/3 py-3 px-1 place-self-end rounded-md mt-4 cursor-pointer font-semibold text-gray-200',
 }
 
-const CreatePool = ({ listings, setListings }) => {
-    const { error, isProcessing, register, handleSubmit, onSubmit } = useCreatePoolForm({ listings, setListings })
+const CreatePool = () => {
+    const { error, isProcessing, register, handleSubmit, onSubmit } = useCreatePoolForm()
 
     return (
         <div className={style.createPool}>
