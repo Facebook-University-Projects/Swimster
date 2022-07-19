@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/auth'
 import { style } from './style'
 
-const Navbar = ({ handleLogout }) => {
-    const { user } = useAuthContext()
+const Navbar = () => {
+    const { handlers: authHandlers, user } = useAuthContext()
 
     return (
         <div className={style.navbar}>
@@ -25,7 +25,7 @@ const Navbar = ({ handleLogout }) => {
                         <h3 className={style.link}>
                             Hey {user.firstName}!
                         </h3>
-                        <button className={style.linkButton} onClick={handleLogout}>
+                        <button className={style.linkButton} onClick={authHandlers.logoutUser}>
                             Logout
                         </button>
                     </>

@@ -13,49 +13,34 @@ import { useListingsContext } from '../../contexts/listings'
 import { style } from './style'
 
 const App = () => {
-  const { user, setUser, isUserAuthenticated } = useAuthContext()
+  const { handlers: authHandlers, isUserAuthenticated, setInitialized } = useAuthContext()
   const { handlers: listingsHandlers } = useListingsContext()
-  const [error, setError] = useState(null)
-  const [isFetching, setIsFetching] = useState(false)
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data, error } = await apiClient.fetchUserFromToken()
-      if (data) setUser(data.user)
-      if (error) setError(error)
+    const initApp = async () => {
+      console.log("Initializing App...")
+      const token = localStorage.getItem("swimster_session_token")
+
+      if (token) {
+        apiClient.setToken(token)
+        await authHandlers.fetchUserFromToken()
+        await listingsHandlers.fetchListings()
+      }
+
+      setInitialized(true)
     }
 
-    const token = localStorage.getItem("swimster_session_token")
-    if (token) {
-      apiClient.setToken(token)
-      fetchUser()
-    }
-  }, [setUser])
-
-  useEffect(() => {
-    const fetchListings = async () => {
-      await listingsHandlers.fetchListings()
-    }
-
-    fetchListings()
-  }, [isUserAuthenticated])
-
-  const handleLogout = async () => {
-    await apiClient.logoutUser()
-    setUser({})
-    setError(null)
-  }
+    initApp()
+    console.log("App is ready to go!")
+  }, [setInitialized, isUserAuthenticated])
 
   return (
     <BrowserRouter>
       <main className={style.app}>
-        <Navbar user={user} handleLogout={handleLogout}/>
+        <Navbar />
         <Routes>
           <Route path='/' element={
-            <ProtectedRoute element={
-              <Home />
-            }
-            />
+            <ProtectedRoute element={<Home />} />
           }
           />
           <Route path='/login' element={<Login />} />
