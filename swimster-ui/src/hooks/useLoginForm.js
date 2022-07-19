@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import  { useForm } from 'react-hook-form'
-import apiClient from '../services/apiClient'
 import { useAuthContext } from '../contexts/auth'
 
 export const useLoginForm = () => {
-    const { user, setUser } = useAuthContext()
-    const navigate = useNavigate()
+    const { handlers: authHandlers, user } = useAuthContext()
     const { register, handleSubmit } = useForm()
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState({})
+    const navigate = useNavigate()
 
     // if user is logged in, redirect them to Home
     useEffect(() => {
@@ -25,13 +24,7 @@ export const useLoginForm = () => {
         }
 
         // makes api request to server backend at the /login endpoint and saves session token
-        const { data, error } = await apiClient.loginUser(JSON.stringify(formattedFormData))
-        if (data) {
-            setUser(data.user)
-            apiClient.setToken(data.token)
-        } if (error) {
-            setError(error.message)
-        }
+        await authHandlers.loginUser(JSON.stringify(formattedFormData))
         setIsProcessing(false)
     }
 

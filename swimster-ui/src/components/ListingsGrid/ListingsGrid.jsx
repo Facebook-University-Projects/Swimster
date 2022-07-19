@@ -11,8 +11,8 @@ const ListingsGrid = ({ listings }) => {
         <div className={style.listingsGrid}>
             {listings?.map(listing => {
                 return (
-                    <Link to={`listings/${listing.id}`}>
-                        <Listing key={listing.id - 1} listing={listing}/>
+                    <Link to={`listings/${listing.id}`} key={listing.id - 1}>
+                        <Listing listing={listing}/>
                     </Link>
                 )
             })}
