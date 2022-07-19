@@ -7,6 +7,7 @@ import Navbar from '../Navbar/Navbar'
 import apiClient from '../../services/apiClient'
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import CreatePool from '../CreatePool/CreatePool'
+import ListingDetail from '../ListingDetail/ListingDetail'
 import { useAuthContext } from '../../contexts/auth'
 import { style } from './style'
 
@@ -65,6 +66,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/createpool' element={<CreatePool listings={listings} setListings={setListings} />} />
+          <Route path='/listings/:listingId' element={<ListingDetail />} />
         </Routes>
       </main>
     </BrowserRouter>
