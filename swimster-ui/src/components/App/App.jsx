@@ -36,7 +36,7 @@ const App = () => {
 
       const { data, error } = await apiClient.fetchListings()
       if (error) setError(error)
-      if (data) setListings(data.listings)
+      if (data?.listings) setListings(data.listings)
 
       setIsFetching(false)
     }
@@ -64,7 +64,7 @@ const App = () => {
           />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/createpool' element={<CreatePool />} />
+          <Route path='/createpool' element={<CreatePool listings={listings} setListings={setListings} />} />
         </Routes>
       </main>
     </BrowserRouter>
