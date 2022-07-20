@@ -62,12 +62,15 @@ const CreatePool = ({ listings, setListings }) => {
                         placeholder="Guests"
                         {...register("totalGuests")}
                     />
-                    <input
+                    <select
                         className={style.inputElement}
                         type="text"
                         placeholder="Pool Type"
                         {...register("poolType")}
-                    />
+                    >
+                        <option value="Outdoors">Outdoors</option>
+                        <option value="Indoors">Indoors</option>
+                    </select>
                     <input
                         className={`${style.inputElement} ${style.fullInput}`}
                         type="text"
