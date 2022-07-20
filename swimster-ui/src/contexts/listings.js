@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from 'react'
-import Listing from '../components/Listing/Listing'
 import apiClient from '../services/apiClient'
 
 const ListingsContext = createContext(null)
@@ -8,23 +7,23 @@ export const ListingsContextProvider = ({ children }) => {
     const [listings, setListings] = useState([])
     const [error, setError] = useState(null)
 
-    // combined object of useful functions for fetching Listing data
+    // listings functions from apiClient w/ validation and security checks
     const handlers = {
         fetchListings: async () => {
             const { data, error } = await apiClient.fetchListings()
             if (error) setError(error)
             if (data?.listings) setListings(data.listings)
         },
-        clear: () => {
+        clearListings: () => {
             setListings([])
             setError(null)
-        },
+        }
     }
 
-    const value = { listings, setListings, handlers, error }
+    const listingsValue = { listings, setListings, handlers, error }
 
     return (
-        <ListingsContext.Provider value={value}>
+        <ListingsContext.Provider value={listingsValue}>
             {children}
         </ListingsContext.Provider>
     )
