@@ -87,8 +87,26 @@ const ListingDetail = () => {
                 </div>
             </div>
             <div className={style.poolContentContainer}>
-                <div className={style.morePoolDetails}></div>
-                <div className={style.reservationCard}></div>
+                <div className={style.morePoolDetails}>
+                    <div className={style.aboutPoolContainer}>
+                        <h1 className={style.aboutPoolTitle}>Description</h1>
+                        <p className={style.aboutPoolDescription}>{description}</p>
+                    </div>
+                    <div className={style.amenitiesContainer}>
+                        <h1 className={style.amenitiesTitle}>Amenities</h1>
+                    </div>
+                    <div className={style.hostInfoContainer}>About the Host</div>
+                </div>
+                <div className={style.reservationCardContainer}>
+                    <div className={style.reservationCard}>
+                        <h1 className={style.reservationCardHeader}>Reserve</h1>
+                        <div className={style.reservationDetails}>
+                            <input className={style.reservationDateInput} type="date"/>
+                            <input className={style.reservationTimeInput} type="time"/>
+                        </div>
+                        <div className={style.reserveButton}>Reserve Now</div>
+                    </div>
+                </div>
             </div>
         </div>
     )
