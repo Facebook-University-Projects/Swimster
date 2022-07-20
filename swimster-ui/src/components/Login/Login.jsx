@@ -4,10 +4,10 @@ import { useLoginForm } from '../../hooks/useLoginForm'
 import { style } from './style'
 
 const Login = () => {
-    const { form, error, isProcessing, register, handleSubmit, onSubmit } = useLoginForm()
+    const { error, isProcessing, register, handleSubmit, onSubmit } = useLoginForm()
 
     return (
-        <div className={style.register}>
+        <div className={style.login}>
             <div className={style.formContainer}>
                 <h1 className={style.formHeader}>Welcome Back!</h1>
                 <form className={style.userDetails} onSubmit={handleSubmit(onSubmit)}>

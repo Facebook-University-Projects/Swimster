@@ -17,9 +17,11 @@ const Navbar = ({ handleLogout }) => {
             <div className={style.links}>
                 {user?.email ? (
                     <>
-                        <button className={style.linkButton}>
-                            List your Pool
-                        </button>
+                        <Link to="/createpool">
+                            <button className={style.linkButton}>
+                                List your Pool
+                            </button>
+                        </Link>
                         <h3 className={style.link}>
                             Hey {user.firstName}!
                         </h3>
