@@ -5,9 +5,9 @@ import apiClient from '../services/apiClient'
 import { useListingsContext } from '../contexts/listings'
 
 export const useCreatePoolForm = () => {
-    const navigate = useNavigate()
-    const { listings, setListings } = useListingsContext()
     const { register, handleSubmit } = useForm()
+    const { listings, setListings } = useListingsContext()
+    const navigate = useNavigate()
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState({})
     const [selectedImages, setSelectedImages] = useState([])
@@ -37,11 +37,11 @@ export const useCreatePoolForm = () => {
         const { data, error } = await apiClient.createListing(
             JSON.stringify(formattedFormData)
         )
+        if (error) setError(error)
         if (data?.listing) {
             setListings([...listings, data.listing])
             navigate('/')
         }
-        if (error) setError(error.message)
 
         setIsProcessing(false)
     }

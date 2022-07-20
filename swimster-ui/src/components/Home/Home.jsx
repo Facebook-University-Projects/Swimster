@@ -8,7 +8,7 @@ const style = {
 
 const Home = () => {
     const { listings } = useListingsContext()
-    if (listings.length === 0) return null
+    if (listings?.length === 0) return null
 
     return (
         <div className={style.home}>

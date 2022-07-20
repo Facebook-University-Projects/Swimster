@@ -1,10 +1,18 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/auth'
+import { useListingsContext } from '../../contexts/listings'
 import { style } from './style'
 
 const Navbar = () => {
     const { handlers: authHandlers, user } = useAuthContext()
+    const { handlers: listingsHandlers } = useListingsContext()
+
+    // commented out function doesn't load listings on login after logout
+    const handleFullLogout = () => {
+        // listingsHandlers.clearListings()
+        authHandlers.logoutUser()
+    }
 
     return (
         <div className={style.navbar}>
@@ -25,7 +33,7 @@ const Navbar = () => {
                         <h3 className={style.link}>
                             Hey {user.firstName}!
                         </h3>
-                        <button className={style.linkButton} onClick={authHandlers.logoutUser}>
+                        <button className={style.linkButton} onClick={handleFullLogout}>
                             Logout
                         </button>
                     </>
