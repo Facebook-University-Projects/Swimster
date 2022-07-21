@@ -10,7 +10,7 @@ import shareIcon from '../../assets/shareIcon.svg'
 
 const ListingDetail = () => {
     const { listingId } = useParams()
-    const { listing, error, isFetching } = useListingDetail(listingId)
+    const { listing, error, isFetching, isProcessing, register, handleSubmit, onSubmit } = useListingDetail(listingId)
 
     const {
         first_name,
@@ -35,6 +35,7 @@ const ListingDetail = () => {
 
     return (
         <div className={style.listingDetail}>
+            {/* main pool listing section - title, images, main pool info */}
             <div className={style.poolHero}>
                 <div className={style.headerContainer}>
                     <div className={style.headerContent}>
@@ -50,7 +51,8 @@ const ListingDetail = () => {
                     <div className={style.hostProfileImage}></div>
                 </div>
                 <div className={style.imagesContainer}>
-                    <img className={`${style.images} ${style.mainImage}`} src={images} alt="main pool listing image" />
+                    <img className={`${style.images} ${style.mainImage}`} src={images} alt="main pool listing img" />
+                    {/* other images will be here soon */}
                     <div className={style.images}></div>
                     <div className={style.images}></div>
                     <div className={style.images}></div>
@@ -86,6 +88,7 @@ const ListingDetail = () => {
                     </div>
                 </div>
             </div>
+            {/* more specific pool info secion  - description, amenities, etc. */}
             <div className={style.poolContentContainer}>
                 <div className={style.morePoolDetails}>
                     <div className={style.aboutPoolContainer}>
@@ -100,11 +103,12 @@ const ListingDetail = () => {
                 <div className={style.reservationCardContainer}>
                     <div className={style.reservationCard}>
                         <h1 className={style.reservationCardHeader}>Reserve</h1>
-                        <div className={style.reservationDetails}>
-                            <input className={style.reservationDateInput} type="date"/>
-                            <input className={style.reservationTimeInput} type="time"/>
-                        </div>
-                        <div className={style.reserveButton}>Reserve Now</div>
+                        <form id="hook-form" className={style.reservationDetails} onSubmit={handleSubmit(onSubmit)}>
+                            <input className={style.reservationDateInput} type="date" {...register("reservationDate")}/>
+                            <input className={style.reservationTimeInput} type="time" {...register("reservationStartTime")}/>
+                            <input className={style.reservationTimeInput} type="time" {...register("reservationEndTime")}/>
+                        </form>
+                        <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
                     </div>
                 </div>
             </div>

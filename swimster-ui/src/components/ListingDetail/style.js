@@ -32,10 +32,10 @@ export const style = {
     amenitiesTitle: '',
     hostInfoContainer: '',
     reservationCardContainer: '',
-    reservationCard: 'flex flex-col w-full p-6 space-y-5 border rounded-xl shadow-xl',
+    reservationCard: 'flex flex-col p-6 space-y-5 border rounded-xl shadow-xl',
     reservationCardHeader: 'text-2xl',
     reservationDetails: 'flex space-x-4',
-    reservationDateInput: 'border rounded-xl p-2',
+    reservationDateInput: 'border rounded-xl p-1',
     reservationTimeInput: 'border rounded-xl p-3',
-    reserveButton: 'bg-indigo-400 w-2/5 text-center py-3 px-2 rounded-lg text-gray-50 cursor-pointer',
+    reserveButton: 'bg-indigo-400 w-1/3 text-center py-3 rounded-lg text-gray-50',
 }
