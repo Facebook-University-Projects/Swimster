@@ -8,7 +8,6 @@ const Navbar = () => {
     const { handlers: authHandlers, user } = useAuthContext()
     const { handlers: listingsHandlers } = useListingsContext()
 
-    // commented out function doesn't load listings on login after logout
     const handleFullLogout = () => {
         // listingsHandlers.clearListings()
         authHandlers.logoutUser()
