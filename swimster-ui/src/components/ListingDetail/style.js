@@ -28,8 +28,6 @@ export const style = {
     aboutPoolContainer: 'flex flex-col space-y-5 p-5 rounded-xl shadow-md',
     aboutPoolTitle: 'text-xl',
     aboutPoolDescription: 'font-normal text-md',
-    amenitiesContainer: '',
-    amenitiesTitle: '',
     hostInfoContainer: '',
     reservationCardContainer: '',
     reservationCard: 'flex flex-col p-6 space-y-5 border rounded-xl shadow-xl',
