@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import apiClient from '../services/apiClient'
+import { useListingsContext } from '../contexts/listings'
 
-export const useCreatePoolForm = ({ listings, setListings }) => {
-    const navigate = useNavigate()
+export const useCreatePoolForm = () => {
     const { register, handleSubmit } = useForm()
+    const { listings, setListings } = useListingsContext()
+    const navigate = useNavigate()
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState({})
     const [selectedImages, setSelectedImages] = useState([])
@@ -35,11 +37,11 @@ export const useCreatePoolForm = ({ listings, setListings }) => {
         const { data, error } = await apiClient.createListing(
             JSON.stringify(formattedFormData)
         )
+        if (error) setError(error)
         if (data?.listing) {
             setListings([...listings, data.listing])
             navigate('/')
         }
-        if (error) setError(error.message)
 
         setIsProcessing(false)
     }

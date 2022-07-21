@@ -7,64 +7,46 @@ import Navbar from '../Navbar/Navbar'
 import apiClient from '../../services/apiClient'
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import CreatePool from '../CreatePool/CreatePool'
+import ListingDetail from '../ListingDetail/ListingDetail'
 import { useAuthContext } from '../../contexts/auth'
+import { useListingsContext } from '../../contexts/listings'
 import { style } from './style'
 
 const App = () => {
-  const [listings, setListings] = useState([])
-  const { user, setUser } = useAuthContext()
-  const [error, setError] = useState(null)
-  const [isFetching, setIsFetching] = useState(false)
+  const { handlers: authHandlers, isUserAuthenticated, setInitialized } = useAuthContext()
+  const { handlers: listingsHandlers } = useListingsContext()
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data, error } = await apiClient.fetchUserFromToken()
-      if (data) setUser(data.user)
-      if (error) setError(error)
+    const initApp = async () => {
+      console.log("Initializing App...")
+      const token = localStorage.getItem("swimster_session_token")
+
+      if (token) {
+        apiClient.setToken(token)
+        await authHandlers.fetchUserFromToken()
+        await listingsHandlers.fetchListings()
+      }
+
+      setInitialized(true)
     }
 
-    const token = localStorage.getItem("swimster_session_token")
-    if (token) {
-      apiClient.setToken(token)
-      fetchUser()
-    }
-  }, [setUser])
-
-  useEffect(() =>{
-    const fetchListings = async () => {
-      setIsFetching(true)
-
-      const { data, error } = await apiClient.fetchListings()
-      if (error) setError(error)
-      if (data?.listings) setListings(data.listings)
-
-      setIsFetching(false)
-    }
-
-    fetchListings()
-  }, [])
-
-  const handleLogout = async () => {
-    await apiClient.logoutUser()
-    setUser({})
-    setError(null)
-  }
+    initApp()
+    console.log("App is ready to go!")
+  }, [setInitialized, isUserAuthenticated])
 
   return (
     <BrowserRouter>
       <main className={style.app}>
-        <Navbar user={user} handleLogout={handleLogout}/>
+        <Navbar />
         <Routes>
           <Route path='/' element={
-            <ProtectedRoute element={
-              <Home listings={listings} />
-            }
-            />
+            <ProtectedRoute element={<Home />} />
           }
           />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/createpool' element={<CreatePool listings={listings} setListings={setListings} />} />
+          <Route path='/createpool' element={<CreatePool />} />
+          <Route path='/listings/:listingId' element={<ListingDetail />} />
         </Routes>
       </main>
     </BrowserRouter>
