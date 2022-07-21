@@ -29,14 +29,13 @@ export const AuthContextProvider = ({ children }) => {
         logoutUser: () => {
             apiClient.logoutUser()
             setUser({})
-            setInitialized(true)
+            setInitialized(false)
             setError(null)
         },
         fetchUserFromToken: async () => {
             const { data } = await apiClient.fetchUserFromToken()
             if (data?.user?.email) setUser(data.user)
             if (error) setError(error)
-            setInitialized(true)
         }
     }
 
