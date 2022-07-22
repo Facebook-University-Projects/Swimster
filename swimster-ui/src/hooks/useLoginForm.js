@@ -6,7 +6,7 @@ import { useAuthContext } from '../contexts/auth'
 export const useLoginForm = () => {
     const { handlers: authHandlers, user } = useAuthContext()
     const { register, handleSubmit } = useForm()
-    const [isProcessing, setIsProcessing] = useState(false)
+    const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
     const [error, setError] = useState({})
     const navigate = useNavigate()
 
@@ -16,7 +16,7 @@ export const useLoginForm = () => {
     }, [user, navigate])
 
     const onSubmit = async (formData) => {
-        setIsProcessing(true)
+        setIsSubmitProcessing(true)
 
         const formattedFormData = {
             email: formData.email,
@@ -25,12 +25,12 @@ export const useLoginForm = () => {
 
         // makes api request to server backend at the /login endpoint and saves session token
         await authHandlers.loginUser(JSON.stringify(formattedFormData))
-        setIsProcessing(false)
+        setIsSubmitProcessing(false)
     }
 
     return {
         error,
-        isProcessing,
+        isSubmitProcessing,
         register,
         handleSubmit,
         onSubmit,

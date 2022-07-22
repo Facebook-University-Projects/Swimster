@@ -2,15 +2,18 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/auth'
 import { useListingsContext } from '../../contexts/listings'
+import { useNavigate } from 'react-router-dom'
 import { style } from './style'
 
 const Navbar = () => {
     const { handlers: authHandlers, user } = useAuthContext()
     const { handlers: listingsHandlers } = useListingsContext()
+    const navigate = useNavigate()
 
+    // TODO: implement clearing all of the context data
     const handleFullLogout = () => {
-        // listingsHandlers.clearListings()
         authHandlers.logoutUser()
+        navigate('/login')
     }
 
     return (

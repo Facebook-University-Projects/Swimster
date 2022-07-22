@@ -39,31 +39,7 @@ class ApiClient {
         }
     }
 
-    async fetchListings() {
-        const listings = await this.request({
-            endpoint: "listings/",
-            method: "GET",
-        })
-        return listings
-    }
-
-    async fetchListingById(listingId) {
-        const listing = await this.request({
-            endpoint: `listings/${listingId}`,
-            method: "GET",
-        })
-        return listing
-    }
-
-    async createListing(listing) {
-        const createListing = await this.request({
-            endpoint: "listings/",
-            method: "POST",
-            data: listing
-        })
-        return createListing
-    }
-
+    // auth endpoint model functions
     async loginUser(credentials) {
         const loginUser = await this.request({
             endpoint: "auth/login",
@@ -90,9 +66,69 @@ class ApiClient {
         return fetchedUser
     }
 
-    async logoutUser() {
+    logoutUser() {
         this.setToken(null)
         localStorage.setItem(this.tokenName, "")
+    }
+
+    // listings endpoint model functions
+    async fetchListings() {
+        const listings = await this.request({
+            endpoint: "listings/",
+            method: "GET",
+        })
+        return listings
+    }
+
+    async fetchListingById(listingId) {
+        const listing = await this.request({
+            endpoint: `listings/${listingId}`,
+            method: "GET",
+        })
+        return listing
+    }
+
+    async createListing(listing) {
+        const createListing = await this.request({
+            endpoint: "listings/",
+            method: "POST",
+            data: listing
+        })
+        return createListing
+    }
+
+    // reservations endpoint model functions
+    async createReservation(reservation, listingId) {
+        const createReservation = await this.request({
+            endpoint: `reservations/listings/${listingId}`,
+            method: "POST",
+            data: reservation
+        })
+        return createReservation
+    }
+
+    async fetchReservationsFromListing(listingId) {
+        const reservationsFromListing = await this.request({
+            endpoint: `reservations/listings/${listingId}`,
+            method: "GET"
+        })
+        return reservationsFromListing
+    }
+
+    async fetchReservationsFromUser() {
+        const userReservations = await this.request({
+            endpoint: "reservations/",
+            method: "GET"
+        })
+        return userReservations
+    }
+
+    async fetchReservationsFromHostListing() {
+        const hostListingsReservations = await this.request({
+            endpoint: "reservations/listings",
+            method: "GET"
+        })
+        return hostListingsReservations
     }
 }
 
