@@ -8,7 +8,7 @@ export const useListingDetail = listingId => {
     const { user, initialized } = useAuthContext()
     const { register, handleSubmit } = useForm()
     const [isFetching, setIsFetching] = useState(false)
-    const [isProcessing, setIsProcessing] = useState(false)
+    const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
     const navigate = useNavigate()
     const [error, setError] = useState(null)
     const [listing, setListing] = useState({})
@@ -32,28 +32,30 @@ export const useListingDetail = listingId => {
 
     // handler for making a reservation for the current listing
     const onSubmit = async formData => {
-        setIsProcessing(true)
+        setIsSubmitProcessing(true)
 
         const formattedFormData = {
             reservationDate: formData.reservationDate,
             startTime: formData.reservationStartTime,
             endTime: formData.reservationEndTime,
-            guests: 4, // value to be changed
+            // TODO: value to be changed
+            guests: 4,
         }
 
         const { data, error } = await apiClient.createReservation(JSON.stringify(formattedFormData), listingId)
         if (error) setError(error)
         if (data?.reservation) {
-            // navigate('/')
+            // will create reservations context in next PR, for now just updating database
+            navigate('/')
         }
-        setIsProcessing(false)
+        setIsSubmitProcessing(false)
     }
 
     return {
         listing,
         error,
         isFetching,
-        isProcessing,
+        isSubmitProcessing,
         register,
         handleSubmit,
         onSubmit,

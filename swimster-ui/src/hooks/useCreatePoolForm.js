@@ -8,7 +8,7 @@ export const useCreatePoolForm = () => {
     const { register, handleSubmit } = useForm()
     const { listings, setListings } = useListingsContext()
     const navigate = useNavigate()
-    const [isProcessing, setIsProcessing] = useState(false)
+    const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
     const [error, setError] = useState({})
     const [step, setStep] = useState(1)
     const [selectedImages, setSelectedImages] = useState([])
@@ -17,7 +17,7 @@ export const useCreatePoolForm = () => {
     const prevStep = () => setStep(curr => curr - 1)
 
     const onSubmit = async (formData) => {
-        setIsProcessing(true)
+        setIsSubmitProcessing(true)
 
         // amenities value will be changed in milestone 2
         const formattedFormData = {
@@ -47,7 +47,7 @@ export const useCreatePoolForm = () => {
             navigate('/')
         }
 
-        setIsProcessing(false)
+        setIsSubmitProcessing(false)
     }
 
     return {
@@ -55,7 +55,7 @@ export const useCreatePoolForm = () => {
         nextStep,
         prevStep,
         error,
-        isProcessing,
+        isSubmitProcessing,
         register,
         handleSubmit,
         onSubmit,
