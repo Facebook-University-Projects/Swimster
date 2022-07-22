@@ -10,7 +10,11 @@ export const useCreatePoolForm = () => {
     const navigate = useNavigate()
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState({})
+    const [step, setStep] = useState(1)
     const [selectedImages, setSelectedImages] = useState([])
+
+    const nextStep = () => setStep(prev => prev + 1)
+    const prevStep = () => setStep(curr => curr - 1)
 
     const onSubmit = async (formData) => {
         setIsProcessing(true)
@@ -47,6 +51,9 @@ export const useCreatePoolForm = () => {
     }
 
     return {
+        step,
+        nextStep,
+        prevStep,
         error,
         isProcessing,
         register,

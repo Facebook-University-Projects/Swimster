@@ -16,7 +16,7 @@ const style = {
     amenityImage: 'w-10 h-10',
 }
 
-const amenities = [
+export const amenities = [
     { title: "BBQ Grill", image: bbqGrillIcon },
     { title: "Wi-Fi", image: internetIcon },
     { title: "Restroom", image: bathroomIcon },
@@ -33,7 +33,7 @@ const Amenities = ({ poolAmenities }) => {
             <div className={style.amenitiesRowContainer}>
                 {amenities.map((amenity, index) => {
                     return poolAmenities[index] && (
-                        <div className={style.amenityContainer}>
+                        <div className={style.amenityContainer} key={index}>
                             <h2 className={style.amenityTitle}>{amenity.title}</h2>
                             <img className={style.amenityImage} src={amenity.image} alt={`${amenity.title} icon`} />
                         </div>
