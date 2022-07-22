@@ -4,7 +4,7 @@ import { useRegistrationForm } from '../../hooks/useRegistrationForm'
 import { style } from './style'
 
 const Register = () => {
-    const { error, isProcessing, register, handleSubmit, onSubmit } = useRegistrationForm()
+    const { error, isSubmitProcessing, register, handleSubmit, onSubmit } = useRegistrationForm()
 
     return (
         <div className={style.register}>

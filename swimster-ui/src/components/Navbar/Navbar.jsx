@@ -10,8 +10,8 @@ const Navbar = () => {
     const { handlers: listingsHandlers } = useListingsContext()
     const navigate = useNavigate()
 
+    // TODO: implement clearing all of the context data
     const handleFullLogout = () => {
-        // listingsHandlers.clearListings()
         authHandlers.logoutUser()
         navigate('/login')
     }

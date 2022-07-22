@@ -17,7 +17,7 @@ const style = {
 }
 
 const CreatePool = () => {
-    const { error, isProcessing, register, handleSubmit, onSubmit } = useCreatePoolForm()
+    const { error, isSubmitProcessing, register, handleSubmit, onSubmit } = useCreatePoolForm()
 
     return (
         <div className={style.createPool}>

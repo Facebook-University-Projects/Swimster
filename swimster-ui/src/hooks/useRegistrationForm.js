@@ -7,7 +7,7 @@ export const useRegistrationForm = () => {
     const { handlers: authHandlers, user } = useAuthContext()
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm()
-    const [isProcessing, setIsProcessing] = useState(false)
+    const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
     const [error, setError] = useState({})
 
     // if user is logged in, redirect them to Home
@@ -16,11 +16,11 @@ export const useRegistrationForm = () => {
     }, [user, navigate])
 
     const onSubmit = async (formData) => {
-        setIsProcessing(true)
+        setIsSubmitProcessing(true)
 
         if (formData.password !== formData.confirmPassword) {
             setError("Passwords do not match.")
-            setIsProcessing(false)
+            setIsSubmitProcessing(false)
             return
         }
 
@@ -36,12 +36,12 @@ export const useRegistrationForm = () => {
 
         // makes api request to server backend at the /register endpoint and saves session token
         await authHandlers.registerUser(JSON.stringify(formattedFormData))
-        setIsProcessing(false)
+        setIsSubmitProcessing(false)
     }
 
     return {
         error,
-        isProcessing,
+        isSubmitProcessing,
         register,
         handleSubmit,
         onSubmit,
