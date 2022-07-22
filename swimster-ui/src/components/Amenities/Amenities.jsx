@@ -8,52 +8,31 @@ import hotTubIcon from '../../assets/hotTubIcon.svg'
 import parkingIcon from '../../assets/parkingIcon.svg'
 
 const style = {
-    amenitiesContainer: 'flex flex-col space-y-5 p-5 rounded-xl shadow-md',
+    amenitiesContainer: 'flex flex-col space-y-5 p-7 rounded-xl shadow-md',
     amenitiesTitle: 'text-xl',
-    amenitiesRowContainer: 'flex flex-wrap space-x-5',
-    amenityContainer: 'border flex flex-col rounded-xl p-4',
+    amenitiesRowContainer: 'grid grid-cols-4 gap-6',
+    amenityContainer: 'border flex flex-col items-center space-y-3 rounded-xl px-3 py-4',
     amenityTitle: '',
     amenityImage: 'w-10 h-10',
 }
 
 const amenities = [
-    {
-        title: "BBQ Grill",
-        image: bbqGrillIcon,
-    },
-    {
-        title: "Wi-Fi",
-        image: internetIcon,
-    },
-    {
-        title: "Restroom",
-        image: bathroomIcon,
-    },
-    {
-        title: "Towels",
-        image: towelsIcon,
-    },
-    {
-        title: "Lounge Chairs",
-        image: loungeChairIcon,
-    },
-    {
-        title: "Hot Tub",
-        image: hotTubIcon,
-    },
-    {
-        title: "Parking",
-        image: parkingIcon,
-    },
+    { title: "BBQ Grill", image: bbqGrillIcon },
+    { title: "Wi-Fi", image: internetIcon },
+    { title: "Restroom", image: bathroomIcon },
+    { title: "Towels", image: towelsIcon },
+    { title: "Lounge Chairs", image: loungeChairIcon },
+    { title: "Hot Tub", image: hotTubIcon },
+    { title: "Parking", image: parkingIcon },
 ]
 
-const Amenities = () => {
+const Amenities = ({ poolAmenities }) => {
     return (
         <div className={style.amenitiesContainer}>
             <h1 className={style.amenitiesTitle}>Amenities</h1>
             <div className={style.amenitiesRowContainer}>
-                {amenities.map(amenity => {
-                    return (
+                {amenities.map((amenity, index) => {
+                    return poolAmenities[index] && (
                         <div className={style.amenityContainer}>
                             <h2 className={style.amenityTitle}>{amenity.title}</h2>
                             <img className={style.amenityImage} src={amenity.image} alt={`${amenity.title} icon`} />

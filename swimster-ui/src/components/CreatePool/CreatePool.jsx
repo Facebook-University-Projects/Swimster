@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useCreatePoolForm } from '../../hooks/useCreatePoolForm'
 
 const style = {
-    createPool: 'flex-1 flex justify-around items-center border-2',
+    createPool: 'flex-1 flex justify-around items-center',
     callToAction: 'text-8xl font-semibold space-y-10',
     primaryCTA: 'space-y-3',
     secondaryCTA: 'text-blue-700',

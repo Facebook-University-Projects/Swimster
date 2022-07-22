@@ -25,7 +25,7 @@ export const style = {
     socialButtonTitle: '',
     poolContentContainer: 'flex space-x-20 mt-20',
     morePoolDetails: 'flex flex-col space-y-20',
-    aboutPoolContainer: 'flex flex-col space-y-5 p-5 rounded-xl shadow-md',
+    aboutPoolContainer: 'flex flex-col space-y-5 p-7 rounded-xl shadow-md',
     aboutPoolTitle: 'text-xl',
     aboutPoolDescription: 'font-normal text-md',
     hostInfoContainer: '',

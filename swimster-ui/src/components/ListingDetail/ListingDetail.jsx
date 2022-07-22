@@ -34,6 +34,16 @@ const ListingDetail = () => {
         images
     } = listing
 
+    const poolAmenities = [
+        has_bbq_grill,
+        has_internet,
+        has_bathroom,
+        has_towels,
+        has_lounge_chairs,
+        has_hot_tub,
+        has_parking
+    ]
+
     return (
         <div className={style.listingDetail}>
             {/* main pool listing section - title, images, main pool info */}
@@ -96,7 +106,7 @@ const ListingDetail = () => {
                         <h1 className={style.aboutPoolTitle}>Description</h1>
                         <p className={style.aboutPoolDescription}>{description}</p>
                     </div>
-                    <Amenities />
+                    <Amenities poolAmenities={poolAmenities}/>
                     <div className={style.hostInfoContainer}>About the Host</div>
                 </div>
                 <div className={style.reservationCardContainer}>
@@ -107,7 +117,11 @@ const ListingDetail = () => {
                             <input className={style.reservationTimeInput} type="time" {...register("reservationStartTime")}/>
                             <input className={style.reservationTimeInput} type="time" {...register("reservationEndTime")}/>
                         </form>
-                        <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
+                        {isProcessing ? (
+                            <button type="submit" form="hook-form" className={style.reserveButton}>Loading...</button>
+                        ) : (
+                            <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
+                        )}
                     </div>
                 </div>
             </div>

@@ -44,8 +44,7 @@ export const useListingDetail = listingId => {
         const { data, error } = await apiClient.createReservation(JSON.stringify(formattedFormData), listingId)
         if (error) setError(error)
         if (data?.reservation) {
-            // will create reservations context in next PR, for now just updating database
-            navigate('/')
+            // navigate('/')
         }
         setIsProcessing(false)
     }
