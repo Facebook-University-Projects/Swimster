@@ -16,39 +16,59 @@ export const useCreatePoolForm = () => {
     const nextStep = () => setStep(prev => prev + 1)
     const prevStep = () => setStep(curr => curr - 1)
 
+    // converts amenity strings to pascal case
+    const toPascalCase = string => {
+        return `${string}`
+        .toLowerCase()
+        .replace(new RegExp(/[-_]+/, 'g'), ' ')
+        .replace(new RegExp(/[^\w\s]/, 'g'), '')
+        .replace(
+        new RegExp(/\s+(.)(\w*)/, 'g'),
+        ($1, $2, $3) => `${$2.toUpperCase() + $3}`
+        )
+        .replace(new RegExp(/\w/), s => s.toUpperCase());
+    }
+
     const onSubmit = async (formData) => {
-        console.log(formData)
-        // setIsProcessing(true)
+        setIsSubmitProcessing(true)
 
-        // // amenities value will be changed in milestone 2
-        // const formattedFormData = {
-        //     title: formData.title,
-        //     address: formData.address,
-        //     description: formData.description,
-        //     price: formData.price,
-        //     totalGuests: formData.totalGuests,
-        //     poolType: formData.poolType,
-        //     hasBbqGrill: false,
-        //     hasInternet: false,
-        //     hasBathroom: false,
-        //     hasTowels: false,
-        //     hasLoungeChairs: false,
-        //     hasHotTub: false,
-        //     hasParking: false,
-        //     images: formData.images
-        // }
+        const formattedFormData = {
+            title: formData.title,
+            address: formData.address,
+            description: formData.description,
+            price: formData.price,
+            totalGuests: formData.totalGuests,
+            poolType: formData.poolType,
+            hasGrill: false,
+            hasInternet: false,
+            hasBathroom: false,
+            hasTowels: false,
+            hasLoungeChairs: false,
+            hasHotTub: false,
+            hasParking: false,
+            images: formData.images
+        }
 
-        // // makes api request to server at listings/ endpoint
-        // const { data, error } = await apiClient.createListing(
-        //     JSON.stringify(formattedFormData)
-        // )
-        // if (error) setError(error)
-        // if (data?.listing) {
-        //     setListings([...listings, data.listing])
-        //     navigate('/')
-        // }
+        // checks chosen amenities and returns property as true if found
+        for (let amenity of formData.amenities) {
+            const formattedAmenity = "has".concat(toPascalCase(amenity))
 
-        // setIsProcessing(false)
+            if (formattedFormData.hasOwnProperty(formattedAmenity)) {
+                formattedFormData[formattedAmenity] = true
+            }
+        }
+
+        // makes api request to server at listings/ endpoint
+        const { data, error } = await apiClient.createListing(
+            JSON.stringify(formattedFormData)
+        )
+        if (error) setError(error)
+        if (data?.listing) {
+            setListings([...listings, data.listing])
+            navigate('/')
+        }
+
+        setIsSubmitProcessing(false)
     }
 
     return {

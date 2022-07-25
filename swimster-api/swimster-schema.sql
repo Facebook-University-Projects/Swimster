@@ -23,7 +23,7 @@ CREATE TABLE listings (
     price               BIGINT NOT NULL,
     total_guests        INT NOT NULL,
     pool_type           TEXT NOT NULL,
-    has_bbq_grill       BOOLEAN NOT NULL DEFAULT FALSE,
+    has_grill           BOOLEAN NOT NULL DEFAULT FALSE,
     has_internet        BOOLEAN NOT NULL DEFAULT FALSE,
     has_bathroom        BOOLEAN NOT NULL DEFAULT FALSE,
     has_towels          BOOLEAN NOT NULL DEFAULT FALSE,

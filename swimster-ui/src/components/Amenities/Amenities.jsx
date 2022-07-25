@@ -1,5 +1,5 @@
 import * as React from 'react'
-import bbqGrillIcon from '../../assets/bbqGrillIcon.svg'
+import grillIcon from '../../assets/grillIcon.svg'
 import internetIcon from '../../assets/internetIcon.svg'
 import bathroomIcon from '../../assets/bathroomIcon.svg'
 import towelsIcon from '../../assets/towelsIcon.svg'
@@ -17,9 +17,9 @@ const style = {
 }
 
 export const amenities = [
-    { title: "BBQ Grill", image: bbqGrillIcon },
-    { title: "Wi-Fi", image: internetIcon },
-    { title: "Restroom", image: bathroomIcon },
+    { title: "Grill", image: grillIcon },
+    { title: "Internet", image: internetIcon },
+    { title: "Bathroom", image: bathroomIcon },
     { title: "Towels", image: towelsIcon },
     { title: "Lounge Chairs", image: loungeChairIcon },
     { title: "Hot Tub", image: hotTubIcon },

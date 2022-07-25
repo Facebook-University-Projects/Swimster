@@ -24,7 +24,7 @@ const ListingDetail = () => {
         price,
         total_guests,
         pool_type,
-        has_bbq_grill,
+        has_grill,
         has_internet,
         has_bathroom,
         has_towels,
@@ -35,7 +35,7 @@ const ListingDetail = () => {
     } = listing
 
     const poolAmenities = [
-        has_bbq_grill,
+        has_grill,
         has_internet,
         has_bathroom,
         has_towels,
