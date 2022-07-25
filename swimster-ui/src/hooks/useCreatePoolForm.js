@@ -5,7 +5,7 @@ import apiClient from '../services/apiClient'
 import { useListingsContext } from '../contexts/listings'
 
 export const useCreatePoolForm = () => {
-    const { register, handleSubmit } = useForm()
+    const { register, setValue, handleSubmit } = useForm()
     const { listings, setListings } = useListingsContext()
     const navigate = useNavigate()
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
@@ -17,37 +17,38 @@ export const useCreatePoolForm = () => {
     const prevStep = () => setStep(curr => curr - 1)
 
     const onSubmit = async (formData) => {
-        setIsSubmitProcessing(true)
+        console.log(formData)
+        // setIsProcessing(true)
 
-        // amenities value will be changed in milestone 2
-        const formattedFormData = {
-            title: formData.title,
-            address: formData.address,
-            description: formData.description,
-            price: formData.price,
-            totalGuests: formData.totalGuests,
-            poolType: formData.poolType,
-            hasBbqGrill: false,
-            hasInternet: false,
-            hasBathroom: false,
-            hasTowels: false,
-            hasLoungeChairs: false,
-            hasHotTub: false,
-            hasParking: false,
-            images: formData.images
-        }
+        // // amenities value will be changed in milestone 2
+        // const formattedFormData = {
+        //     title: formData.title,
+        //     address: formData.address,
+        //     description: formData.description,
+        //     price: formData.price,
+        //     totalGuests: formData.totalGuests,
+        //     poolType: formData.poolType,
+        //     hasBbqGrill: false,
+        //     hasInternet: false,
+        //     hasBathroom: false,
+        //     hasTowels: false,
+        //     hasLoungeChairs: false,
+        //     hasHotTub: false,
+        //     hasParking: false,
+        //     images: formData.images
+        // }
 
-        // makes api request to server at listings/ endpoint
-        const { data, error } = await apiClient.createListing(
-            JSON.stringify(formattedFormData)
-        )
-        if (error) setError(error)
-        if (data?.listing) {
-            setListings([...listings, data.listing])
-            navigate('/')
-        }
+        // // makes api request to server at listings/ endpoint
+        // const { data, error } = await apiClient.createListing(
+        //     JSON.stringify(formattedFormData)
+        // )
+        // if (error) setError(error)
+        // if (data?.listing) {
+        //     setListings([...listings, data.listing])
+        //     navigate('/')
+        // }
 
-        setIsSubmitProcessing(false)
+        // setIsProcessing(false)
     }
 
     return {
@@ -57,6 +58,7 @@ export const useCreatePoolForm = () => {
         error,
         isSubmitProcessing,
         register,
+        setValue,
         handleSubmit,
         onSubmit,
     }

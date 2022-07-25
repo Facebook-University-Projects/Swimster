@@ -117,7 +117,7 @@ const ListingDetail = () => {
                             <input className={style.reservationTimeInput} type="time" {...register("reservationStartTime")}/>
                             <input className={style.reservationTimeInput} type="time" {...register("reservationEndTime")}/>
                         </form>
-                        {isProcessing ? (
+                        {isSubmitProcessing ? (
                             <button type="submit" form="hook-form" className={style.reserveButton}>Loading...</button>
                         ) : (
                             <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
