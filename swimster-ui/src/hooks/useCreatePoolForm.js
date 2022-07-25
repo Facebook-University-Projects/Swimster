@@ -5,7 +5,7 @@ import apiClient from '../services/apiClient'
 import { useListingsContext } from '../contexts/listings'
 
 export const useCreatePoolForm = () => {
-    const { register, setValue, handleSubmit } = useForm()
+    const { register, setValue, resetField, handleSubmit } = useForm()
     const { listings, setListings } = useListingsContext()
     const navigate = useNavigate()
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
@@ -30,6 +30,7 @@ export const useCreatePoolForm = () => {
     }
 
     const onSubmit = async (formData) => {
+        console.log('formData: ', formData);
         setIsSubmitProcessing(true)
 
         const formattedFormData = {
@@ -39,6 +40,9 @@ export const useCreatePoolForm = () => {
             price: formData.price,
             totalGuests: formData.totalGuests,
             poolType: formData.poolType,
+            poolLength: formData.poolLength,
+            poolWidth: formData.poolWidth,
+            poolDepth: formData.poolDepth,
             hasGrill: false,
             hasInternet: false,
             hasBathroom: false,
@@ -57,6 +61,7 @@ export const useCreatePoolForm = () => {
                 formattedFormData[formattedAmenity] = true
             }
         }
+        console.log('formattedFormData: ', formattedFormData);
 
         // makes api request to server at listings/ endpoint
         const { data, error } = await apiClient.createListing(
@@ -79,6 +84,7 @@ export const useCreatePoolForm = () => {
         isSubmitProcessing,
         register,
         setValue,
+        resetField,
         handleSubmit,
         onSubmit,
     }

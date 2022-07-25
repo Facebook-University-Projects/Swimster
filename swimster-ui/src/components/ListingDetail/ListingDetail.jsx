@@ -24,6 +24,9 @@ const ListingDetail = () => {
         price,
         total_guests,
         pool_type,
+        pool_length,
+        pool_width,
+        pool_depth,
         has_grill,
         has_internet,
         has_bathroom,
@@ -79,11 +82,11 @@ const ListingDetail = () => {
                             </div>
                             <div className={style.guestsContainer}>
                                 <img className={style.guestsImage} src={rulerIcon} alt="ruler icon" />
-                                <p className={style.totalGuests}>25' wide and 40' long</p>
+                                <p className={style.totalGuests}>{pool_length}' long and {pool_width}' wide</p>
                             </div>
                             <div className={style.guestsContainer}>
                                 <img className={style.guestsImage} src={depthIcon} alt="depth icon" />
-                                <p className={style.totalGuests}>3' - 6' deep</p>
+                                <p className={style.totalGuests}>{pool_depth}' deep</p>
                             </div>
                         </div>
                     </div>

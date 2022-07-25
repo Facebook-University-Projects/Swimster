@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { amenities } from '../Amenities/Amenities'
 
 const style = {
@@ -19,9 +19,10 @@ const style = {
     formStepConfirmButton: 'bg-blue-700 py-3 col-start-3 col-span-1 rounded-md mt-4 cursor-pointer font-semibold text-gray-200',
 }
 
-const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue }) => {
+const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue, resetField }) => {
     const [amenitiesChosen, setAmenitiesChosen] = useState([])
 
+    // allows selecting and deselecting of amenities
     const handleSelected = (amenity) => {
         if (getSelected(amenity)) {
             const newSeletedAmenities = amenitiesChosen.filter(amenityTitle => amenityTitle !== amenity.title)
@@ -30,10 +31,19 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue }) => {
         setAmenitiesChosen([...amenitiesChosen, amenity.title])
     }
 
+    // checks if amenity is selected for UI change
     const getSelected = amenity => amenitiesChosen.includes(amenity.title)
+
+    // resets these fields - solves autocomplete fields bug
+    useEffect(() => {
+        resetField("poolLength")
+        resetField("poolWidth")
+        resetField("poolDepth")
+    }, [step])
 
     switch (step) {
         case 1:
+
             return (
                 <>
                     <h1 className={style.formCreatePoolHeader}>Get Started with the Basics.</h1>
@@ -57,7 +67,7 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue }) => {
                     />
                     <input
                         className={style.inputElement}
-                        type="text"
+                        type="number"
                         placeholder="Price"
                         {...register("price")}
                     />
@@ -82,7 +92,6 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue }) => {
                         placeholder="Image URL"
                         {...register("images")}
                     />
-                    {/* <input type="submit" className={style.submitButton} value="Begin Hosting"/> */}
                     <button className={style.formStepContinueButton} onClick={nextStep}>Continue</button>
                 </>
             )

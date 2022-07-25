@@ -20,6 +20,7 @@ const CreatePool = () => {
         isProcessing,
         register,
         setValue,
+        resetField,
         handleSubmit,
         onSubmit
     } = useCreatePoolForm()
@@ -42,6 +43,7 @@ const CreatePool = () => {
                         prevStep={prevStep}
                         register={register}
                         setValue={setValue}
+                        resetField={resetField}
                     />
                 </form>
             </div>

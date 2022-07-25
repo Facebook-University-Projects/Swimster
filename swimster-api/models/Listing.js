@@ -11,6 +11,9 @@ class Listing {
             "price",
             "totalGuests",
             "poolType",
+            "poolLength",
+            "poolWidth",
+            "poolDepth",
             "hasGrill",
             "hasInternet",
             "hasBathroom",
@@ -37,6 +40,9 @@ class Listing {
                 price,
                 total_guests,
                 pool_type,
+                pool_length,
+                pool_width,
+                pool_depth,
                 has_grill,
                 has_internet,
                 has_bathroom,
@@ -48,7 +54,7 @@ class Listing {
             )
             VALUES (
                 (SELECT id FROM users WHERE email = $1),
-                $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+                $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18
             )
             RETURNING id,
             host_id,
@@ -58,6 +64,9 @@ class Listing {
             price,
             total_guests,
             pool_type,
+            pool_length,
+            pool_width,
+            pool_depth,
             has_grill,
             has_internet,
             has_bathroom,
@@ -75,6 +84,9 @@ class Listing {
             newListing.price,
             newListing.totalGuests,
             newListing.poolType,
+            newListing.poolLength,
+            newListing.poolWidth,
+            newListing.poolDepth,
             newListing.hasGrill,
             newListing.hasInternet,
             newListing.hasBathroom,
@@ -122,6 +134,9 @@ class Listing {
                     listing.price,
                     listing.total_guests,
                     listing.pool_type,
+                    listing.pool_length,
+                    listing.pool_width,
+                    listing.pool_depth,
                     listing.has_grill,
                     listing.has_internet,
                     listing.has_bathroom,
