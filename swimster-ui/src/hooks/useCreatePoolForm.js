@@ -5,17 +5,34 @@ import apiClient from '../services/apiClient'
 import { useListingsContext } from '../contexts/listings'
 
 export const useCreatePoolForm = () => {
-    const { register, handleSubmit } = useForm()
+    const { register, setValue, resetField, handleSubmit } = useForm()
     const { listings, setListings } = useListingsContext()
     const navigate = useNavigate()
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
     const [error, setError] = useState({})
+    const [step, setStep] = useState(1)
     const [selectedImages, setSelectedImages] = useState([])
 
+    const nextStep = () => setStep(prev => prev + 1)
+    const prevStep = () => setStep(curr => curr - 1)
+
+    // converts amenity strings to pascal case
+    const toPascalCase = string => {
+        return `${string}`
+        .toLowerCase()
+        .replace(new RegExp(/[-_]+/, 'g'), ' ')
+        .replace(new RegExp(/[^\w\s]/, 'g'), '')
+        .replace(
+        new RegExp(/\s+(.)(\w*)/, 'g'),
+        ($1, $2, $3) => `${$2.toUpperCase() + $3}`
+        )
+        .replace(new RegExp(/\w/), s => s.toUpperCase());
+    }
+
     const onSubmit = async (formData) => {
+        console.log('formData: ', formData);
         setIsSubmitProcessing(true)
 
-        // amenities value will be changed in milestone 2
         const formattedFormData = {
             title: formData.title,
             address: formData.address,
@@ -23,7 +40,10 @@ export const useCreatePoolForm = () => {
             price: formData.price,
             totalGuests: formData.totalGuests,
             poolType: formData.poolType,
-            hasBbqGrill: false,
+            poolLength: formData.poolLength,
+            poolWidth: formData.poolWidth,
+            poolDepth: formData.poolDepth,
+            hasGrill: false,
             hasInternet: false,
             hasBathroom: false,
             hasTowels: false,
@@ -32,6 +52,16 @@ export const useCreatePoolForm = () => {
             hasParking: false,
             images: formData.images
         }
+
+        // checks chosen amenities and returns property as true if found
+        for (let amenity of formData.amenities) {
+            const formattedAmenity = "has".concat(toPascalCase(amenity))
+
+            if (formattedFormData.hasOwnProperty(formattedAmenity)) {
+                formattedFormData[formattedAmenity] = true
+            }
+        }
+        console.log('formattedFormData: ', formattedFormData);
 
         // makes api request to server at listings/ endpoint
         const { data, error } = await apiClient.createListing(
@@ -47,9 +77,14 @@ export const useCreatePoolForm = () => {
     }
 
     return {
+        step,
+        nextStep,
+        prevStep,
         error,
         isSubmitProcessing,
         register,
+        setValue,
+        resetField,
         handleSubmit,
         onSubmit,
     }

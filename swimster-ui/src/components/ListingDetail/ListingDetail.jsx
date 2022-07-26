@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useListingDetail } from '../../hooks/useListingDetail'
 import { style } from './style'
+import Amenities from '../Amenities/Amenities'
 import ratingsIcon from '../../assets/ratingsIcon.svg'
 import guestsIcon from '../../assets/guestsIcon.svg'
 import rulerIcon from '../../assets/rulerIcon.svg'
@@ -23,7 +24,10 @@ const ListingDetail = () => {
         price,
         total_guests,
         pool_type,
-        has_bbq_grill,
+        pool_length,
+        pool_width,
+        pool_depth,
+        has_grill,
         has_internet,
         has_bathroom,
         has_towels,
@@ -32,6 +36,16 @@ const ListingDetail = () => {
         has_parking,
         images
     } = listing
+
+    const poolAmenities = [
+        has_grill,
+        has_internet,
+        has_bathroom,
+        has_towels,
+        has_lounge_chairs,
+        has_hot_tub,
+        has_parking
+    ]
 
     return (
         <div className={style.listingDetail}>
@@ -68,11 +82,11 @@ const ListingDetail = () => {
                             </div>
                             <div className={style.guestsContainer}>
                                 <img className={style.guestsImage} src={rulerIcon} alt="ruler icon" />
-                                <p className={style.totalGuests}>25' wide and 40' long</p>
+                                <p className={style.totalGuests}>{pool_length}' long and {pool_width}' wide</p>
                             </div>
                             <div className={style.guestsContainer}>
                                 <img className={style.guestsImage} src={depthIcon} alt="depth icon" />
-                                <p className={style.totalGuests}>3' - 6' deep</p>
+                                <p className={style.totalGuests}>{pool_depth}' deep</p>
                             </div>
                         </div>
                     </div>
@@ -95,9 +109,7 @@ const ListingDetail = () => {
                         <h1 className={style.aboutPoolTitle}>Description</h1>
                         <p className={style.aboutPoolDescription}>{description}</p>
                     </div>
-                    <div className={style.amenitiesContainer}>
-                        <h1 className={style.amenitiesTitle}>Amenities</h1>
-                    </div>
+                    <Amenities poolAmenities={poolAmenities}/>
                     <div className={style.hostInfoContainer}>About the Host</div>
                 </div>
                 <div className={style.reservationCardContainer}>
@@ -108,7 +120,11 @@ const ListingDetail = () => {
                             <input className={style.reservationTimeInput} type="time" {...register("reservationStartTime")}/>
                             <input className={style.reservationTimeInput} type="time" {...register("reservationEndTime")}/>
                         </form>
-                        <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
+                        {isSubmitProcessing ? (
+                            <button type="submit" form="hook-form" className={style.reserveButton}>Loading...</button>
+                        ) : (
+                            <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
+                        )}
                     </div>
                 </div>
             </div>
