@@ -41,9 +41,9 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue, resetFi
         resetField("poolDepth")
     }, [step])
 
+    console.log(amenitiesChosen)
     switch (step) {
         case 1:
-
             return (
                 <>
                     <h1 className={style.formCreatePoolHeader}>Get Started with the Basics.</h1>
@@ -98,7 +98,7 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue, resetFi
         case 2:
             return (
                 <>
-                    <h1 className={style.formAmenitiesHeader}>What Amenities come with the Pool?</h1>
+                    <h1 className={style.formAmenitiesHeader}>What amenities come with the Pool?</h1>
                     <div className={style.amenitiesContainer}>
                         <div className={style.amenitiesContent}>
                             {amenities.map((amenity, index) => {

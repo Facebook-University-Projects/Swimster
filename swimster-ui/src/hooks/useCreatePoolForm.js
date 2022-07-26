@@ -30,7 +30,6 @@ export const useCreatePoolForm = () => {
     }
 
     const onSubmit = async (formData) => {
-        console.log('formData: ', formData);
         setIsSubmitProcessing(true)
 
         const formattedFormData = {
