@@ -49,7 +49,7 @@ router.post('/listings/:listingId', requiresAuth, async (req, res, next) => {
             listing: listing,
             user: user,
         })
-        res.status(201).json({ reservation })
+        return res.status(201).json({ reservation })
     } catch (error) {
         next(error)
     }
