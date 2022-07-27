@@ -2,43 +2,55 @@ const db = require('../db')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/error')
 
 class Image {
-    static async createImage(fileInfo) {
-        const { filename, mimetype, size, path } = fileInfo
+    static async createImages(imageFiles) {
+        if (imageFiles.length < 5) {
+            throw new BadRequestError("Must upload at least 5 pictures!")
+        }
 
-        const result = await db.query(`
-            INSERT INTO images (
-                image_name,
-                image_path,
-                mime_type,
-                image_size,
-                listing_id
-            )
-            VALUES (
-                $1,
-                $2,
-                $3,
-                $4,
-                $5
-            )
-            RETURNING   id,
-                        image_name,
-                        image_path,
-                        mime_type,
-                        image_size,
-                        listing_id
-        `, [
-            filename,
-            path,
-            mimetype,
-            size,
-            26 // TODO: adjust for listing id
-        ])
+        if (imageFiles.length > 10) {
+            throw new BadRequestError("Cannot upload more than 10 pictures!")
+        }
 
-        const image = result.rows[0]
-        return image
+        const images = []
+
+        for (let image of imageFiles) {
+            const result = await db.query(`
+                INSERT INTO images (
+                    image_name,
+                    image_path,
+                    mime_type,
+                    image_size,
+                    listing_id
+                )
+                VALUES (
+                    $1,
+                    $2,
+                    $3,
+                    $4,
+                    $5
+                )
+                RETURNING   id,
+                            image_name,
+                            image_path,
+                            mime_type,
+                            image_size,
+                            listing_id
+            `, [
+                image.filename,
+                image.path,
+                image.mimetype,
+                image.size,
+                26 // TODO: adjust for listing id
+            ])
+
+            const imageCreated = result.rows[0]
+            images.push(imageCreated)
+        }
+
+        return images
     }
 
-    static async getImage(fileName) {
+    static async fetchImagesFromListing(listingId) {
         const result = await db.query(`
             SELECT  id,
                     image_name,
@@ -47,12 +59,12 @@ class Image {
                     image_size,
                     listing_id
             FROM images
-            WHERE image_name = $1
+            WHERE listing_id = $1
         `, [
-            fileName
+            listingId
         ])
 
-        const image = result.rows[0]
+        const image = result.rows
         return image
     }
 }

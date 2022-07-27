@@ -1,7 +1,7 @@
 const express = require('express')
 const Image = require('../models/Image')
 const { requiresAuth } = require('../middleware/security')
-const imageUpload = require('../middleware/imageUpload')
+const multiUpload = require('../middleware/multer')
 const path = require('path')
 
 const router = express.Router()
@@ -15,12 +15,12 @@ router.get('/', requiresAuth, async (req, res, next) => {
     }
 })
 
-router.post('/', requiresAuth, imageUpload.single('images'), async (req, res, next) => {
-    // uploads a new image for a listing
+router.post('/', requiresAuth, multiUpload.array("images", 10), async (req, res, next) => {
+    // uploads image(s) for a listing
     try {
-        const fileInfo = req.file
-        const image = await Image.createImage(fileInfo)
-        return res.status(201).json({ image })
+            const imageFiles = req.files
+
+            return res.status(200).end("Images uploaded successfully")
     } catch (error) {
         next(error)
     }
