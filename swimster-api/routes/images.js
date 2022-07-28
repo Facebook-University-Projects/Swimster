@@ -2,7 +2,6 @@ const express = require('express')
 const Image = require('../models/Image')
 const { requiresAuth } = require('../middleware/security')
 const multiUpload = require('../middleware/multer')
-const path = require('path')
 
 const router = express.Router()
 
@@ -18,28 +17,23 @@ router.get('/', requiresAuth, async (req, res, next) => {
 router.post('/', requiresAuth, multiUpload.array("images", 10), async (req, res, next) => {
     // uploads image(s) for a listing
     try {
+            // TODO: should be req.body in apiClient function
+            const listingId = 27
             const imageFiles = req.files
-
-            return res.status(200).end("Images uploaded successfully")
+            const images = await Image.createImages(imageFiles, listingId)
+            return res.status(201).end({ images })
     } catch (error) {
         next(error)
     }
 })
 
-// TODO: change to fetch by listing id
-router.get('/:fileName', async (req, res, next) => {
+router.get('/listings/:listingId', async (req, res, next) => {
     // fetches all images for a single listing by listing id
     try {
-        const fileName = req.params.fileName
-        const image = await Image.getImage(fileName)
-        if (image) {
-            const dirName = path.resolve()
-            const absoluteFilePath = path.join(
-                dirName,
-                image.image_path
-            )
-            return res.type(image.mime_type).sendFile(absoluteFilePath)
-        }
+        const listingId = req.params.listingId
+        const listingImages = await Image.fetchImagesFromListing(listingId)
+        // TODO: change to sendFile when getting aws stored images
+        return res.status(200).send({ listingImages })
     } catch (error) {
         next(error)
     }

@@ -1,8 +1,9 @@
 const db = require('../db')
+const { uploadImageToS3, fetchImageFromS3 } = require('../s3')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/error')
 
 class Image {
-    static async createImages(imageFiles) {
+    static async createImages(imageFiles, listingId) {
         if (imageFiles.length < 5) {
             throw new BadRequestError("Must upload at least 5 pictures!")
         }
@@ -14,11 +15,16 @@ class Image {
         const images = []
 
         for (let image of imageFiles) {
+            // uploadImagesToS3 returning object
+            const s3Image = await uploadImageToS3(image)
+            console.log('s3Image: ', s3Image);
+
+            // store key and/or etag in images table
             const result = await db.query(`
                 INSERT INTO images (
                     image_name,
-                    image_path,
-                    mime_type,
+                    image_url,
+                    image_key,
                     image_size,
                     listing_id
                 )
@@ -31,16 +37,16 @@ class Image {
                 )
                 RETURNING   id,
                             image_name,
-                            image_path,
-                            mime_type,
+                            image_url,
+                            image_key,
                             image_size,
                             listing_id
             `, [
                 image.filename,
-                image.path,
-                image.mimetype,
+                s3Image.Location,
+                s3Image.Key,
                 image.size,
-                26 // TODO: adjust for listing id
+                listingId
             ])
 
             const imageCreated = result.rows[0]
@@ -51,21 +57,30 @@ class Image {
     }
 
     static async fetchImagesFromListing(listingId) {
+        // TODO: change query to match aws details
+        // returns key for fetching image from s3 bucket
         const result = await db.query(`
             SELECT  id,
                     image_name,
-                    image_path,
-                    mime_type,
+                    image_url,
+                    image_key,
                     image_size,
                     listing_id
             FROM images
             WHERE listing_id = $1
-        `, [
-            listingId
-        ])
+        `, [listingId])
 
-        const image = result.rows
-        return image
+        const images = result.rows
+
+        // loop through all image keys and call getObject
+        // store each result inside arr and return
+
+        for (let image of images) {
+            const fetchedS3Image = await fetchImageFromS3(image.image_key)
+            console.log('fetchedS3Image: ', fetchedS3Image);
+        }
+
+        return images
     }
 }
 

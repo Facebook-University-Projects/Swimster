@@ -53,8 +53,8 @@ CREATE TABLE reservations (
 CREATE TABLE images (
     id         SERIAL PRIMARY KEY,
     image_name      TEXT UNIQUE NOT NULL,
-    image_path      TEXT NOT NULL,
-    mime_type       TEXT NOT NULL,
+    image_url       TEXT NOT NULL,
+    image_key       TEXT NOT NULL,
     image_size      BIGINT NOT NULL,
     listing_id      INT NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
