@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useListingDetail } from '../../hooks/useListingDetail'
 import { style } from './style'
 import Amenities from '../Amenities/Amenities'
+import ReservationCard from '../ReservationCard/ReservationCard'
 import ratingsIcon from '../../assets/ratingsIcon.svg'
 import guestsIcon from '../../assets/guestsIcon.svg'
 import rulerIcon from '../../assets/rulerIcon.svg'
@@ -112,21 +113,12 @@ const ListingDetail = () => {
                     <Amenities poolAmenities={poolAmenities}/>
                     <div className={style.hostInfoContainer}>About the Host</div>
                 </div>
-                <div className={style.reservationCardContainer}>
-                    <div className={style.reservationCard}>
-                        <h1 className={style.reservationCardHeader}>Reserve</h1>
-                        <form id="hook-form" className={style.reservationDetails} onSubmit={handleSubmit(onSubmit)}>
-                            <input className={style.reservationDateInput} type="date" {...register("reservationDate")}/>
-                            <input className={style.reservationTimeInput} type="time" {...register("reservationStartTime")}/>
-                            <input className={style.reservationTimeInput} type="time" {...register("reservationEndTime")}/>
-                        </form>
-                        {isSubmitProcessing ? (
-                            <button type="submit" form="hook-form" className={style.reserveButton}>Loading...</button>
-                        ) : (
-                            <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
-                        )}
-                    </div>
-                </div>
+                <ReservationCard
+                    register={register}
+                    isSubmitProcessing={isSubmitProcessing}
+                    handleSubmit={handleSubmit}
+                    onSubmit={onSubmit}
+                />
             </div>
         </div>
     )
