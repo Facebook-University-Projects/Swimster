@@ -5,14 +5,19 @@ import CalendarDatePicker from '../CalendarDatePicker/CalendarDatePicker'
 import CalendarTimePicker from '../CalendarTimePicker/CalendarTimePicker'
 
 const style = {
-    reservationCardContainer: '',
-    reservationCard: 'flex flex-col p-6 space-y-5 border rounded-xl shadow-xl',
-    reservationCardHeader: 'text-2xl',
-    reservationDetails: 'flex space-x-4',
-    reserveButton: 'bg-indigo-400 w-1/3 text-center py-3 rounded-lg text-gray-50',
+    reservationCardContainer: 'col-span-1 px-4',
+    reservationCard: 'grid grid-cols-2 p-6 border rounded-xl shadow-xl',
+    reservationCardHeader: 'col-span-2 text-2xl',
+    reservationDetailsContainer: 'col-span-2 mt-4',
+    reservationDetails: 'grid grid-cols-2 gap-2',
+    reservationGuestsContainer: 'mt-4 col-span-2',
+    reservationGuestsHeader: 'col-span-2 text-xl',
+    reservationGuestsDescription: 'col-span-2 text-xs text-gray-400',
+    reservationGuestsInput: 'col-span-2 w-full mt-4 rounded-lg border-2 border-gray-200 p-2',
+    reserveButton: 'mt-6 col-span-2 bg-indigo-400 py-3 rounded-lg text-gray-50',
 }
 
-const ReservationCard = ({ setValue, isSubmitProcessing, handleSubmit, onSubmit }) => {
+const ReservationCard = ({ register, setValue, isSubmitProcessing, handleSubmit, onSubmit }) => {
     const { listingId } = useParams()
 
     const {
@@ -29,27 +34,39 @@ const ReservationCard = ({ setValue, isSubmitProcessing, handleSubmit, onSubmit 
     return (
         <div className={style.reservationCardContainer}>
             <div className={style.reservationCard}>
-                <h1 className={style.reservationCardHeader}>Reserve</h1>
-                <form id="hook-form" className={style.reservationDetails} onSubmit={handleSubmit(onSubmit)}>
-                    <CalendarDatePicker
-                        dateSelected={dateSelected}
-                        setDateSelected={setDateSelected}
-                    />
-                    <CalendarTimePicker
-                        time={startTime}
-                        setTime={setStartTime}
-                        timeType={"Start Time"}
-                        reservedTimes={reservedTimes}
-                        dateSelected={dateSelected}
-                    />
-                    <CalendarTimePicker
-                        time={endTime}
-                        setTime={setEndTime}
-                        timeType={"End Time"}
-                        reservedTimes={reservedTimes}
-                        dateSelected={dateSelected}
-                    />
-                </form>
+                <h1 className={style.reservationCardHeader}>Reservation</h1>
+                <div className={style.reservationDetailsContainer}>
+                    <form id="hook-form" className={style.reservationDetails} onSubmit={handleSubmit(onSubmit)}>
+                        <CalendarDatePicker
+                            dateSelected={dateSelected}
+                            setDateSelected={setDateSelected}
+                        />
+                        <CalendarTimePicker
+                            time={startTime}
+                            setTime={setStartTime}
+                            timeType={"Start Time"}
+                            reservedTimes={reservedTimes}
+                            dateSelected={dateSelected}
+                        />
+                        <CalendarTimePicker
+                            time={endTime}
+                            setTime={setEndTime}
+                            timeType={"End Time"}
+                            reservedTimes={reservedTimes}
+                            dateSelected={dateSelected}
+                        />
+                    </form>
+                    <div className={style.reservationGuestsContainer}>
+                        <h1 className={style.reservationGuestsHeader}>Guests</h1>
+                        <div className={style.reservationGuestsDescription}>Choose the number of people you plan to bring</div>
+                        <input
+                            type="number"
+                            placeholder='Guests'
+                            className={style.reservationGuestsInput}
+                            {...register("reservationGuests")}
+                        />
+                    </div>
+                </div>
                 {isSubmitProcessing ? (
                     <button type="submit" form="hook-form" className={style.reserveButton}>Loading...</button>
                 ) : (

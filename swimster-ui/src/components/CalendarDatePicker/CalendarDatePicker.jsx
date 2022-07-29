@@ -3,18 +3,21 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 const style = {
-    reservationDateInput: "rounded-lg border-2 border-gray-200 p-2",
+    reservationDateInputContainer: 'col-span-2',
+    reservationDateInput: "rounded-lg border-2 w-full border-gray-200 p-2",
 }
 
 const CalendarDatePicker = ({ dateSelected, setDateSelected }) => {
     return (
-        <DatePicker
-            className={style.reservationDateInput}
-            selected={dateSelected}
-            minDate={new Date()}
-            placeholderText='Choose a date'
-            onChange={date => setDateSelected(date)}
-        />
+        <div className={style.reservationDateInputContainer}>
+            <DatePicker
+                className={style.reservationDateInput}
+                selected={dateSelected}
+                minDate={new Date()}
+                placeholderText='Choose a date'
+                onChange={date => setDateSelected(date)}
+            />
+        </div>
     )
 }
 
