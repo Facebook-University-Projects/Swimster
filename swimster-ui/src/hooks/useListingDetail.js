@@ -6,7 +6,7 @@ import apiClient from "../services/apiClient"
 
 export const useListingDetail = listingId => {
     const { user, initialized } = useAuthContext()
-    const { register, handleSubmit } = useForm()
+    const { setValue, handleSubmit } = useForm()
     const [isFetching, setIsFetching] = useState(false)
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
     const navigate = useNavigate()
@@ -56,7 +56,7 @@ export const useListingDetail = listingId => {
         error,
         isFetching,
         isSubmitProcessing,
-        register,
+        setValue,
         handleSubmit,
         onSubmit,
     }
