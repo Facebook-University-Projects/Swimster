@@ -3,6 +3,11 @@ import { amenities } from '../Amenities/Amenities'
 
 const style = {
     formCreatePoolHeader: 'font-semibold text-3xl col-span-3 mb-3',
+    formImagesUploadHeader: 'col-span-3',
+    formImagesUploadTitle: 'font-semibold text-2xl',
+    formImagesUploadSubtitle: 'font-semibold text-sm text-gray-500',
+    imageUploadButton: 'hidden',
+    realImageUpload: 'bg-red-400 p-3 rounded-lg',
     formAmenitiesHeader: 'font-semibold text-2xl col-span-3',
     formDimensionsHeader: 'font-semibold text-2xl col-span-3',
     amenitiesContainer: 'col-span-3',
@@ -19,11 +24,31 @@ const style = {
     formStepConfirmButton: 'bg-blue-700 py-3 col-start-3 col-span-1 rounded-md mt-4 cursor-pointer font-semibold text-gray-200',
 }
 
-const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue, resetField }) => {
+const RenderSelectedPhotos = ({ images }) => {
+    return (
+        <div>
+            {images.length > 0 ? (
+                <>
+                    {images.map(image => {
+                        return (
+                            <img key={image} src={image}/>
+                        )
+                    })}
+                </>
+            ) : (
+                <>
+                    None
+                </>
+            )}
+        </div>
+    )
+}
+
+const CreatePoolSteps = ({ step, nextStep, prevStep, selectedImages, setSelectedImages, register, setValue, resetField }) => {
     const [amenitiesChosen, setAmenitiesChosen] = useState([])
 
     // allows selecting and deselecting of amenities
-    const handleSelected = (amenity) => {
+    const handleSelected = amenity => {
         if (getSelected(amenity)) {
             const newSeletedAmenities = amenitiesChosen.filter(amenityTitle => amenityTitle !== amenity.title)
             return setAmenitiesChosen(newSeletedAmenities)
@@ -41,7 +66,16 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue, resetFi
         resetField("poolDepth")
     }, [step])
 
-    console.log(amenitiesChosen)
+    const handleImageSelect = e => {
+        console.log('e: ', e.target.files);
+        if (e.target.files) {
+            const imagesArr = Array.from(e.target.files).map(file => URL.createObjectURL(file))
+
+            setSelectedImages(prevImgs => prevImgs.concat(imagesArr))
+            Array.from(e.target.files).map(file => URL.revokeObjectURL(file))
+        }
+    }
+
     switch (step) {
         case 1:
             return (
@@ -86,16 +120,35 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, register, setValue, resetFi
                         <option value="Outdoors">Outdoors</option>
                         <option value="Indoors">Indoors</option>
                     </select>
-                    <input
-                        className={`${style.inputElement} ${style.fullInput}`}
-                        type="text"
-                        placeholder="Image URL"
-                        {...register("images")}
-                    />
                     <button className={style.formStepContinueButton} onClick={nextStep}>Continue</button>
                 </>
             )
         case 2:
+            return (
+                <>
+                    <div className={style.formImagesUploadHeader}>
+                        <h1 className={style.formImagesUploadTitle}>Make your Pool Stand Out</h1>
+                        <p className={style.formImagesUploadSubtitle}>Upload at least 5 images (10 max)</p>
+                    </div>
+                    <input
+                        className={style.imageUploadButton}
+                        type="file"
+                        id="file"
+                        multiple
+                        onChange={handleImageSelect}
+                        // {...register("poolImages"s)}
+                    />
+                    <div>
+                        <label htmlFor="file" className={style.realImageUpload}>UPLOAD</label>
+                    </div>
+                    <div>
+                        <RenderSelectedPhotos images={selectedImages}/>
+                    </div>
+                    <button className={style.formStepBackButton} onClick={prevStep}>Back</button>
+                    <button className={style.formStepBackButton} onClick={nextStep}>Continue</button>
+                </>
+            )
+        case 3:
             return (
                 <>
                     <h1 className={style.formAmenitiesHeader}>What amenities come with the Pool?</h1>
