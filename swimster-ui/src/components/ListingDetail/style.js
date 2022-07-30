@@ -28,5 +28,10 @@ export const style = {
     aboutPoolContainer: 'flex flex-col space-y-5 p-7 rounded-xl shadow-md',
     aboutPoolTitle: 'text-xl',
     aboutPoolDescription: 'font-normal text-md',
-    hostInfoContainer: '',
+    hostInfoContainer: 'flex flex-col space-y-7 p-7 rounded-xl shadow-md',
+    hostInfoTitle: 'text-xl',
+    hostInfoHeader: 'flex items-center space-x-4',
+    hostInfoHeaderDetails: 'flex flex-col',
+    hostName: '',
+    hostEmail: 'text-gray-400 text-sm',
 }

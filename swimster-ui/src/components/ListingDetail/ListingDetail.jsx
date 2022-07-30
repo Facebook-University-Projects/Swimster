@@ -111,7 +111,16 @@ const ListingDetail = () => {
                         <p className={style.aboutPoolDescription}>{description}</p>
                     </div>
                     <Amenities poolAmenities={poolAmenities}/>
-                    <div className={style.hostInfoContainer}>About the Host</div>
+                    <div className={style.hostInfoContainer}>
+                        <h1 className={style.hostInfoTitle}>About the Host</h1>
+                        <div className={style.hostInfoHeader}>
+                            <div className={style.hostProfileImage}></div>
+                            <div className={style.hostInfoHeaderDetails}>
+                                <h2 className={style.hostName}>{first_name} {last_name}</h2>
+                                <h3 className={style.hostEmail}>{email}</h3>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <ReservationCard
                     register={register}
