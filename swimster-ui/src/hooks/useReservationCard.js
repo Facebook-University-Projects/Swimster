@@ -16,6 +16,10 @@ const inclusiveInterval = (startNum, endNum) => {
     return result
 }
 
+const toLocalTime = date => {
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString()
+}
+
 export const useReservationCard = (listingId, setValue) => {
     const { user, initialized } = useAuthContext()
     const [reservations, setReservations] = useState([])
@@ -56,7 +60,7 @@ export const useReservationCard = (listingId, setValue) => {
 
     // sets the registered reservation fields' values for form submission
     const handleReservations = () => {
-        setValue("reservationDate", dateSelected.toISOString())
+        setValue("reservationDate", toLocalTime(dateSelected))
         setValue("reservationStartTime", format(startTime, "HH:mm:ss"))
         setValue("reservationEndTime", format(endTime, "HH:mm:ss"))
     }
