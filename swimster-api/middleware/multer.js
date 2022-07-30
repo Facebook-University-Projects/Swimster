@@ -2,15 +2,8 @@ const multer = require('multer')
 const path = require('path')
 const { BadRequestError } = require('../utils/error')
 
-// disk storage engine - stores files to /images directory
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../images'))
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '_' + file.fieldname + '_' + file.originalname)
-    }
-})
+// stores the files in memory as Buffer objects
+const storage = multer.memoryStorage()
 
 // controls which files are supported - jpg/jpeg
 const fileFilter = (req, file, cb) => {
@@ -26,9 +19,9 @@ const fileFilter = (req, file, cb) => {
 
 // creates multer object
 const multiUpload = multer({
-    storage,
+    storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
-    fileFilter
+    fileFilter: fileFilter,
 })
 
 module.exports = multiUpload

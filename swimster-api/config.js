@@ -18,10 +18,14 @@ const getDatabaseUri = () => {
 const getAwsS3Info = () => {
     const bucketName = process.env.AWS_BUCKET_NAME
     const bucketRegion = process.env.AWS_BUCKET_REGION
+    const accessKey = process.env.AWS_ACCESS_KEY_ID
+    const secretKey = process.env.AWS_SECRET_ACCESS_KEY
 
     return {
         bucketName: bucketName,
         bucketRegion: bucketRegion,
+        accessKey: accessKey,
+        secretKey: secretKey,
     }
 }
 

@@ -1,9 +1,17 @@
 const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3')
+const crypto = require('crypto')
 const { getAwsS3Info } = require('./config')
 
 const s3BucketInfo = getAwsS3Info()
+const BYTES = 32
 
-const s3 = new S3Client({ region: s3BucketInfo.bucketRegion })
+const s3 = new S3Client({
+    region: s3BucketInfo.bucketRegion,
+    credentials: {
+        accessKeyId: s3BucketInfo.accessKey,
+        secretAccessKey: s3BucketInfo.secretKey
+    }
+})
 
 // converts readableStream to string
 const streamToStr = stream => new Promise((resolve, reject) => {
@@ -12,18 +20,23 @@ const streamToStr = stream => new Promise((resolve, reject) => {
     stream.on("error", reject)
     stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf-8")))
 })
+// creates a hash and attaches itself to image file name for unique identification
+const hashImageName = (bytes=BYTES, fileName) => crypto.randomBytes(bytes).toString('hex') + '_' + fileName
 
 // uploads an image to s3
 const uploadImageToS3 = async image => {
     try {
         const uploadParams = {
             Bucket: s3BucketInfo.bucketName,
-            Key: image.filename,
-            Body: image.path,
+            Key: hashImageName(BYTES, image.originalname),
+            Body: image.buffer,
+            ContentType: image.mimetype,
         }
         const result = await s3.send(new PutObjectCommand(uploadParams))
-        console.log('result: ', result);
-        return result
+        return {
+            result: result,
+            key: uploadParams.Key,
+        }
     } catch (error) {
         console.log("AWS Uploading Error:", error)
     }

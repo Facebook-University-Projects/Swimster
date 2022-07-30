@@ -17,40 +17,40 @@ class Image {
         for (let image of imageFiles) {
             // uploadImagesToS3 returning object
             const s3Image = await uploadImageToS3(image)
-            console.log('s3Image: ', s3Image);
 
             // store key and/or etag in images table
-            const result = await db.query(`
-                INSERT INTO images (
-                    image_name,
-                    image_url,
-                    image_key,
-                    image_size,
-                    listing_id
-                )
-                VALUES (
-                    $1,
-                    $2,
-                    $3,
-                    $4,
-                    $5
-                )
-                RETURNING   id,
-                            image_name,
-                            image_url,
-                            image_key,
-                            image_size,
-                            listing_id
-            `, [
-                image.filename,
-                s3Image.Location,
-                s3Image.Key,
-                image.size,
-                listingId
-            ])
-
-            const imageCreated = result.rows[0]
-            images.push(imageCreated)
+            if (s3Image) {
+                const result = await db.query(`
+                    INSERT INTO images (
+                        image_name,
+                        image_key,
+                        image_size,
+                        image_mimetype,
+                        listing_id
+                    )
+                    VALUES (
+                        $1,
+                        $2,
+                        $3,
+                        $4,
+                        $5
+                    )
+                    RETURNING   id,
+                                image_name,
+                                image_key,
+                                image_size,
+                                image_mimetype,
+                                listing_id
+                `, [
+                    image.originalname,
+                    s3Image.key,
+                    image.size,
+                    image.mimetype,
+                    listingId
+                ])
+                const imageCreated = result.rows[0]
+                images.push(imageCreated)
+            }
         }
 
         return images
