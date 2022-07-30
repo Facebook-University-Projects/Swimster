@@ -32,7 +32,6 @@ router.get('/listings/:listingId', async (req, res, next) => {
     try {
         const listingId = req.params.listingId
         const listingImages = await Image.fetchImagesFromListing(listingId)
-        // TODO: change to sendFile when getting aws stored images
         return res.status(200).send({ listingImages })
     } catch (error) {
         next(error)

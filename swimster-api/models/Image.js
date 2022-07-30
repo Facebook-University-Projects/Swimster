@@ -1,8 +1,20 @@
 const db = require('../db')
-const { uploadImageToS3, fetchImageFromS3 } = require('../s3')
+const { uploadImageToS3, fetchImageUrlFromS3 } = require('../s3')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/error')
 
 class Image {
+    static publicImageInfo(image, url) {
+        return {
+            id: image.id,
+            image_name: image.image_name,
+            image_key: image.image_key,
+            image_size: image.image_size,
+            image_mimetype: image.image_mimetype,
+            listing_id: image.listing_id,
+            image_url: url,
+        }
+    }
+
     static async createImages(imageFiles, listingId) {
         if (imageFiles.length < 5) {
             throw new BadRequestError("Must upload at least 5 pictures!")
@@ -57,14 +69,12 @@ class Image {
     }
 
     static async fetchImagesFromListing(listingId) {
-        // TODO: change query to match aws details
-        // returns key for fetching image from s3 bucket
         const result = await db.query(`
             SELECT  id,
                     image_name,
-                    image_url,
                     image_key,
                     image_size,
+                    image_mimetype,
                     listing_id
             FROM images
             WHERE listing_id = $1
@@ -72,15 +82,17 @@ class Image {
 
         const images = result.rows
 
-        // loop through all image keys and call getObject
-        // store each result inside arr and return
+        const imagesWithUrl = []
 
         for (let image of images) {
-            const fetchedS3Image = await fetchImageFromS3(image.image_key)
-            console.log('fetchedS3Image: ', fetchedS3Image);
+            const { image_key } = image
+            const fetchedS3ImageUrl = await fetchImageUrlFromS3(image_key)
+
+            // attaches aws url to image object sent back to client
+            imagesWithUrl.push(this.publicImageInfo(image, fetchedS3ImageUrl))
         }
 
-        return images
+        return imagesWithUrl
     }
 }
 
