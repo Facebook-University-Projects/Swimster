@@ -12,6 +12,7 @@ export const useListingDetail = listingId => {
     const navigate = useNavigate()
     const [error, setError] = useState(null)
     const [listing, setListing] = useState({})
+    const [listingImages, setListingImages] = useState([])
 
     const isAuthenticated = isUserAuthenticated(user, initialized)
 
@@ -27,7 +28,16 @@ export const useListingDetail = listingId => {
             setIsFetching(false)
         }
 
-        if (isAuthenticated) fetchListing()
+        const fetchImagesFromListing = async () => {
+            const { data, error } = await apiClient.fetchImagesFromListing(listingId)
+            if (error) setError(error)
+            if (data?.listingImages) setListingImages([...data.listingImages])
+        }
+
+        if (isAuthenticated) {
+            fetchListing()
+            fetchImagesFromListing()
+        }
     }, [listingId, isAuthenticated])
 
     // handler for making a reservation for the current listing
@@ -53,6 +63,7 @@ export const useListingDetail = listingId => {
 
     return {
         listing,
+        listingImages,
         error,
         isFetching,
         isSubmitProcessing,

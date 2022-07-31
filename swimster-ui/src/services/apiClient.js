@@ -145,7 +145,7 @@ class ApiClient {
 
     async fetchImagesFromListing(listingId) {
         const listingImages = await this.request({
-            endpoint: `images/listing/${listingId}`,
+            endpoint: `images/listings/${listingId}`,
             method: "GET"
         })
         return listingImages
