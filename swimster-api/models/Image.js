@@ -11,6 +11,7 @@ class Image {
             image_size: image.image_size,
             image_mimetype: image.image_mimetype,
             listing_id: image.listing_id,
+            is_main_image: image.is_main_image,
             image_url: url,
         }
     }
@@ -26,9 +27,11 @@ class Image {
 
         const images = []
 
-        for (let image of imageFiles) {
+        for (let [index, image] of imageFiles.entries()) {
             // uploadImagesToS3 returning object
             const s3Image = await uploadImageToS3(image)
+
+            const isMainImage = index === 0 ? true : false
 
             // store key and/or etag in images table
             if (s3Image) {
@@ -38,27 +41,31 @@ class Image {
                         image_key,
                         image_size,
                         image_mimetype,
-                        listing_id
+                        listing_id,
+                        is_main_image
                     )
                     VALUES (
                         $1,
                         $2,
                         $3,
                         $4,
-                        $5
+                        $5,
+                        $6
                     )
                     RETURNING   id,
                                 image_name,
                                 image_key,
                                 image_size,
                                 image_mimetype,
-                                listing_id
+                                listing_id,
+                                is_main_image
                 `, [
                     image.originalname,
                     s3Image.key,
                     image.size,
                     image.mimetype,
-                    listingId
+                    listingId,
+                    isMainImage,
                 ])
                 const imageCreated = result.rows[0]
                 images.push(imageCreated)
@@ -75,7 +82,8 @@ class Image {
                     image_key,
                     image_size,
                     image_mimetype,
-                    listing_id
+                    listing_id,
+                    is_main_image
             FROM images
             WHERE listing_id = $1
         `, [listingId])
@@ -93,6 +101,33 @@ class Image {
         }
 
         return imagesWithUrl
+    }
+
+    static async fetchMainImagesFromListings() {
+        const result = await db.query(`
+            SELECT  id,
+                    image_name,
+                    image_key,
+                    image_size,
+                    image_mimetype,
+                    listing_id,
+                    is_main_image
+            FROM images
+            WHERE is_main_image = true
+        `)
+
+        const fetchedMainImages = result.rows
+
+        const mainImages = []
+
+        for (let image of fetchedMainImages) {
+            const { image_key } = image
+            const fetchedS3ImageUrl = await fetchImageUrlFromS3(image_key)
+
+            mainImages.push(this.publicImageInfo(image, fetchedS3ImageUrl))
+        }
+
+        return mainImages
     }
 }
 

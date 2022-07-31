@@ -55,6 +55,7 @@ CREATE TABLE images (
     image_key       TEXT UNIQUE NOT NULL,
     image_size      BIGINT NOT NULL,
     image_mimetype  TEXT NOT NULL,
+    is_main_image      BOOLEAN NOT NULL DEFAULT FALSE,
     listing_id      INT NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
 );

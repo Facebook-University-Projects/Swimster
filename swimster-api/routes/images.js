@@ -5,10 +5,11 @@ const multiUpload = require('../middleware/multer')
 
 const router = express.Router()
 
-router.get('/', requiresAuth, async (req, res, next) => {
-    // fetches all of the images
+router.get('/', async (req, res, next) => {
+    // fetches all of the main images of each listing
     try {
-        return res.json('/image api1')
+        const allImages = await Image.fetchMainImagesFromListings()
+        return res.status(200).send({ allImages })
     } catch (error) {
         next(error)
     }

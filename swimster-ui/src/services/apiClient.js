@@ -41,7 +41,6 @@ class ApiClient {
 
     // auth endpoint model functions
     async loginUser(credentials) {
-        console.log('credentials: ', credentials);
         const loginUser = await this.request({
             endpoint: "auth/login",
             method: "POST",
@@ -149,6 +148,14 @@ class ApiClient {
             method: "GET"
         })
         return listingImages
+    }
+
+    async fetchMainImagesFromListings() {
+        const mainImages = await this.request({
+            endpoint: "images/",
+            method: "GET"
+        })
+        return mainImages
     }
 }
 
