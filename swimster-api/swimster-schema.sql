@@ -30,7 +30,6 @@ CREATE TABLE listings (
     has_lounge_chairs   BOOLEAN NOT NULL DEFAULT FALSE,
     has_hot_tub         BOOLEAN NOT NULL DEFAULT FALSE,
     has_parking         BOOLEAN NOT NULL DEFAULT FALSE,
-    images              TEXT NOT NULL,
     created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY (host_id) REFERENCES users(id) ON DELETE CASCADE
 );

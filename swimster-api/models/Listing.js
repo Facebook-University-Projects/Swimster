@@ -3,7 +3,7 @@ const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/
 
 class Listing {
     static async createListing({ newListing, user }) {
-        // take the listing name, address, description, price, totalGuests, poolType, amenities, images
+        // take the listing name, address, description, price, totalGuests, poolType, amenities
         const requiredFields = [
             "title",
             "address",
@@ -21,10 +21,9 @@ class Listing {
             "hasLoungeChairs",
             "hasHotTub",
             "hasParking",
-            "images"
         ]
 
-        // edge cases: missing fields, there are < 5 images,
+        // edge cases: missing fields,
         requiredFields.forEach(field => {
             if (!newListing.hasOwnProperty(field)) {
                 throw new BadRequestError(`Missing ${field} in request body.`)
@@ -49,12 +48,11 @@ class Listing {
                 has_towels,
                 has_lounge_chairs,
                 has_hot_tub,
-                has_parking,
-                images
+                has_parking
             )
             VALUES (
                 (SELECT id FROM users WHERE email = $1),
-                $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18
+                $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17
             )
             RETURNING id,
             host_id,
@@ -74,7 +72,6 @@ class Listing {
             has_lounge_chairs,
             has_hot_tub,
             has_parking,
-            images,
             created_at;
         `, [
             user.email,
@@ -93,8 +90,7 @@ class Listing {
             newListing.hasTowels,
             newListing.hasLoungeChairs,
             newListing.hasHotTub,
-            newListing.hasParking,
-            newListing.images
+            newListing.hasParking
         ])
 
         const listing = result.rows[0]
@@ -109,8 +105,7 @@ class Listing {
                     listings.title,
                     listings.address,
                     listings.price,
-                    listings.total_guests,
-                    listings.images
+                    listings.total_guests
             FROM listings;
         `)
 
@@ -144,7 +139,6 @@ class Listing {
                     listing.has_lounge_chairs,
                     listing.has_hot_tub,
                     listing.has_parking,
-                    listing.images,
                     listing.created_at
             FROM listings AS listing
             JOIN users AS host ON host.id = listing.host_id

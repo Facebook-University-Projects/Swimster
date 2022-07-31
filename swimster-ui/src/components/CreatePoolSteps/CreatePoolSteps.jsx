@@ -35,17 +35,17 @@ const style = {
     formStepConfirmButton: 'bg-blue-700 py-3 col-start-3 col-span-1 rounded-md mt-4 cursor-pointer font-semibold text-gray-200',
 }
 
-const RenderSelectedImages = ({ selectedImages, setSelectedImages }) => {
+const RenderSelectedImages = ({ selectedBlobs, setSelectedBlobs }) => {
     const removeSelectedImage = imageIdx => {
-        const newSelectedImages = selectedImages.filter(image => image != selectedImages[imageIdx])
-        setSelectedImages([...newSelectedImages])
+        const newSelectedBlobs = selectedBlobs.filter(image => image != selectedBlobs[imageIdx])
+        setSelectedBlobs([...newSelectedBlobs])
     }
 
     return (
         <div className={style.imageUploadContentContainer}>
-            {selectedImages.length > 0 ? (
+            {selectedBlobs.length > 0 ? (
                 <>
-                    {selectedImages.map((image, index) => {
+                    {selectedBlobs.map((image, index) => {
                         return (
                             <div key={index} className={style.selectedImageContainer}>
                                 <img className={style.selectedImageCancelButton} src={cancelButtonIcon} onClick={() => removeSelectedImage(index)}/>
@@ -56,7 +56,7 @@ const RenderSelectedImages = ({ selectedImages, setSelectedImages }) => {
                 </>
             ) : (
                 <>
-                    <img className={style.imageUploadIconImage} src={imageUploadIcon} alt="image upload icon" />
+                    <img className={style.imageUploadIconImage} src={imageUploadIcon} alt="upload icon" />
                 </>
             )}
         </div>
@@ -65,6 +65,7 @@ const RenderSelectedImages = ({ selectedImages, setSelectedImages }) => {
 
 const CreatePoolSteps = ({ step, nextStep, prevStep, selectedImages, setSelectedImages, register, setValue, resetField }) => {
     const [amenitiesChosen, setAmenitiesChosen] = useState([])
+    const [selectedBlobs, setSelectedBlobs] = useState([])
 
     // allows selecting and deselecting of amenities
     const handleSelected = amenity => {
@@ -85,11 +86,16 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, selectedImages, setSelected
         resetField("poolDepth")
     }, [step])
 
+    // converts images uploaded to blobs to render them as user selects them
     const handleImageSelect = e => {
         if (e.target.files) {
-            const imagesArr = Array.from(e.target.files).map(file => URL.createObjectURL(file))
+            const blobImagesArr = Array.from(e.target.files).map(file => URL.createObjectURL(file))
+            const selectedImagesArr = Array.from(e.target.files)
 
-            setSelectedImages(prevImgs => prevImgs.concat(imagesArr))
+            setSelectedBlobs(prevImgs => prevImgs.concat(blobImagesArr))
+            setSelectedImages(selectedImagesArr)
+
+            // unmounts selected images from the browser
             Array.from(e.target.files).map(file => URL.revokeObjectURL(file))
         }
     }
@@ -153,14 +159,15 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, selectedImages, setSelected
                         type="file"
                         id="file"
                         multiple
-                        onChange={handleImageSelect}
-                        // {...register("poolImages"s)}
+                        {...register("poolImages", {
+                            onChange: handleImageSelect,
+                        })}
                     />
                     <label htmlFor="file" className={style.imageUploadLabel}>Upload</label>
                     <div className={style.renderSelectedImagesContainer}>
                         <RenderSelectedImages
-                            selectedImages={selectedImages}
-                            setSelectedImages={setSelectedImages}
+                            selectedBlobs={selectedBlobs}
+                            setSelectedBlobs={setSelectedBlobs}
                         />
                     </div>
                     <div className={style.formImagesUploadButtons}>

@@ -29,6 +29,16 @@ export const useCreatePoolForm = () => {
         .replace(new RegExp(/\w/), s => s.toUpperCase());
     }
 
+    // packages image files and listing id into one payload
+    const imageFormDataPayload = (formData, listingId) => {
+        const fd = new FormData()
+        for (let poolImage of formData.poolImages) {
+            fd.append(poolImage.name, poolImage, poolImage.name)
+        }
+        fd.append("listingId", listingId)
+        return fd
+    }
+
     const onSubmit = async (formData) => {
         setIsSubmitProcessing(true)
 
@@ -49,7 +59,6 @@ export const useCreatePoolForm = () => {
             hasLoungeChairs: false,
             hasHotTub: false,
             hasParking: false,
-            images: formData.images
         }
 
         // checks chosen amenities and returns property as true if found
@@ -60,7 +69,6 @@ export const useCreatePoolForm = () => {
                 formattedFormData[formattedAmenity] = true
             }
         }
-        console.log('formattedFormData: ', formattedFormData);
 
         // makes api request to server at listings/ endpoint
         const { data, error } = await apiClient.createListing(
@@ -68,8 +76,13 @@ export const useCreatePoolForm = () => {
         )
         if (error) setError(error)
         if (data?.listing) {
-            setListings([...listings, data.listing])
-            navigate('/')
+            const images = imageFormDataPayload(formData, data.listing.id)
+            const { data: imageData, error: imageError } = await apiClient.createImages(images)
+            if (imageError) setError(imageError)
+            if (imageData?.images) {
+                setListings([...listings, data.listing])
+                navigate('/')
+            }
         }
 
         setIsSubmitProcessing(false)
@@ -81,6 +94,8 @@ export const useCreatePoolForm = () => {
         prevStep,
         error,
         isSubmitProcessing,
+        selectedImages,
+        setSelectedImages,
         register,
         setValue,
         resetField,

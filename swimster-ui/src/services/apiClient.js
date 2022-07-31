@@ -12,19 +12,19 @@ class ApiClient {
         localStorage.setItem(this.tokenName, token)
     }
 
-    async request({ endpoint, method="GET", data={} }) {
+    async request({ endpoint, method="GET", data={}, headers="application/json"}) {
         const url = `${this.remoteHostUrl}/${endpoint}`
 
-        const headers = {
-            "Content-Type": "application/json"
+        const headerSelected = {
+            "Content-Type": headers
         }
 
         if (this.token) {
-            headers["Authorization"] = `Bearer ${this.token}`
+            headerSelected["Authorization"] = `Bearer ${this.token}`
         }
 
         try {
-            const res = await axios({ url, method, data, headers })
+            const res = await axios({ url, method, data, headers: headerSelected })
             return {
                 data: res.data,
                 error: null
@@ -41,6 +41,7 @@ class ApiClient {
 
     // auth endpoint model functions
     async loginUser(credentials) {
+        console.log('credentials: ', credentials);
         const loginUser = await this.request({
             endpoint: "auth/login",
             method: "POST",
@@ -130,6 +131,25 @@ class ApiClient {
         })
         return hostListingsReservations
     }
+
+    // images endpoint model functions
+    async createImages(imageFiles) {
+        const images = await this.request({
+            endpoint: "images/",
+            method: "POST",
+            data: imageFiles,
+            headers: "multipart/form-data"
+        })
+        return images
+    }
+
+    async fetchImagesFromListing(listingId) {
+        const listingImages = await this.request({
+            endpoint: `images/listing/${listingId}`,
+            method: "GET"
+        })
+        return listingImages
+    }
 }
 
-export default new ApiClient(process.env.CLIENT_REMOTE_HOST_URL || "http://localhost:3001")
+export default new ApiClient(process.env.CLIENT_REMOTE_HOST_URL || "http://localhost:3002")

@@ -14,13 +14,12 @@ router.get('/', requiresAuth, async (req, res, next) => {
     }
 })
 
-router.post('/', requiresAuth, multiUpload.array("images", 10), async (req, res, next) => {
+router.post('/', requiresAuth, multiUpload.any(), async (req, res, next) => {
     // uploads image(s) for a listing
     try {
-            // TODO: should be req.body in apiClient function
-            const listingId = 27
             const imageFiles = req.files
-            const images = await Image.createImages(imageFiles, listingId)
+            const { listingId } = req.body
+             const images = await Image.createImages(imageFiles, listingId)
             return res.status(201).send({ images })
     } catch (error) {
         next(error)
