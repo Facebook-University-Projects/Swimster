@@ -30,6 +30,7 @@ export const useCreatePoolForm = () => {
     }
 
     const onSubmit = async (formData) => {
+        console.log('formData: ', formData);
         setIsSubmitProcessing(true)
 
         const formattedFormData = {
@@ -60,6 +61,7 @@ export const useCreatePoolForm = () => {
                 formattedFormData[formattedAmenity] = true
             }
         }
+        console.log('formattedFormData: ', formattedFormData);
 
         // makes api request to server at listings/ endpoint
         const { data, error } = await apiClient.createListing(
