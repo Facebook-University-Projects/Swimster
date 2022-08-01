@@ -1,5 +1,5 @@
 --- reservation session
-CREATE TYPE status AS ENUM ('DRAFT', 'PENDING_CONFIRMATION', 'CONFIRMED', 'ARCHIVED');
+CREATE TYPE  reservation_status AS ENUM ('DRAFT', 'PENDING_CONFIRMATION', 'CONFIRMED', 'ARCHIVED');
 
 CREATE TABLE users (
     id              SERIAL PRIMARY KEY,
@@ -30,7 +30,6 @@ CREATE TABLE listings (
     has_lounge_chairs   BOOLEAN NOT NULL DEFAULT FALSE,
     has_hot_tub         BOOLEAN NOT NULL DEFAULT FALSE,
     has_parking         BOOLEAN NOT NULL DEFAULT FALSE,
-    images              TEXT NOT NULL,
     created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY (host_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -45,16 +44,18 @@ CREATE TABLE reservations (
     guests              INT NOT NULL,
     total               NUMERIC NOT NULL,
     --- this value detects whether or not user is in reservation session
-    reservation_status  status NOT NULL DEFAULT 'DRAFT',
+    reservation_status  reservation_status NOT NULL DEFAULT 'DRAFT',
     created_at  TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at  TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE images (
     id         SERIAL PRIMARY KEY,
-    image_type      TEXT NOT NULL,
     image_name      TEXT NOT NULL,
-    image_url       TEXT NOT NULL,
+    image_key       TEXT UNIQUE NOT NULL,
+    image_size      BIGINT NOT NULL,
+    image_mimetype  TEXT NOT NULL,
+    is_main_image      BOOLEAN NOT NULL DEFAULT FALSE,
     listing_id      INT NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
 );

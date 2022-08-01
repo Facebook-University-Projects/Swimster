@@ -7,6 +7,7 @@ const { extractUserFromJwt } = require('./middleware/security')
 const authRoutes = require('./routes/auth')
 const listingRoutes = require('./routes/listings')
 const reservationRoutes = require('./routes/reservations')
+const imageRoutes = require('./routes/images')
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.use(extractUserFromJwt)
 app.use('/auth', authRoutes)
 app.use('/listings', listingRoutes)
 app.use('/reservations', reservationRoutes)
+app.use('/images', imageRoutes)
 
 /* health check */
 app.get('/', (req, res) => {

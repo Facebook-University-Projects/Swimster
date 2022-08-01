@@ -11,7 +11,7 @@ import shareIcon from '../../assets/shareIcon.svg'
 
 const ListingDetail = () => {
     const { listingId } = useParams()
-    const { listing, error, isFetching, isSubmitProcessing, register, handleSubmit, onSubmit } = useListingDetail(listingId)
+    const { listing, listingImages, error, isFetching, isSubmitProcessing, register, handleSubmit, onSubmit } = useListingDetail(listingId)
 
     const {
         first_name,
@@ -65,12 +65,15 @@ const ListingDetail = () => {
                     <div className={style.hostProfileImage}></div>
                 </div>
                 <div className={style.imagesContainer}>
-                    <img className={`${style.images} ${style.mainImage}`} src={images} alt="main pool listing img" />
-                    {/* other images will be here soon */}
-                    <div className={style.images}></div>
-                    <div className={style.images}></div>
-                    <div className={style.images}></div>
-                    <div className={style.images}></div>
+                    {listingImages.map((image, index) => {
+                        return (
+                            <img
+                                key={index}
+                                className={`${style.images} ${index === 0 ? style.mainImage : ""}`}
+                                src={image.image_url} alt='pool listing pics'
+                            />
+                        )
+                    })}
                 </div>
                 <div className={style.mainPoolDetails}>
                     <div className={style.mainPoolDetailsContent}>

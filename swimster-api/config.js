@@ -15,6 +15,20 @@ const getDatabaseUri = () => {
     return process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`
 }
 
+const getAwsS3Info = () => {
+    const bucketName = process.env.AWS_BUCKET_NAME
+    const bucketRegion = process.env.AWS_BUCKET_REGION
+    const accessKey = process.env.AWS_ACCESS_KEY_ID
+    const secretKey = process.env.AWS_SECRET_ACCESS_KEY
+
+    return {
+        bucketName: bucketName,
+        bucketRegion: bucketRegion,
+        accessKey: accessKey,
+        secretKey: secretKey,
+    }
+}
+
 console.log("Swimster Config: ".red)
 console.log("PORT: ".blue, PORT)
 console.log("Database URI: ".blue, getDatabaseUri())
@@ -24,4 +38,5 @@ module.exports = {
     SECRET_TOKEN_KEY,
     SALT_WORK_FACTOR,
     getDatabaseUri,
+    getAwsS3Info,
 }
