@@ -1,104 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
 import { amenities } from '../Amenities/Amenities'
-import imageUploadIcon from '../../assets/imageUploadIcon.svg'
-import cancelButtonIcon from '../../assets/cancelButtonIcon.svg'
+import { RenderSelectedImages } from '../RenderSelectedImages/RenderSelectedImages'
+import { useImageUploadForm } from '../../hooks/useImageUploadForm'
+import { useAmenitiesDimensionsForm } from '../../hooks/useAmenitiesDimensionsForm'
+import { style } from './style'
 
-const style = {
-    formCreatePoolHeader: 'font-semibold text-3xl col-span-3 mb-3',
-    formImagesUploadHeader: 'col-span-3',
-    formImagesUploadTitle: 'font-semibold text-2xl',
-    formImagesUploadSubtitle: 'font-semibold text-sm text-gray-500',
-    imageUploadButton: 'hidden',
-    imageUploadContentContainer: 'grid grid-cols-3 place-items-center gap-x-2 gap-y-5 border-2 p-4 border-gray-400 rounded-md h-96',
-    imageUploadLabel: 'bg-blue-700 text-gray-200 font-semibold py-2 text-center rounded-md cursor-pointer col-span-3',
-    renderSelectedImagesContainer: 'col-span-3',
-    selectedImage: 'w-36 h-36 object-cover rounded-lg col-span-1',
-    selectedImageContainer: 'flex flex-col',
-    selectedImageCancelButton: 'bg-red-50 w-4 h-4 rounded-full cursor-pointer self-end absolute',
-    imageUploadIconImage: 'col-start-2',
-    formImagesUploadButtons: 'col-span-3 flex justify-end space-x-4',
-    formImagesUploadBackButton: 'bg-blue-700 p-3 w-1/4 rounded-md cursor-pointer font-semibold text-gray-200',
-    formImagesUploadContinueButton: 'bg-blue-700 p-3 w-1/4 rounded-md cursor-pointer font-semibold text-gray-200',
-    formAmenitiesHeader: 'font-semibold text-2xl col-span-3',
-    formDimensionsHeader: 'font-semibold text-2xl col-span-3',
-    amenitiesContainer: 'col-span-3',
-    amenitiesContent: 'grid grid-cols-3 gap-6 mt-3',
-    amenityContainer: 'rounded-xl flex flex-col space-y-2 items-center border px-3 py-4 font-semibold cursor-pointer',
-    selectedAmenity: 'bg-gray-500 text-gray-200 border-gray-500',
-    checked: 'bg-blue-100',
-    amenityTitle: 'text-sm',
-    amenityImage: 'w-8 h-8 fill-gray-200',
-    inputElement: 'rounded-md p-3 border-none outline-none bg-gray-200 ring-gray-400 hover:ring-2 focus:ring-4 focus:ring-offset-2 focus:ring-offset-gray-300',
-    fullInput: 'col-span-3 resize-none',
-    formStepContinueButton: 'bg-blue-700 py-3 col-start-3 rounded-md mt-4 cursor-pointer font-semibold text-gray-200',
-    formStepBackButton: 'bg-blue-700 py-3 col-start-2 col-span-1 rounded-md mt-4 cursor-pointer font-semibold text-gray-200',
-    formStepConfirmButton: 'bg-blue-700 py-3 col-start-3 col-span-1 rounded-md mt-4 cursor-pointer font-semibold text-gray-200',
-}
-
-const RenderSelectedImages = ({ selectedBlobs, setSelectedBlobs }) => {
-    const removeSelectedImage = imageIdx => {
-        const newSelectedBlobs = selectedBlobs.filter(image => image != selectedBlobs[imageIdx])
-        setSelectedBlobs([...newSelectedBlobs])
-    }
-
-    return (
-        <div className={style.imageUploadContentContainer}>
-            {selectedBlobs.length > 0 ? (
-                <>
-                    {selectedBlobs.map((image, index) => {
-                        return (
-                            <div key={index} className={style.selectedImageContainer}>
-                                <img className={style.selectedImageCancelButton} src={cancelButtonIcon} onClick={() => removeSelectedImage(index)}/>
-                                <img className={style.selectedImage} src={image}/>
-                            </div>
-                        )
-                    })}
-                </>
-            ) : (
-                <>
-                    <img className={style.imageUploadIconImage} src={imageUploadIcon} alt="upload icon" />
-                </>
-            )}
-        </div>
-    )
-}
-
-const CreatePoolSteps = ({ step, nextStep, prevStep, selectedImages, setSelectedImages, register, setValue, resetField }) => {
-    const [amenitiesChosen, setAmenitiesChosen] = useState([])
-    const [selectedBlobs, setSelectedBlobs] = useState([])
-
-    // allows selecting and deselecting of amenities
-    const handleSelected = amenity => {
-        if (getSelected(amenity)) {
-            const newSeletedAmenities = amenitiesChosen.filter(amenityTitle => amenityTitle !== amenity.title)
-            return setAmenitiesChosen(newSeletedAmenities)
-        }
-        setAmenitiesChosen([...amenitiesChosen, amenity.title])
-    }
-
-    // checks if amenity is selected for UI change
-    const getSelected = amenity => amenitiesChosen.includes(amenity.title)
-
-    // resets these fields - solves autocomplete fields bug
-    useEffect(() => {
-        resetField("poolLength")
-        resetField("poolWidth")
-        resetField("poolDepth")
-    }, [step])
-
-    // converts images uploaded to blobs to render them as user selects them
-    const handleImageSelect = e => {
-        if (e.target.files) {
-            const blobImagesArr = Array.from(e.target.files).map(file => URL.createObjectURL(file))
-            const selectedImagesArr = Array.from(e.target.files)
-
-            setSelectedBlobs(prevImgs => prevImgs.concat(blobImagesArr))
-            setSelectedImages(selectedImagesArr)
-
-            // unmounts selected images from the browser
-            Array.from(e.target.files).map(file => URL.revokeObjectURL(file))
-        }
-    }
+const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register, setValue, resetField }) => {
+    const { selectedBlobs, setSelectedBlobs, handleImageSelect } = useImageUploadForm({ setSelectedImages })
+    const { handleSelected, getSelected, amenitiesChosen } = useAmenitiesDimensionsForm({ step, resetField })
 
     switch (step) {
         case 1:

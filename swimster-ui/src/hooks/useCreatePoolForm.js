@@ -77,6 +77,7 @@ export const useCreatePoolForm = () => {
         if (error) setError(error)
         if (data?.listing) {
             const images = imageFormDataPayload(formData, data.listing.id)
+            // makes api request to server at images/ endpoint
             const { data: imageData, error: imageError } = await apiClient.createImages(images)
             if (imageError) setError(imageError)
             if (imageData?.images) {
@@ -94,7 +95,6 @@ export const useCreatePoolForm = () => {
         prevStep,
         error,
         isSubmitProcessing,
-        selectedImages,
         setSelectedImages,
         register,
         setValue,
