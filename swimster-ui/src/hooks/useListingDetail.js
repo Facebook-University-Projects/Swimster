@@ -6,7 +6,7 @@ import apiClient from "../services/apiClient"
 
 export const useListingDetail = listingId => {
     const { user, initialized } = useAuthContext()
-    const { register, handleSubmit } = useForm()
+    const { register, setValue, handleSubmit } = useForm()
     const [isFetching, setIsFetching] = useState(false)
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
     const navigate = useNavigate()
@@ -38,14 +38,12 @@ export const useListingDetail = listingId => {
             reservationDate: formData.reservationDate,
             startTime: formData.reservationStartTime,
             endTime: formData.reservationEndTime,
-            // TODO: value to be changed
-            guests: 4,
+            guests: parseInt(formData.reservationGuests),
         }
 
         const { data, error } = await apiClient.createReservation(JSON.stringify(formattedFormData), listingId)
         if (error) setError(error)
         if (data?.reservation) {
-            // will create reservations context in next PR, for now just updating database
             navigate('/')
         }
         setIsSubmitProcessing(false)
@@ -57,6 +55,7 @@ export const useListingDetail = listingId => {
         isFetching,
         isSubmitProcessing,
         register,
+        setValue,
         handleSubmit,
         onSubmit,
     }
