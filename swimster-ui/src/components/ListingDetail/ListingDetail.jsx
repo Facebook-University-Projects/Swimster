@@ -12,13 +12,12 @@ import shareIcon from '../../assets/shareIcon.svg'
 
 const ListingDetail = () => {
     const { listingId } = useParams()
-    const { listing, listingImages, error, isFetching, isSubmitProcessing, register, handleSubmit, onSubmit } = useListingDetail(listingId)
+    const { listing, listingImages, error, isFetching, isSubmitProcessing, register, setValue, handleSubmit, onSubmit } = useListingDetail(listingId)
 
     const {
         first_name,
         last_name,
         email,
-        phone_number,
         title,
         address,
         description,
@@ -35,7 +34,6 @@ const ListingDetail = () => {
         has_lounge_chairs,
         has_hot_tub,
         has_parking,
-        images
     } = listing
 
     const poolAmenities = [
@@ -126,6 +124,7 @@ const ListingDetail = () => {
                     </div>
                 </div>
                 <ReservationCard
+                    price={price}
                     register={register}
                     setValue={setValue}
                     isSubmitProcessing={isSubmitProcessing}

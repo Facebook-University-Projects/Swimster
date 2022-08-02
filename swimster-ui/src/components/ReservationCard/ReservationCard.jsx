@@ -7,7 +7,9 @@ import CalendarTimePicker from '../CalendarTimePicker/CalendarTimePicker'
 const style = {
     reservationCardContainer: 'col-span-1 px-4',
     reservationCard: 'grid grid-cols-2 p-6 border rounded-xl shadow-xl',
-    reservationCardHeader: 'col-span-2 text-2xl',
+    resvervationCardHeaderContainer: 'col-span-3 flex flex-col',
+    reservationCardHeader: 'text-sm text-gray-400 text-right',
+    reservationCardHeaderPrice: 'flex items-end text-3xl',
     reservationDetailsContainer: 'col-span-2 mt-4',
     reservationDetails: 'grid grid-cols-2 gap-2',
     reservationGuestsContainer: 'mt-4 col-span-2',
@@ -17,7 +19,7 @@ const style = {
     reserveButton: 'mt-6 col-span-2 bg-indigo-400 py-3 rounded-lg text-gray-50',
 }
 
-const ReservationCard = ({ register, setValue, isSubmitProcessing, handleSubmit, onSubmit }) => {
+const ReservationCard = ({ price, register, setValue, isSubmitProcessing, handleSubmit, onSubmit }) => {
     const { listingId } = useParams()
 
     const {
@@ -34,7 +36,10 @@ const ReservationCard = ({ register, setValue, isSubmitProcessing, handleSubmit,
     return (
         <div className={style.reservationCardContainer}>
             <div className={style.reservationCard}>
-                <h1 className={style.reservationCardHeader}>Reservation</h1>
+                <div className={style.resvervationCardHeaderContainer}>
+                    <h1 className={style.reservationCardHeader}>Reservation</h1>
+                    <div className={style.reservationCardHeaderPrice}>${price}<span className={"text-sm ml-1"}>hour</span></div>
+                </div>
                 <div className={style.reservationDetailsContainer}>
                     <form id="hook-form" className={style.reservationDetails} onSubmit={handleSubmit(onSubmit)}>
                         <CalendarDatePicker
