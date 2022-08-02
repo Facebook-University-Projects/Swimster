@@ -5,13 +5,16 @@ import App from './components/App/App'
 import reportWebVitals from './reportWebVitals'
 import { AuthContextProvider } from './contexts/auth'
 import { ListingsContextProvider } from './contexts/listings'
+import { ReservationsContextProvider } from './contexts/reservations'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <AuthContextProvider>
       <ListingsContextProvider>
-        <App />
+        <ReservationsContextProvider>
+          <App />
+        </ReservationsContextProvider>
       </ListingsContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
