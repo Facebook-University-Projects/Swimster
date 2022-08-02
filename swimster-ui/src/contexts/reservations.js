@@ -10,7 +10,6 @@ export const ReservationsContextProvider = ({ children }) => {
         guests: "",
     })
 
-    console.log('reservation: ', reservation);
     const reservationsValue = { reservation, setReservation }
 
     return (
