@@ -3,12 +3,7 @@ import { createContext, useContext, useState } from 'react'
 const ReservationsContext = createContext(null)
 
 export const ReservationsContextProvider = ({ children }) => {
-    const [reservation, setReservation] = useState({
-        dateSelected: "",
-        startTime: "",
-        endTime: "",
-        guests: "",
-    })
+    const [reservation, setReservation] = useState({})
 
     const reservationsValue = { reservation, setReservation }
 

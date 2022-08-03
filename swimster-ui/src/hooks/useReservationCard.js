@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import format from 'date-fns/format'
 
-export const useReservationCard = (listingId) => {
+export const useReservationCard = listingId => {
     const { user, initialized } = useAuthContext()
     const { reservation, setReservation } = useReservationsContext()
     const { register, setValue, handleSubmit } = useForm()
@@ -55,14 +55,16 @@ export const useReservationCard = (listingId) => {
         setIsSubmitProcessing(true)
 
         const formattedFormData = {
-            dateSelected: formData.reservationDate,
+            reservationDate: formData.reservationDate,
             startTime: formData.startTime,
             endTime: formData.endTime,
             guests: parseInt(formData.reservationGuests),
         }
 
-        if (formattedFormData) {
-            setReservation(formattedFormData)
+        const { data, error } = await apiClient.createReservation(JSON.stringify(formattedFormData), listingId)
+        if (error) setError(error)
+        if (data?.reservation) {
+            setReservation(data.reservation)
             navigate('confirm')
         }
 

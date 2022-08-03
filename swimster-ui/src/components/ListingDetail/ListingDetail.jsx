@@ -9,10 +9,13 @@ import rulerIcon from '../../assets/rulerIcon.svg'
 import depthIcon from '../../assets/depthIcon.svg'
 import unlikedIcon from '../../assets/unlikedIcon.svg'
 import shareIcon from '../../assets/shareIcon.svg'
+import { useListingsContext } from '../../contexts/listings'
 
 const ListingDetail = () => {
     const { listingId } = useParams()
-    const { listing, listingImages, error, isFetching } = useListingDetail(listingId)
+    const { listing, setListing } = useListingsContext()
+    const { listingImages, error, isFetching } = useListingDetail(listingId)
+
 
     const {
         first_name,

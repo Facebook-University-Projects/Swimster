@@ -5,6 +5,7 @@ const ListingsContext = createContext(null)
 
 export const ListingsContextProvider = ({ children }) => {
     const [listings, setListings] = useState([])
+    const [listing, setListing] = useState({})
     const [error, setError] = useState(null)
 
     // listings functions from apiClient w/ validation and security checks
@@ -20,7 +21,7 @@ export const ListingsContextProvider = ({ children }) => {
         }
     }
 
-    const listingsValue = { listings, setListings, handlers, error }
+    const listingsValue = { listing, setListing, listings, setListings, handlers, error }
 
     return (
         <ListingsContext.Provider value={listingsValue}>

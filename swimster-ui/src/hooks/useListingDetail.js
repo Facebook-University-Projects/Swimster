@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useAuthContext, isUserAuthenticated } from "../contexts/auth"
+import { useListingsContext } from '../contexts/listings'
 import apiClient from "../services/apiClient"
 
 export const useListingDetail = listingId => {
     const { user, initialized } = useAuthContext()
+    const { setListing } = useListingsContext()
     const [isFetching, setIsFetching] = useState(false)
     const [error, setError] = useState(null)
-    const [listing, setListing] = useState({})
     const [listingImages, setListingImages] = useState([])
 
     const isAuthenticated = isUserAuthenticated(user, initialized)
@@ -36,7 +37,6 @@ export const useListingDetail = listingId => {
     }, [listingId, isAuthenticated])
 
     return {
-        listing,
         listingImages,
         error,
         isFetching,

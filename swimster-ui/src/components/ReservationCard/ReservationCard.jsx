@@ -3,6 +3,7 @@ import { useReservationCard } from '../../hooks/useReservationCard'
 import { useParams } from 'react-router-dom'
 import CalendarDatePicker from '../CalendarDatePicker/CalendarDatePicker'
 import CalendarTimePicker from '../CalendarTimePicker/CalendarTimePicker'
+import { useListingsContext } from '../../contexts/listings'
 
 const style = {
     reservationCardContainer: 'col-span-1 px-4',
@@ -19,8 +20,9 @@ const style = {
     reserveButton: 'mt-6 col-span-2 bg-indigo-400 flex justify-center py-3 rounded-lg text-gray-50',
 }
 
-const ReservationCard = ({ listing }) => {
+const ReservationCard = () => {
     const { listingId } = useParams()
+    const { listing } = useListingsContext()
 
     const {
         dateSelected,
