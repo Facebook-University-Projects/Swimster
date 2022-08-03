@@ -4,11 +4,12 @@ import LocationIcon from '../../assets/locationIcon.svg'
 import UnlikedIcon from '../../assets/unlikedIcon.svg'
 import { style } from './style'
 
-const Listing = ({ listing }) => {
-    const { title, address, price, total_guests, images } = listing
+const Listing = ({ listing, listingImage }) => {
+    const { title, address, price, total_guests } = listing
+
     return (
         <div className={style.listing}>
-            <img className={style.images} src={images} alt="listing images" />
+            <img className={style.images} src={listingImage?.image_url} alt="listing images" />
             <div className={style.listingHeader}>
                <h2 className={style.listingTitle}>{title}</h2>
                <h4 className={style.listingAddress}>{address}</h4>
