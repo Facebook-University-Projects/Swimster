@@ -1,7 +1,9 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { useListingsContext } from '../../contexts/listings'
 import { useReservationsContext } from '../../contexts/reservations'
 import { useImagesContext } from '../../contexts/images'
+import apiClient from '../../services/apiClient'
+import { useNavigate } from 'react-router-dom'
 
 const style = {
     confirmReservation: 'grid grid-cols-3 gap-x-5 mx-48 mt-20 font-normal text-md',
@@ -56,6 +58,8 @@ const ConfirmReservation = () => {
     const { reservation } = useReservationsContext()
     const { listing } = useListingsContext()
     const { mainImage } = useImagesContext()
+    const navigate = useNavigate()
+    const [error, setError] = useState({})
 
     const someDate = new Date(reservation.reservation_date)
 
@@ -106,6 +110,14 @@ const ConfirmReservation = () => {
     }
 
     const ReservationPaymentDetails = calculateCost(reservation, listing)
+
+    const handleConfirmReservation = async () => {
+        const { data, error } = await apiClient.confirmReservation(reservation.id, listing.id)
+        if (error) setError(error)
+        if (data?.confirmedReservation) {
+            navigate('/')
+        }
+    }
 
     return (
         <div className={style.confirmReservation}>
@@ -165,7 +177,7 @@ const ConfirmReservation = () => {
                     <h1 className={style.totalHeader}>Total</h1>
                     <p className={style.total}>${reservation?.total}</p>
                 </div>
-                <button className={style.confirmReservationButton} type="submit" form="hook-form">Reserve</button>
+                <button className={style.confirmReservationButton} type="submit" onClick={handleConfirmReservation}>Reserve</button>
             </div>
         </div>
     )

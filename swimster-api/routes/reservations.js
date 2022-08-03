@@ -55,4 +55,15 @@ router.post('/listings/:listingId', requiresAuth, async (req, res, next) => {
     }
 })
 
+router.put('/listings/:listingId', requiresAuth, async (req, res, next) => {
+    try {
+        // changes status of DRAFT reservation to CONFIRMED
+        const { reservationId } = req.body
+        const confirmedReservation = await Reservation.confirmReservation(reservationId)
+        return res.status(200).json({ confirmedReservation })
+    } catch (error) {
+        next(error)
+    }
+})
+
 module.exports = router

@@ -131,6 +131,15 @@ class ApiClient {
         return hostListingsReservations
     }
 
+    async confirmReservation(reservationId, listingId) {
+        const confirmedReservation = await this.request({
+            endpoint: `reservations/listings/${listingId}`,
+            method: "PUT",
+            data: { "reservationId": reservationId }
+        })
+        return confirmedReservation
+    }
+
     // images endpoint model functions
     async createImages(imageFiles) {
         const images = await this.request({

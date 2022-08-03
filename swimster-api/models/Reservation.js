@@ -120,8 +120,10 @@ class Reservation {
             FROM reservations
             JOIN users ON users.id = reservations.user_id
             WHERE listing_id = $1
+            AND reservations.reservation_status = $2
+            OR reservations.reservation_status = $3
             ORDER BY reservations.created_at DESC;
-        `, [listingId])
+        `, [listingId, "DRAFT", "CONFIRMED"])
 
         const reservations = result.rows
         return reservations
@@ -191,6 +193,22 @@ class Reservation {
 
         const reservations = result.rows
         return reservations
+    }
+
+    static async confirmReservation(reservationId) {
+        // updates reservation status to confirm
+        const result = await db.query(`
+            UPDATE      reservations
+            SET         reservation_status = $1
+            WHERE       id = $2
+            RETURNING   *;
+        `, [
+            "CONFIRMED",
+            reservationId
+        ])
+
+        const confirmedReservation = result.rows[0]
+        return confirmedReservation
     }
 }
 
