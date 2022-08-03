@@ -18,25 +18,22 @@ export const useListingDetail = listingId => {
 
     // fetches the listing when on user click
     useEffect(() => {
-        const fetchListing = async () => {
+        const fetchListingData = async () => {
             setIsFetching(true)
 
-            const { data, error } = await apiClient.fetchListingById(listingId)
-            if (error) setError(error)
-            if (data?.listing) setListing(data.listing)
+            const { data: listingData, error: listingError } = await apiClient.fetchListingById(listingId)
+            if (error) setError(listingError)
+            if (listingData?.listing) {
+                setListing(listingData.listing)
 
-            setIsFetching(false)
-        }
-
-        const fetchImagesFromListing = async () => {
-            const { data, error } = await apiClient.fetchImagesFromListing(listingId)
-            if (error) setError(error)
-            if (data?.listingImages) setListingImages([...data.listingImages])
+                const { data: listingImagesData, error: listingImagesError } = await apiClient.fetchImagesFromListing(listingId)
+                if (listingImagesError) setError(listingImagesError)
+                if (listingImagesData?.listingImages) setListingImages([...listingImagesData.listingImages])
+            }
         }
 
         if (isAuthenticated) {
-            fetchListing()
-            fetchImagesFromListing()
+            fetchListingData()
         }
     }, [listingId, isAuthenticated])
 

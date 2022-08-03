@@ -32,7 +32,7 @@ const uploadImageToS3 = async image => {
             key: uploadParams.Key,
         }
     } catch (error) {
-        console.log("AWS Uploading Error:", error)
+        console.error(`AWS Uploading Error: ${error}`)
     }
 }
 
@@ -47,7 +47,7 @@ const fetchImageUrlFromS3 = async imageKey => {
         const imageUrl = await getSignedUrl(s3, command, { expiresIn: 3600 })
         return imageUrl
     } catch (error) {
-        console.log("AWS Fetching Error:", error)
+        console.error(`AWS Fetching Error:", ${error}`)
     }
 }
 
