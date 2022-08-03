@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useListingDetail } from '../../hooks/useListingDetail'
 import { style } from './style'
 import Amenities from '../Amenities/Amenities'
+import ReservationCard from '../ReservationCard/ReservationCard'
 import ratingsIcon from '../../assets/ratingsIcon.svg'
 import guestsIcon from '../../assets/guestsIcon.svg'
 import rulerIcon from '../../assets/rulerIcon.svg'
@@ -12,6 +13,7 @@ import shareIcon from '../../assets/shareIcon.svg'
 const ListingDetail = () => {
     const { listingId } = useParams()
     const { listing, listingImages, error, isFetching, isSubmitProcessing, register, handleSubmit, onSubmit } = useListingDetail(listingId)
+
 
     const {
         first_name,
@@ -113,23 +115,24 @@ const ListingDetail = () => {
                         <p className={style.aboutPoolDescription}>{description}</p>
                     </div>
                     <Amenities poolAmenities={poolAmenities}/>
-                    <div className={style.hostInfoContainer}>About the Host</div>
-                </div>
-                <div className={style.reservationCardContainer}>
-                    <div className={style.reservationCard}>
-                        <h1 className={style.reservationCardHeader}>Reserve</h1>
-                        <form id="hook-form" className={style.reservationDetails} onSubmit={handleSubmit(onSubmit)}>
-                            <input className={style.reservationDateInput} type="date" {...register("reservationDate")}/>
-                            <input className={style.reservationTimeInput} type="time" {...register("reservationStartTime")}/>
-                            <input className={style.reservationTimeInput} type="time" {...register("reservationEndTime")}/>
-                        </form>
-                        {isSubmitProcessing ? (
-                            <button type="submit" form="hook-form" className={style.reserveButton}>Loading...</button>
-                        ) : (
-                            <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
-                        )}
+                    <div className={style.hostInfoContainer}>
+                        <h1 className={style.hostInfoTitle}>About the Host</h1>
+                        <div className={style.hostInfoHeader}>
+                            <div className={style.hostProfileImage}></div>
+                            <div className={style.hostInfoHeaderDetails}>
+                                <h2 className={style.hostName}>{first_name} {last_name}</h2>
+                                <h3 className={style.hostEmail}>{email}</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <ReservationCard
+                    register={register}
+                    setValue={setValue}
+                    isSubmitProcessing={isSubmitProcessing}
+                    handleSubmit={handleSubmit}
+                    onSubmit={onSubmit}
+                />
             </div>
         </div>
     )
