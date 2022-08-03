@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useListingsContext } from '../../contexts/listings'
 import { useReservationsContext } from '../../contexts/reservations'
+import { useImagesContext } from '../../contexts/images'
 
 const style = {
     confirmReservation: 'grid grid-cols-3 gap-x-5 mx-48 mt-20 font-normal text-md',
@@ -54,6 +55,7 @@ const TAX_RATE = 0.0725
 const ConfirmReservation = () => {
     const { reservation } = useReservationsContext()
     const { listing } = useListingsContext()
+    const { mainImage } = useImagesContext()
 
     const someDate = new Date(reservation.reservation_date)
 
@@ -110,6 +112,7 @@ const ConfirmReservation = () => {
             <div className={style.reservationDetailsContainer}>
                 <h1 className={style.reservationDetailsHeader}>Reservation Details</h1>
                 <div className={style.confirmReservationListingContainer}>
+                    <img className={style.confirmReservationListingImage} src={mainImage} alt="listing main pic" />
                     <div className={style.confirmReservationListingContent}>
                         <div className={style.confirmReservationListingPrimary}>
                             <p className={style.confirmReservationListingPoolType}>{listing.pool_type} Pool</p>

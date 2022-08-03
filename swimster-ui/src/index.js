@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals'
 import { AuthContextProvider } from './contexts/auth'
 import { ListingsContextProvider } from './contexts/listings'
 import { ReservationsContextProvider } from './contexts/reservations'
+import { ImagesContextProvider } from './contexts/images'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -13,7 +14,9 @@ root.render(
     <AuthContextProvider>
       <ListingsContextProvider>
         <ReservationsContextProvider>
-          <App />
+          <ImagesContextProvider>
+            <App />
+          </ImagesContextProvider>
         </ReservationsContextProvider>
       </ListingsContextProvider>
     </AuthContextProvider>

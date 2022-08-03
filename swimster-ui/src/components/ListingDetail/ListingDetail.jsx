@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useListingDetail } from '../../hooks/useListingDetail'
 import { style } from './style'
@@ -10,12 +11,17 @@ import depthIcon from '../../assets/depthIcon.svg'
 import unlikedIcon from '../../assets/unlikedIcon.svg'
 import shareIcon from '../../assets/shareIcon.svg'
 import { useListingsContext } from '../../contexts/listings'
+import { useImagesContext } from '../../contexts/images'
 
 const ListingDetail = () => {
     const { listingId } = useParams()
     const { listing, setListing } = useListingsContext()
+    const { setMainImage } = useImagesContext()
     const { listingImages, error, isFetching } = useListingDetail(listingId)
 
+    useEffect(() => {
+        if (listingImages[0]?.image_url) setMainImage(listingImages[0].image_url)
+    }, [listing])
 
     const {
         first_name,
