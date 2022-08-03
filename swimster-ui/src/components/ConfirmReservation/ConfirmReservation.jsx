@@ -1,123 +1,17 @@
-import React, { useState } from 'react'
-import { useListingsContext } from '../../contexts/listings'
-import { useReservationsContext } from '../../contexts/reservations'
-import { useImagesContext } from '../../contexts/images'
-import apiClient from '../../services/apiClient'
-import { useNavigate } from 'react-router-dom'
-
-const style = {
-    confirmReservation: 'grid grid-cols-3 gap-x-5 mx-48 mt-20 font-normal text-md',
-    reservationDetailsContainer: 'col-span-2 space-y-10 p-7 rounded-xl shadow-md',
-    reservationDetailsHeader: 'font-medium text-2xl',
-    confirmReservationListingContainer: 'flex space-x-4',
-    reservationDateContainer: '',
-    confirmReservationListingImage: 'w-48 h-32 rounded-lg',
-    confirmReservationListingContent: 'flex flex-col space-y-5',
-    confirmReservationListingPrimary: '',
-    confirmReservationListingPoolType: 'font-medium text-gray-400 text-sm',
-    confirmReservationListingTitle: 'font-semibold text-lg',
-    confirmReservationListingAddress: 'font-semibold text-gray-400',
-    confirmReservationListingSecondary: '',
-    confirmReservationListingHostDetails: 'font-medium',
-    reservationDateHeader: 'text-lg font-semibold',
-    reservationDate: '',
-    reservationDurationContainer: '',
-    reservationDurationHeader: 'text-lg font-semibold',
-    reservationDuration: '',
-    reservationGuestsContainer: '',
-    reservationGuestsHeader: 'text-lg font-semibold',
-    reservationGuests: '',
-    paymentDetailsContainer: 'col-span-1 flex flex-col space-y-8 p-7 rounded-xl shadow-md',
-    paymentDetailsHeader: 'font-medium text-2xl',
-    poolCostContainer: '',
-    poolCostHeader: 'font-medium',
-    poolCost: '',
-    confirmReservationDurationContainer: '',
-    confirmReservationDurationHeader: 'font-medium',
-    confirmReservationDuration: '',
-    transactionDetailsBreak: 'h-0.5 bg-gray-200',
-    reservationSubtotalContainer: 'flex justify-between',
-    reservationSubtotalHeader: 'font-medium text-lg',
-    reservationSubtotal: 'text-lg',
-    serviceFeesContainer: 'flex justify-between',
-    serviceFeesHeader: 'font-medium',
-    serviceFees: '',
-    taxesContainer: 'flex justify-between',
-    taxesHeader: 'font-medium',
-    taxes: '',
-    totalContainer: 'flex justify-between',
-    totalHeader: 'font-medium text-xl',
-    total: 'text-lg',
-    confirmReservationButton: 'bg-indigo-400 rounded-lg py-3 px-2 text-gray-50',
-}
-
-const FEES_RATE = 0.08
-const TAX_RATE = 0.0725
+import * as React from 'react'
+import { useConfirmReservation } from '../../hooks/useConfirmReservation'
+import { style } from './style'
 
 const ConfirmReservation = () => {
-    const { reservation } = useReservationsContext()
-    const { listing } = useListingsContext()
-    const { mainImage } = useImagesContext()
-    const navigate = useNavigate()
-    const [error, setError] = useState({})
-
-    const someDate = new Date(reservation.reservation_date)
-
-    const formattedDate = someDate.toLocaleString(
-        'default',
-        {
-            weekday: 'long',
-            month: 'long',
-            day: '2-digit',
-            year: 'numeric'
-        }
-    )
-
-    const formatTime = time => {
-        time = time.split(':'); // convert to array
-
-        // fetch
-        let hours = Number(time[0])
-        let minutes = Number(time[1])
-
-        // calculate
-        let timeValue
-
-        if (hours > 0 && hours <= 12) timeValue= "" + hours
-        else if (hours > 12) timeValue= "" + (hours - 12)
-        else if (hours == 0) timeValue= "12"
-
-        timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes  // get minutes
-        timeValue += (hours >= 12) ? " p.m." : " a.m."  // get AM/PM
-        return timeValue
-    }
-
-    const calculateCost = (reservation, listing) => {
-        const startTimeNum = Number(reservation.start_time.substring(0, 2))
-        const endTimeNum = Number(reservation.end_time.substring(0, 2))
-
-        const duration = endTimeNum - startTimeNum
-        const subTotal = Number(listing.price) * duration
-        const feesTaken = subTotal * FEES_RATE
-        const taxesTaken = subTotal * TAX_RATE
-
-        return {
-            duration: duration,
-            subTotal: subTotal.toFixed(2),
-            feesTaken: feesTaken.toFixed(2),
-            taxesTaken: taxesTaken.toFixed(2),
-        }
-    }
-
-    const ReservationPaymentDetails = calculateCost(reservation, listing)
-
-    const handleConfirmReservation = async () => {
-        const { data, error } = await apiClient.confirmReservation(reservation.id, listing.id)
-        if (error) setError(error)
-        if (data?.confirmedReservation) {
-            navigate('/')
-        }
-    }
+    const {
+        formattedDate,
+        formatTime,
+        ReservationPaymentDetails,
+        listing,
+        reservation,
+        handleConfirmReservation,
+        mainImage
+    } = useConfirmReservation()
 
     return (
         <div className={style.confirmReservation}>
