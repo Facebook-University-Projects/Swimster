@@ -11,7 +11,7 @@ const fileFilter = (req, file, cb) => {
         return cb(null, true)
     } else {
         cb(null, false)
-        const error = new BadRequestError("Only .jpeg and .jpg are allowed!")
+        const error = new BadRequestError("Only .jpeg and .jpg file types are allowed!")
         error.name = "ExtensionError"
         return cb(error)
     }
