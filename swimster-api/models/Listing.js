@@ -10,6 +10,8 @@ class Listing {
             "address",
             "city",
             "state",
+            "lat",
+            "lng",
             "description",
             "price",
             "totalGuests",
@@ -40,6 +42,8 @@ class Listing {
                 address,
                 city,
                 state,
+                lat,
+                lng,
                 description,
                 price,
                 total_guests,
@@ -57,7 +61,7 @@ class Listing {
             )
             VALUES (
                 (SELECT id FROM users WHERE email = $1),
-                $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19
+                $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21
             )
             RETURNING id,
             host_id,
@@ -65,6 +69,8 @@ class Listing {
             address,
             city,
             state,
+            lat,
+            lng,
             description,
             price,
             total_guests,
@@ -86,6 +92,8 @@ class Listing {
             newListing.address,
             newListing.city,
             newListing.state,
+            newListing.lat,
+            newListing.lng,
             newListing.description,
             newListing.price,
             newListing.totalGuests,
@@ -117,6 +125,8 @@ class Listing {
                     listings.title,
                     listings.city,
                     listings.state,
+                    listings.lat,
+                    listings.lng,
                     listings.price,
                     listings.total_guests
             FROM listings;
@@ -147,6 +157,8 @@ class Listing {
                     listing.address,
                     listing.city,
                     listing.state,
+                    listing.lat,
+                    listing.lng,
                     listing.description,
                     listing.price,
                     listing.total_guests,
