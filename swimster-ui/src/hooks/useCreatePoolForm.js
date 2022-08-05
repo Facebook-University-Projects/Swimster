@@ -39,12 +39,14 @@ export const useCreatePoolForm = () => {
         return fd
     }
 
-    const onSubmit = async (formData) => {
+    const onSubmit = async formData => {
         setIsSubmitProcessing(true)
 
         const formattedFormData = {
             title: formData.title,
             address: formData.address,
+            city: formData.city,
+            state: formData.state,
             description: formData.description,
             price: formData.price,
             totalGuests: formData.totalGuests,

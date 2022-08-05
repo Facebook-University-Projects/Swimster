@@ -29,6 +29,8 @@ export const useRegistrationForm = () => {
             lastName: formData.lastName,
             email: formData.email,
             address: formData.address,
+            city: formData.city,
+            state: formData.state,
             phoneNumber: formData.phoneNumber,
             dateOfBirth: formData.dateOfBirth,
             password: formData.password,

@@ -3,13 +3,15 @@ import Listing from '../Listing/Listing'
 import { Link } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import { useAuthContext, isUserAuthenticated } from '../../contexts/auth'
+import { useListingsContext } from '../../contexts/listings'
 
 const style = {
     listingsGrid: 'grid grid-cols-4 gap-6',
 }
 
-const ListingsGrid = ({ listings }) => {
+const ListingsGrid = () => {
     const { user, initialized } = useAuthContext()
+    const { listings } = useListingsContext()
     const [error, setError] = useState({})
     const [mainImages, setMainImages] = useState([])
 
@@ -26,6 +28,7 @@ const ListingsGrid = ({ listings }) => {
         if (isAuthenticated) fetchMainImages()
     }, [listings, isAuthenticated])
 
+    if (listings?.length === 0) return null
 
     return (
         <div className={style.listingsGrid}>
