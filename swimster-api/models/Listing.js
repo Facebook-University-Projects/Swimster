@@ -1,4 +1,5 @@
 const db = require('../db')
+const Image = require('./Image')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/error')
 
 class Listing {
@@ -106,6 +107,9 @@ class Listing {
     }
 
     static async fetchListings() {
+
+        const mainImages = await Image.fetchMainImagesFromListings()
+
         // fetches all listings w/ broad info
         const result = await db.query(`
             SELECT  listings.id,
@@ -118,7 +122,14 @@ class Listing {
             FROM listings;
         `)
 
+
         const allListings = result.rows
+
+        // attach image_url from main image to corresponding listing
+        allListings.forEach((listing, index) => {
+            listing.image_url = mainImages[index].image_url
+        })
+
         return allListings
     }
 
