@@ -6,7 +6,7 @@ import { useAuthContext } from '../contexts/auth'
 export const useRegistrationForm = () => {
     const { handlers: authHandlers, user } = useAuthContext()
     const navigate = useNavigate()
-    const { register, handleSubmit } = useForm()
+    const { register, setValue, handleSubmit } = useForm()
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
     const [error, setError] = useState({})
 
@@ -43,6 +43,7 @@ export const useRegistrationForm = () => {
         error,
         isSubmitProcessing,
         register,
+        setValue,
         handleSubmit,
         onSubmit,
     }

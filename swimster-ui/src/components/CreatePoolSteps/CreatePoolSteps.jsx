@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { amenities } from '../Amenities/Amenities'
+import { AddressSearchInput } from '../AddressSearchInput/AddressSearchInput'
 import { RenderSelectedImages } from '../RenderSelectedImages/RenderSelectedImages'
 import { useImageUploadForm } from '../../hooks/useImageUploadForm'
 import { useAmenitiesDimensionsForm } from '../../hooks/useAmenitiesDimensionsForm'
@@ -20,11 +21,10 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register
                         placeholder="Title"
                         {...register("title")}
                     />
-                    <input
-                        className={`${style.inputElement} ${style.fullInput}`}
-                        type="text"
-                        placeholder="Address"
-                        {...register("address")}
+                    <AddressSearchInput
+                        styling={`${style.inputElement} ${style.fullInput}`}
+                        register={register}
+                        setValue={setValue}
                     />
                     <textarea
                         className={`${style.inputElement} ${style.fullInput}`}
