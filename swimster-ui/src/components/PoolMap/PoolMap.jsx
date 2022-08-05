@@ -6,6 +6,7 @@ const mapContainerStyle = {
     height: '100%',
 }
 
+// default center position of google map when rendered
 const center = {
     lat: 37.775,
     lng: -122.419,

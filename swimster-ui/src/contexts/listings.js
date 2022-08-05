@@ -5,6 +5,7 @@ const ListingsContext = createContext(null)
 
 export const ListingsContextProvider = ({ children }) => {
     const [listings, setListings] = useState([])
+    const [filteredListings, setFilteredListings] = useState([])
     const [listing, setListing] = useState({})
     const [error, setError] = useState(null)
 
@@ -13,7 +14,10 @@ export const ListingsContextProvider = ({ children }) => {
         fetchListings: async () => {
             const { data, error } = await apiClient.fetchListings()
             if (error) setError(error)
-            if (data?.listings) setListings(data.listings)
+            if (data?.listings) {
+                setListings(data.listings)
+                setFilteredListings(data.listings)
+            }
         },
         clearListings: () => {
             setListings([])
@@ -21,7 +25,16 @@ export const ListingsContextProvider = ({ children }) => {
         }
     }
 
-    const listingsValue = { listing, setListing, listings, setListings, handlers, error }
+    const listingsValue = {
+        listing,
+        setListing,
+        listings,
+        setListings,
+        filteredListings,
+        setFilteredListings,
+        handlers,
+        error
+    }
 
     return (
         <ListingsContext.Provider value={listingsValue}>
@@ -29,5 +42,7 @@ export const ListingsContextProvider = ({ children }) => {
         </ListingsContext.Provider>
     )
 }
+
+export const searchListingsByAddress = (listings, address) => listings.filter(listing => listing.address.includes(address))
 
 export const useListingsContext = () => useContext(ListingsContext)

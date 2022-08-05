@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Listing from '../Listing/Listing'
+import ListingSearchInput from '../ListingSearchInput/ListingSearchInput'
 import { Link } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import { useAuthContext, isUserAuthenticated } from '../../contexts/auth'
@@ -11,7 +12,7 @@ const style = {
 
 const ListingsGrid = () => {
     const { user, initialized } = useAuthContext()
-    const { listings } = useListingsContext()
+    const { listings, filteredListings, setFilteredListings } = useListingsContext()
     const [error, setError] = useState({})
     const [mainImages, setMainImages] = useState([])
 
@@ -30,10 +31,11 @@ const ListingsGrid = () => {
 
     return (
         <div className={style.listingsGrid}>
-            {listings?.map((listing, index) => {
+            <ListingSearchInput mainImages={mainImages} setMainImages={setMainImages} listings={listings} setFilteredListings={setFilteredListings}/>
+            {filteredListings?.map((listing, index) => {
                 return (
                     <Link to={`listings/${listing.id}`} key={index}>
-                        <Listing listing={listing} listingImage={mainImages[index]}/>
+                        <Listing listing={listing} />
                     </Link>
                 )
             })}
