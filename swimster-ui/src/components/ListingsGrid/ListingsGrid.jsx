@@ -6,7 +6,7 @@ import { useAuthContext, isUserAuthenticated } from '../../contexts/auth'
 import { useListingsContext } from '../../contexts/listings'
 
 const style = {
-    listingsGrid: 'grid grid-cols-4 gap-6',
+    listingsGrid: 'col-span-2 grid grid-cols-2 mt-10 gap-x-6 px-6 gap-y-8 max-h-screen overflow-y-auto',
 }
 
 const ListingsGrid = () => {
@@ -27,8 +27,6 @@ const ListingsGrid = () => {
 
         if (isAuthenticated) fetchMainImages()
     }, [listings, isAuthenticated])
-
-    if (listings?.length === 0) return null
 
     return (
         <div className={style.listingsGrid}>
