@@ -7,6 +7,7 @@ import Navbar from '../Navbar/Navbar'
 import apiClient from '../../services/apiClient'
 import CreatePool from '../CreatePool/CreatePool'
 import ListingDetail from '../ListingDetail/ListingDetail'
+import ConfirmReservation from '../ConfirmReservation/ConfirmReservation'
 import { useAuthContext, isUserAuthenticated } from '../../contexts/auth'
 import { useListingsContext } from '../../contexts/listings'
 import { style } from './style'
@@ -45,6 +46,7 @@ const App = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/createpool' element={<CreatePool />} />
           <Route path='/listings/:listingId' element={<ListingDetail />} />
+          <Route path='/listings/:listingId/confirm' element={<ConfirmReservation />} />
         </Routes>
       </main>
     </BrowserRouter>

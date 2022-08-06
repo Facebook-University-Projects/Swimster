@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useListingDetail } from '../../hooks/useListingDetail'
 import { style } from './style'
@@ -9,10 +10,18 @@ import rulerIcon from '../../assets/rulerIcon.svg'
 import depthIcon from '../../assets/depthIcon.svg'
 import unlikedIcon from '../../assets/unlikedIcon.svg'
 import shareIcon from '../../assets/shareIcon.svg'
+import { useListingsContext } from '../../contexts/listings'
+import { useImagesContext } from '../../contexts/images'
 
 const ListingDetail = () => {
     const { listingId } = useParams()
-    const { listing, listingImages, error, isFetching, isSubmitProcessing, register, setValue, handleSubmit, onSubmit } = useListingDetail(listingId)
+    const { listing, setListing } = useListingsContext()
+    const { setMainImage } = useImagesContext()
+    const { listingImages, error, isFetching } = useListingDetail(listingId)
+
+    useEffect(() => {
+        if (listingImages[0]?.image_url) setMainImage(listingImages[0].image_url)
+    }, [listing])
 
     const {
         first_name,
@@ -21,7 +30,6 @@ const ListingDetail = () => {
         title,
         address,
         description,
-        price,
         total_guests,
         pool_type,
         pool_length,
@@ -124,12 +132,7 @@ const ListingDetail = () => {
                     </div>
                 </div>
                 <ReservationCard
-                    price={price}
-                    register={register}
-                    setValue={setValue}
-                    isSubmitProcessing={isSubmitProcessing}
-                    handleSubmit={handleSubmit}
-                    onSubmit={onSubmit}
+                    listing={listing}
                 />
             </div>
         </div>

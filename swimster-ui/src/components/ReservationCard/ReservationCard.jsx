@@ -3,6 +3,7 @@ import { useReservationCard } from '../../hooks/useReservationCard'
 import { useParams } from 'react-router-dom'
 import CalendarDatePicker from '../CalendarDatePicker/CalendarDatePicker'
 import CalendarTimePicker from '../CalendarTimePicker/CalendarTimePicker'
+import { useListingsContext } from '../../contexts/listings'
 
 const style = {
     reservationCardContainer: 'col-span-1 px-4',
@@ -16,11 +17,12 @@ const style = {
     reservationGuestsHeader: 'col-span-2 text-xl',
     reservationGuestsDescription: 'col-span-2 text-xs text-gray-400',
     reservationGuestsInput: 'col-span-2 w-full mt-4 rounded-lg border-2 border-gray-200 p-2',
-    reserveButton: 'mt-6 col-span-2 bg-indigo-400 py-3 rounded-lg text-gray-50',
+    reserveButton: 'mt-6 col-span-2 bg-indigo-400 flex justify-center py-3 rounded-lg text-gray-50',
 }
 
-const ReservationCard = ({ price, register, setValue, isSubmitProcessing, handleSubmit, onSubmit }) => {
+const ReservationCard = () => {
     const { listingId } = useParams()
+    const { listing } = useListingsContext()
 
     const {
         dateSelected,
@@ -29,19 +31,23 @@ const ReservationCard = ({ price, register, setValue, isSubmitProcessing, handle
         setStartTime,
         endTime,
         setEndTime,
+        setGuests,
         reservedTimes,
-        handleReservations,
-    } = useReservationCard(listingId, setValue)
+        register,
+        handleSubmit,
+        handleReservation,
+    } = useReservationCard(listingId)
+
 
     return (
         <div className={style.reservationCardContainer}>
             <div className={style.reservationCard}>
                 <div className={style.resvervationCardHeaderContainer}>
                     <h1 className={style.reservationCardHeader}>Reservation</h1>
-                    <div className={style.reservationCardHeaderPrice}>${price}<span className={"text-sm ml-1"}>hour</span></div>
+                    <div className={style.reservationCardHeaderPrice}>${listing.price}<span className={"text-sm ml-1"}>hour</span></div>
                 </div>
                 <div className={style.reservationDetailsContainer}>
-                    <form id="hook-form" className={style.reservationDetails} onSubmit={handleSubmit(onSubmit)}>
+                    <form id="hook-form" className={style.reservationDetails} onSubmit={handleSubmit(handleReservation)}>
                         <CalendarDatePicker
                             dateSelected={dateSelected}
                             setDateSelected={setDateSelected}
@@ -68,15 +74,13 @@ const ReservationCard = ({ price, register, setValue, isSubmitProcessing, handle
                             type="number"
                             placeholder='Guests'
                             className={style.reservationGuestsInput}
-                            {...register("reservationGuests")}
+                            {...register("reservationGuests", {
+                                onChange: (e) => setGuests(e.target.value)
+                            })}
                         />
                     </div>
                 </div>
-                {isSubmitProcessing ? (
-                    <button type="submit" form="hook-form" className={style.reserveButton}>Loading...</button>
-                ) : (
-                    <button type="submit" form="hook-form" className={style.reserveButton} onClick={handleReservations}>Reserve Now</button>
-                )}
+                <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
             </div>
         </div>
     )
