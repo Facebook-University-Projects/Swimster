@@ -86,7 +86,7 @@ export const useCreatePoolForm = () => {
             if (imageError) setError(imageError)
             if (imageData?.images) {
                 setListings([...listings, data.listing])
-                navigate('/')
+                navigate('/menu')
             }
         }
 

@@ -73,7 +73,7 @@ export const useConfirmReservation = () => {
         const { data, error } = await apiClient.confirmReservation(reservation.id, listing.id)
         if (error) setError(error)
         if (data?.confirmedReservation) {
-            navigate('/')
+            navigate('/menu')
         }
     }
 
