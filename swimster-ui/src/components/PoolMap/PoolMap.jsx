@@ -1,47 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api'
-import { useListingsContext } from '../../contexts/listings'
+import * as React from 'react'
+import { GoogleMap, InfoWindow, Marker } from '@react-google-maps/api'
 import { Link } from 'react-router-dom'
 import mapMarker from '../../assets/mapMarker.svg'
 import { poolOptions } from './poolOptions'
-
-const mapContainerStyle = {
-    width: '100%',
-    height: '100%',
-}
-
-const defaultCenter = {
-    lat: 37.3387,
-    lng: -121.8853,
-}
-
-const infoWindowContainer = {
-    width: '175px',
-    height: '175px',
-}
+import { usePoolMap } from '../../hooks/usePoolMap'
 
 const PoolMap = () => {
-    const { listings } = useListingsContext()
-    const [selected, setSelected] = useState({})
-    const [userLocation, setUserLocation] = useState({})
-    const [error, setError] = useState({})
-
-    // sets state for the listing selected on the map
-    const onSelect = item => setSelected(item)
-
-    // grabs the latitude/longitude of user's device
-    const success = position => {
-        const currentPosition = {
-            lat: parseFloat(position.coords.latitude),
-            lng: parseFloat(position.coords.longitude),
-        }
-        setUserLocation(currentPosition)
-    }
-
-    // gets user's device location
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(success)
-    })
+    const {
+        listings,
+        selected,
+        setSelected,
+        userLocation,
+        onSelect,
+        mapContainerStyle,
+        defaultCenter,
+        infoWindowContainer
+    } = usePoolMap()
 
     return (
         <div className={"col-span-2"}>
