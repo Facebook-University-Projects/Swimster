@@ -13,19 +13,19 @@ export const poolOptions = {
         fontWeight: "600",
         fontSize: "15px",
         position: "absolute",
-        top: 135,
+        top: 170,
     },
     listingLocOnMap: {
         fontWeight: "500",
         color: "#9ca3af",
         fontSize: "12px",
         position: "absolute",
-        top: 154,
+        top: 189,
     },
     listingPriceOnMap: {
         fontWeight: "500",
-        fontSize: "17px",
+        fontSize: "20px",
         position: "absolute",
-        top: 175,
+        top: 215,
     }
 }

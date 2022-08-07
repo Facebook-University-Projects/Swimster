@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import * as React from 'react'
 import Autocomplete from 'react-google-autocomplete'
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 
@@ -24,11 +24,10 @@ export const AddressSearchInput = ({ styling, setValue }) => {
         setValue("state", address.address_components[5].long_name)
     }
 
-    return (
+    return window.google && (
         <Autocomplete
             className={styling}
             placeholder="Address"
-            apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
             onPlaceSelected={place => handleAddress(place)}
             options={options}
         />

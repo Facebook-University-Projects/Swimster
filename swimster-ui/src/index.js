@@ -7,16 +7,22 @@ import { AuthContextProvider } from './contexts/auth'
 import { ListingsContextProvider } from './contexts/listings'
 import { ReservationsContextProvider } from './contexts/reservations'
 import { ImagesContextProvider } from './contexts/images'
+import { LoadScript } from '@react-google-maps/api'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <AuthContextProvider>
     <ListingsContextProvider>
-      <ReservationsContextProvider>
-        <ImagesContextProvider>
-          <App />
-        </ImagesContextProvider>
-      </ReservationsContextProvider>
+      <LoadScript
+        googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+        libraries={["places"]}
+      >
+        <ReservationsContextProvider>
+          <ImagesContextProvider>
+            <App />
+          </ImagesContextProvider>
+        </ReservationsContextProvider>
+      </LoadScript>
     </ListingsContextProvider>
   </AuthContextProvider>
 );

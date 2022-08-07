@@ -87,6 +87,7 @@ export const useCreatePoolForm = () => {
             if (imageData?.images) {
                 setListings([...listings, data.listing])
                 navigate('/menu')
+                window.location.reload()
             }
         }
 

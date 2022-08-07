@@ -74,6 +74,7 @@ export const useConfirmReservation = () => {
         if (error) setError(error)
         if (data?.confirmedReservation) {
             navigate('/menu')
+            window.location.reload()
         }
     }
 
