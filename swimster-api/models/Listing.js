@@ -1,4 +1,5 @@
 const db = require('../db')
+const Image = require('./Image')
 const { UnauthorizedError, BadRequestError, NotFoundError } = require('../utils/error')
 
 class Listing {
@@ -7,6 +8,8 @@ class Listing {
         const requiredFields = [
             "title",
             "address",
+            "city",
+            "state",
             "description",
             "price",
             "totalGuests",
@@ -35,6 +38,8 @@ class Listing {
                 host_id,
                 title,
                 address,
+                city,
+                state,
                 description,
                 price,
                 total_guests,
@@ -52,12 +57,14 @@ class Listing {
             )
             VALUES (
                 (SELECT id FROM users WHERE email = $1),
-                $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17
+                $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19
             )
             RETURNING id,
             host_id,
             title,
             address,
+            city,
+            state,
             description,
             price,
             total_guests,
@@ -77,6 +84,8 @@ class Listing {
             user.email,
             newListing.title,
             newListing.address,
+            newListing.city,
+            newListing.state,
             newListing.description,
             newListing.price,
             newListing.totalGuests,
@@ -98,18 +107,29 @@ class Listing {
     }
 
     static async fetchListings() {
+
+        const mainImages = await Image.fetchMainImagesFromListings()
+
         // fetches all listings w/ broad info
         const result = await db.query(`
             SELECT  listings.id,
                     listings.host_id,
                     listings.title,
-                    listings.address,
+                    listings.city,
+                    listings.state,
                     listings.price,
                     listings.total_guests
             FROM listings;
         `)
 
+
         const allListings = result.rows
+
+        // attach image_url from main image to corresponding listing
+        allListings.forEach((listing, index) => {
+            listing.image_url = mainImages[index].image_url
+        })
+
         return allListings
     }
 
@@ -125,6 +145,8 @@ class Listing {
                     host.phone_number,
                     listing.title,
                     listing.address,
+                    listing.city,
+                    listing.state,
                     listing.description,
                     listing.price,
                     listing.total_guests,

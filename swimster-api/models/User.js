@@ -45,6 +45,8 @@ class User {
             "email",
             "phoneNumber",
             "address",
+            "city",
+            "state",
             "dateOfBirth",
             "password"
         ]
@@ -74,17 +76,21 @@ class User {
                 email,
                 phone_number,
                 address,
+                city,
+                state,
                 date_of_birth,
                 password
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
-            RETURNING id, first_name, last_name, email, phone_number, address, date_of_birth, created_at;
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            RETURNING id, first_name, last_name, email, phone_number, address, city, state, date_of_birth, created_at;
         `, [
             credentials.firstName,
             credentials.lastName,
             lowercaseEmail,
             credentials.phoneNumber,
             credentials.address,
+            credentials.city,
+            credentials.state,
             credentials.dateOfBirth,
             hashedPassword,
         ])

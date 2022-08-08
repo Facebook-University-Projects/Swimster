@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useRegistrationForm } from '../../hooks/useRegistrationForm'
+import { AddressSearchInput } from '../AddressSearchInput/AddressSearchInput'
 import { style } from './style'
 
 const Register = () => {
-    const { error, isSubmitProcessing, register, handleSubmit, onSubmit } = useRegistrationForm()
+    const { error, isSubmitProcessing, register, setValue, handleSubmit, onSubmit } = useRegistrationForm()
 
     return (
         <div className={style.register}>
@@ -31,13 +32,10 @@ const Register = () => {
                         placeholder="Email"
                         {...register("email")}
                     />
-                    <input
-                        className={
-                            `${style.inputElement} ${style.fullInput}`
-                        }
-                        type=""
-                        placeholder="Address"
-                        {...register("address")}
+                    <AddressSearchInput
+                    styling={`${style.inputElement} ${style.fullInput}`}
+                    register={register}
+                    setValue={setValue}
                     />
                     <input
                         className={style.inputElement}

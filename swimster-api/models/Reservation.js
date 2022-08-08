@@ -154,6 +154,8 @@ class Reservation {
                     listings.id AS "listing_id",
                     listings.title AS "listing_title",
                     listings.address AS "listing_address",
+                    listings.city AS "listing_city",
+                    listings.state AS "listing_state",
                     listings.images AS "listing_images"
             FROM reservations
             JOIN users ON users.id = reservations.user_id
@@ -183,6 +185,8 @@ class Reservation {
                     users.email,
                     listings.title AS "listing_title",
                     listings.address,
+                    listings.city,
+                    listings.state,
                     listings.images
             FROM reservations
             JOIN users ON users.id = reservations.user_id

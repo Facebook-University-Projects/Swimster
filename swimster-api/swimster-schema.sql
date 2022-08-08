@@ -19,6 +19,8 @@ CREATE TABLE listings (
     host_id             INT NOT NULL,
     title               TEXT NOT NULL,
     address             TEXT NOT NULL,
+    city,               TEXT NOT NULL,
+    state,              TEXT NOT NULL,
     description         TEXT NOT NULL,
     price               BIGINT NOT NULL,
     total_guests        INT NOT NULL,

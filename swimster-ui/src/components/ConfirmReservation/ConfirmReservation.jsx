@@ -23,7 +23,7 @@ const ConfirmReservation = () => {
                         <div className={style.confirmReservationListingPrimary}>
                             <p className={style.confirmReservationListingPoolType}>{listing.pool_type} Pool</p>
                             <h1 className={style.confirmReservationListingTitle}>{listing.title}</h1>
-                            <p className={style.confirmReservationListingAddress}>{listing.address}</p>
+                            <p className={style.confirmReservationListingAddress}>{listing.city}, {listing.state}</p>
                         </div>
                         <div className={style.confirmReservationListingSecondary}>
                             <h2 className={style.confirmReservationListingHostDetails}>Hosted by {listing.first_name} {listing.last_name}</h2>

@@ -11,24 +11,19 @@ import depthIcon from '../../assets/depthIcon.svg'
 import unlikedIcon from '../../assets/unlikedIcon.svg'
 import shareIcon from '../../assets/shareIcon.svg'
 import { useListingsContext } from '../../contexts/listings'
-import { useImagesContext } from '../../contexts/images'
 
 const ListingDetail = () => {
     const { listingId } = useParams()
     const { listing, setListing } = useListingsContext()
-    const { setMainImage } = useImagesContext()
     const { listingImages, error, isFetching } = useListingDetail(listingId)
-
-    useEffect(() => {
-        if (listingImages[0]?.image_url) setMainImage(listingImages[0].image_url)
-    }, [listing])
 
     const {
         first_name,
         last_name,
         email,
         title,
-        address,
+        city,
+        state,
         description,
         total_guests,
         pool_type,
@@ -66,7 +61,7 @@ const ListingDetail = () => {
                                 <img src={ratingsIcon} alt="ratings star icon" />
                                 <p className={style.rating}>4.8</p>
                             </div>
-                            <h3 className={style.headerContentAddress}>{address}</h3>
+                            <h3 className={style.headerContentAddress}>{city}, {state}</h3>
                         </div>
                     </div>
                     <div className={style.hostProfileImage}></div>

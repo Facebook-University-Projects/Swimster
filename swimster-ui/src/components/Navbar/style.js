@@ -1,5 +1,5 @@
 export const style = {
-    navbar: 'bg-indigo-50 flex justify-between items-center px-5 py-1',
+    navbar: 'border-b flex justify-between items-center px-5 py-3',
     logoContainer: 'flex items-center space-x-3',
     logoImg: 'w-12 h-12',
     logoTitle: 'text-3xl font-semibold',
