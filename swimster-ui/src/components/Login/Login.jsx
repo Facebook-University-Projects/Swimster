@@ -4,7 +4,7 @@ import { useLoginForm } from '../../hooks/useLoginForm'
 import { style } from './style'
 
 const Login = () => {
-    const { error, isSubmitProcessing, register, handleSubmit, onSubmit } = useLoginForm()
+    const { errors, isSubmitProcessing, register, handleSubmit, onSubmit } = useLoginForm()
 
     return (
         <div className={style.login}>
@@ -17,16 +17,22 @@ const Login = () => {
                         }
                         type="email"
                         placeholder="Email"
-                        {...register("email")}
+                        {...register("email", {
+                            required: true
+                        })}
                     />
+                    {errors.email && <p className={"text-md text-red-400"}>email required</p>}
                     <input
                         className={
                             `${style.inputElement} ${style.fullInput}`
                         }
                         type="password"
                         placeholder="Password"
-                        {...register("password")}
+                        {...register("password", {
+                            required: true
+                        })}
                     />
+                    {errors.password && <p className={"text-md text-red-400"}>password required</p>}
                     <input type="submit" className={style.submitButton} value="Login" />
                 </form>
                 <p className={style.toLogin}>

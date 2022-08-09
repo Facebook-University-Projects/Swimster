@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import  { useForm } from 'react-hook-form'
 import { useAuthContext } from '../contexts/auth'
+import { useNotification } from './useNotification'
 
 export const useLoginForm = () => {
     const { handlers: authHandlers, user } = useAuthContext()
-    const { register, handleSubmit } = useForm()
+    const { setError } = useNotification()
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
-    const [error, setError] = useState({})
     const navigate = useNavigate()
 
     // if user is logged in, redirect them to Home
@@ -29,7 +30,7 @@ export const useLoginForm = () => {
     }
 
     return {
-        error,
+        errors,
         isSubmitProcessing,
         register,
         handleSubmit,
