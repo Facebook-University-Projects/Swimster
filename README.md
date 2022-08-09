@@ -77,3 +77,9 @@ or on the pop-up in Google map view
 
 ## Reservations
 This was the most challenging part of this process as I had to make sure reservation date and times weren't being double booked. To combat this race condition, I gave different statuses to the reservations. Those statuses decided whether or not the date and times were going to be shown to the user. When a user picks their reservation, they are led to a confirmation page, which at this point, a reservation entity is made with the status of `DRAFT`. This still broadcasts to other users that the datetime is disabled. The confirmation page allows them to see an overview of what they're going to pay for. When they confirm, the status is then changed to `CONFIFMED`. For future implementations, I was thinking of having a render lifecylcle for the confirmation page for around 10 minutes, which after that the reservation would then be changed to an `ARCHIVED` status which is not added to the hashmap.
+
+The `checkReservedTimes` function uses a hashmap data structure to store the fetched reserved times from Postgres. That is, the key being the date and the value being a list of times for that date.
+https://github.com/Facebook-University-Projects/Swimster/blob/68dd3e75953b44175c50accc16c7fd369046a4f1/swimster-ui/src/hooks/useReserve.js#L69-L78
+
+It then goes through more checks for edge cases such as time gaps, where its neighbors are also disabled
+https://github.com/Facebook-University-Projects/Swimster/blob/68dd3e75953b44175c50accc16c7fd369046a4f1/swimster-ui/src/hooks/useReserve.js#L24-L37
