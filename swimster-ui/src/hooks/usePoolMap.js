@@ -12,6 +12,7 @@ export const usePoolMap = () => {
         height: '100%',
     }
 
+    // starting center point when google map gets loaded
     const defaultCenter = {
         lat: 37.3387,
         lng: -121.8853,

@@ -4,6 +4,7 @@ import ListingSearchInput from '../ListingSearchInput/ListingSearchInput'
 import { Link } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import { useAuthContext, isUserAuthenticated } from '../../contexts/auth'
+import { useNotification } from '../../hooks/useNotification'
 import { useListingsContext } from '../../contexts/listings'
 
 const style = {
@@ -13,7 +14,7 @@ const style = {
 const ListingsGrid = () => {
     const { user, initialized } = useAuthContext()
     const { listings, filteredListings, setFilteredListings } = useListingsContext()
-    const [error, setError] = useState({})
+    const { setError } = useNotification()
     const [mainImages, setMainImages] = useState([])
 
     const isAuthenticated = isUserAuthenticated(user, initialized)
@@ -21,7 +22,11 @@ const ListingsGrid = () => {
     useEffect(() => {
         const fetchMainImages = async () => {
             const { data, error } = await apiClient.fetchMainImagesFromListings()
-            if (error) setError(error)
+            if (error) {
+                setError(error)
+                // TODO: set animation for loading images
+                return
+            }
             if (data?.allImages) setMainImages([...data.allImages])
 
         }

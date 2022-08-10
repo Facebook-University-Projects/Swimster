@@ -42,7 +42,7 @@ const PoolMap = () => {
                     >
                         <div style={infoWindowContainer}>
                             <Link to={`/listings/${selected.id}`}>
-                            <img style={poolOptions.listingImageOnMap} src={selected?.image_url} alt="pool listing pic on map" />
+                            <img style={poolOptions.listingImageOnMap} src={selected?.image_url} alt="pool listing picture on map" />
                             </Link>
                             <div>
                                 <h1 style={poolOptions.listingTitleOnMap}>{selected.title}</h1>
