@@ -6,7 +6,7 @@ import { useImageUploadForm } from '../../hooks/useImageUploadForm'
 import { useAmenitiesDimensionsForm } from '../../hooks/useAmenitiesDimensionsForm'
 import { style } from './style'
 
-const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register, setValue, resetField }) => {
+const CreatePoolSteps = ({ step, nextStep, prevStep, setIsValidAddress, selectedImages, setSelectedImages, register, setValue, resetField }) => {
     const { selectedBlobs, setSelectedBlobs, handleImageSelect } = useImageUploadForm({ setSelectedImages })
     const { handleSelected, getSelected, amenitiesChosen } = useAmenitiesDimensionsForm({ step, resetField })
 
@@ -23,8 +23,8 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register
                     />
                     <AddressSearchInput
                         styling={`${style.inputElement} ${style.fullInput}`}
-                        register={register}
                         setValue={setValue}
+                        setIsValidAddress={setIsValidAddress}
                     />
                     <textarea
                         className={`${style.inputElement} ${style.fullInput}`}
@@ -68,15 +68,16 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register
                         type="file"
                         id="file"
                         multiple
-                        {...register("poolImages", {
-                            onChange: handleImageSelect,
-                        })}
+                        onChange={handleImageSelect}
                     />
                     <label htmlFor="file" className={style.imageUploadLabel}>Upload</label>
                     <div className={style.renderSelectedImagesContainer}>
                         <RenderSelectedImages
                             selectedBlobs={selectedBlobs}
                             setSelectedBlobs={setSelectedBlobs}
+                            selectedImages={selectedImages}
+                            setSelectedImages={setSelectedImages}
+                            setValue={setValue}
                         />
                     </div>
                     <div className={style.formImagesUploadButtons}>

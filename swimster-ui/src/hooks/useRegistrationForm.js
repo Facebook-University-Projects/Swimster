@@ -10,7 +10,7 @@ export const useRegistrationForm = () => {
     const { setSuccess, setError } = useNotification()
     const navigate = useNavigate()
     const { register, setValue, handleSubmit } = useForm({ reValidateMode: "onChange" })
-    const [validAddress, setValidAddress] = useState(false)
+    const [isValidAddress, setIsValidAddress] = useState(false)
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
 
     // if user is logged in, redirect them to Home
@@ -32,7 +32,7 @@ export const useRegistrationForm = () => {
         }
 
         // checks if user selected google dropdown option
-        if (!validAddress) {
+        if (!isValidAddress) {
             setError("Invalid address. Make sure to select it on the dropdown.")
             setIsSubmitProcessing(false)
             return
@@ -79,7 +79,7 @@ export const useRegistrationForm = () => {
     }
 
     return {
-        setValidAddress,
+        setIsValidAddress,
         isSubmitProcessing,
         register,
         setValue,

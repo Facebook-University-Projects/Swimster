@@ -28,6 +28,7 @@ export const useListingDetail = listingId => {
                 if (listingImagesError) setError(listingImagesError)
                 if (listingImagesData?.listingImages) {
                     setListingImages([...listingImagesData.listingImages])
+                    // sets image for confirm reservation page
                     if (listingImagesData?.listingImages[0]?.image_url) setMainImage(listingImagesData.listingImages[0].image_url)
                 }
             }

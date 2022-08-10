@@ -5,7 +5,7 @@ import { AddressSearchInput } from '../AddressSearchInput/AddressSearchInput'
 import { style } from './style'
 
 const Register = () => {
-    const { setValidAddress, isSubmitProcessing, register, setValue, handleSubmit, onSubmit } = useRegistrationForm()
+    const { setIsValidAddress, isSubmitProcessing, register, setValue, handleSubmit, onSubmit } = useRegistrationForm()
 
     return (
         <div className={style.register}>
@@ -41,7 +41,7 @@ const Register = () => {
                     <AddressSearchInput
                     styling={`${style.inputElement} ${style.fullInput}`}
                     setValue={setValue}
-                    setValidAddress={setValidAddress}
+                    setIsValidAddress={setIsValidAddress}
                     />
                     <input
                         className={style.inputElement}
