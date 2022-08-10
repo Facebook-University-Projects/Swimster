@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useRegistrationForm } from '../../hooks/useRegistrationForm'
 import { AddressSearchInput } from '../AddressSearchInput/AddressSearchInput'
+import { Loader } from '../Loader/Loader'
 import { style } from './style'
 
 const Register = () => {
@@ -82,7 +83,9 @@ const Register = () => {
                     <p className={style.toLogin}>
                         Already have an account? <Link to="/login"><span className={style.loginLink}>Log in.</span></Link>
                     </p>
-                    <input type="submit" className={style.submitButton} value="Sign Up"/>
+                    <button type="submit" className={style.submitButton}>
+                        {isSubmitProcessing ? <Loader height={"26"} width={"26"} /> : "Sign Up"}
+                    </button>
                 </form>
             </div>
         </div>

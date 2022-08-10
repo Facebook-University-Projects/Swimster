@@ -21,7 +21,7 @@ export const useRegistrationForm = () => {
         }
     }, [user, navigate])
 
-    const onSubmit = async (formData) => {
+    const onSubmit = async formData => {
         setIsSubmitProcessing(true)
 
         // checks if email is valid
