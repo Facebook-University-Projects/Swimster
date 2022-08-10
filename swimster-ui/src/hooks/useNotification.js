@@ -23,8 +23,19 @@ export const useNotification = () => {
         })
     }
 
+    const setInfo = message => {
+        enqueueSnackbar(message, {
+            variant: "info",
+            anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "right"
+            }
+        })
+    }
+
     return {
         setSuccess,
         setError,
+        setInfo,
     }
 }
