@@ -2,9 +2,10 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useLoginForm } from '../../hooks/useLoginForm'
 import { style } from './style'
+import { Loader } from '../Loader/Loader'
 
 const Login = () => {
-    const { error, isSubmitProcessing, register, handleSubmit, onSubmit } = useLoginForm()
+    const { isSubmitProcessing, register, handleSubmit, onSubmit } = useLoginForm()
 
     return (
         <div className={style.login}>
@@ -15,9 +16,11 @@ const Login = () => {
                         className={
                             `${style.inputElement} ${style.fullInput}`
                         }
-                        type="email"
+                        type="text"
                         placeholder="Email"
-                        {...register("email")}
+                        {...register("email", {
+                            required: true
+                        })}
                     />
                     <input
                         className={
@@ -25,9 +28,13 @@ const Login = () => {
                         }
                         type="password"
                         placeholder="Password"
-                        {...register("password")}
+                        {...register("password", {
+                            required: true
+                        })}
                     />
-                    <input type="submit" className={style.submitButton} value="Login" />
+                    <button type="submit" className={style.submitButton}>
+                        {isSubmitProcessing ? <Loader height={"26"} width={"26"}/> : "Login"}
+                    </button>
                 </form>
                 <p className={style.toLogin}>
                         Don't have an account? <Link to="/register"><span className={style.loginLink}>Sign up for free.</span></Link>

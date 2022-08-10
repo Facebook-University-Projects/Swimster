@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react'
+import { useNotification } from '../hooks/useNotification'
 import apiClient from '../services/apiClient'
 
 const ListingsContext = createContext(null)
@@ -7,7 +8,7 @@ export const ListingsContextProvider = ({ children }) => {
     const [listings, setListings] = useState([])
     const [filteredListings, setFilteredListings] = useState([])
     const [listing, setListing] = useState({})
-    const [error, setError] = useState(null)
+    const { setError } = useNotification()
 
     // listings functions from apiClient w/ validation and security checks
     const handlers = {
@@ -21,7 +22,6 @@ export const ListingsContextProvider = ({ children }) => {
         },
         clearListings: () => {
             setListings([])
-            setError(null)
         }
     }
 
@@ -33,7 +33,6 @@ export const ListingsContextProvider = ({ children }) => {
         filteredListings,
         setFilteredListings,
         handlers,
-        error
     }
 
     return (

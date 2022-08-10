@@ -1,41 +1,44 @@
 import { useState, createContext, useContext } from 'react'
 import apiClient from '../services/apiClient'
+import { useNotification } from '../hooks/useNotification'
 
 const AuthContext = createContext(null)
 
 export const AuthContextProvider = ({ children }) => {
     const [initialized, setInitialized] = useState(false)
     const [user, setUser] = useState({})
-    const [error, setError] = useState(null)
+    const { setSuccess, setError } = useNotification()
 
     // auth functions from apiClient w/ validation and security checks
     const handlers = {
         loginUser: async credentials => {
             const { data, error } = await apiClient.loginUser(credentials)
+            if (error) setError(error)
             if (data?.user) {
                 setUser(data.user)
                 apiClient.setToken(data.token)
                 localStorage.setItem("swimster_session_token", data.token)
-            } if (error) setError(error)
+                setSuccess("Logged in!")
+            }
         },
         registerUser: async credentials => {
             const { data, error } = await apiClient.registerUser(credentials)
+            if (error) setError(error)
             if (data?.user) {
                 setUser(data.user)
                 apiClient.setToken(data.token)
                 localStorage.setItem("swimster_session_token", data.token)
-            } if (error) setError(error)
+            }
         },
         logoutUser: () => {
             apiClient.logoutUser()
             setUser({})
             setInitialized(false)
-            setError(null)
         },
         fetchUserFromToken: async () => {
-            const { data } = await apiClient.fetchUserFromToken()
-            if (data?.user?.email) setUser(data.user)
+            const { data, error } = await apiClient.fetchUserFromToken()
             if (error) setError(error)
+            if (data?.user?.email) setUser(data.user)
         }
     }
 

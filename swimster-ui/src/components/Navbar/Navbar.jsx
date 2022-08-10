@@ -1,24 +1,29 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-import { useAuthContext } from '../../contexts/auth'
+import { useAuthContext, isUserAuthenticated } from '../../contexts/auth'
 import { useListingsContext } from '../../contexts/listings'
 import { useNavigate } from 'react-router-dom'
+import { useNotification } from '../../hooks/useNotification'
 import { style } from './style'
 
 const Navbar = () => {
-    const { handlers: authHandlers, user } = useAuthContext()
+    const { handlers: authHandlers, user, initialized } = useAuthContext()
     const { handlers: listingsHandlers } = useListingsContext()
+    const { setDefault } = useNotification()
     const navigate = useNavigate()
+
+    const isAuthenticated = isUserAuthenticated(user, initialized)
 
     // TODO: implement clearing all of the context data
     const handleFullLogout = () => {
         authHandlers.logoutUser()
+        setDefault("Logged out successfully.")
         navigate('/login')
     }
 
     return (
         <div className={style.navbar}>
-            <Link to="/menu">
+            <Link to={isAuthenticated ? "/menu" : "/login"}>
                 <div className={style.logoContainer}>
                     <img className={style.logoImg} src="https://www.kindpng.com/picc/m/156-1565640_transparent-pool-party-png-transparent-background-pool-float.png" alt="" />
                     <h1 className={style.logoTitle}>Swimster</h1>

@@ -4,9 +4,10 @@ import { AddressSearchInput } from '../AddressSearchInput/AddressSearchInput'
 import { RenderSelectedImages } from '../RenderSelectedImages/RenderSelectedImages'
 import { useImageUploadForm } from '../../hooks/useImageUploadForm'
 import { useAmenitiesDimensionsForm } from '../../hooks/useAmenitiesDimensionsForm'
+import { Loader } from '../Loader/Loader'
 import { style } from './style'
 
-const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register, setValue, resetField }) => {
+const CreatePoolSteps = ({ step, nextStep, prevStep, isSubmitProcessing, setIsValidAddress, selectedImages, setSelectedImages, register, setValue, resetField }) => {
     const { selectedBlobs, setSelectedBlobs, handleImageSelect } = useImageUploadForm({ setSelectedImages })
     const { handleSelected, getSelected, amenitiesChosen } = useAmenitiesDimensionsForm({ step, resetField })
 
@@ -23,8 +24,8 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register
                     />
                     <AddressSearchInput
                         styling={`${style.inputElement} ${style.fullInput}`}
-                        register={register}
                         setValue={setValue}
+                        setIsValidAddress={setIsValidAddress}
                     />
                     <textarea
                         className={`${style.inputElement} ${style.fullInput}`}
@@ -68,15 +69,16 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register
                         type="file"
                         id="file"
                         multiple
-                        {...register("poolImages", {
-                            onChange: handleImageSelect,
-                        })}
+                        onChange={handleImageSelect}
                     />
                     <label htmlFor="file" className={style.imageUploadLabel}>Upload</label>
                     <div className={style.renderSelectedImagesContainer}>
                         <RenderSelectedImages
                             selectedBlobs={selectedBlobs}
                             setSelectedBlobs={setSelectedBlobs}
+                            selectedImages={selectedImages}
+                            setSelectedImages={setSelectedImages}
+                            setValue={setValue}
                         />
                     </div>
                     <div className={style.formImagesUploadButtons}>
@@ -124,8 +126,9 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, setSelectedImages, register
                     <button
                         type="submit"
                         className={style.formStepConfirmButton}
-                        onClick={() => setValue("amenities", amenitiesChosen)}>
-                        Begin Hosting
+                        onClick={() => setValue("amenities", amenitiesChosen)}
+                    >
+                        {isSubmitProcessing ? <Loader height={"26"} width={"26"}/> : "Begin Hosting"}
                     </button>
                 </>
             )

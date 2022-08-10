@@ -1,9 +1,11 @@
 import * as React from 'react'
 import { useConfirmReservation } from '../../hooks/useConfirmReservation'
+import { Loader } from '../Loader/Loader'
 import { style } from './style'
 
 const ConfirmReservation = () => {
     const {
+        isConfirming,
         formattedDate,
         formatTime,
         ReservationPaymentDetails,
@@ -71,7 +73,7 @@ const ConfirmReservation = () => {
                     <h1 className={style.totalHeader}>Total</h1>
                     <p className={style.total}>${reservation?.total}</p>
                 </div>
-                <button className={style.confirmReservationButton} type="submit" onClick={handleConfirmReservation}>Reserve</button>
+                <button className={style.confirmReservationButton} type="submit" onClick={handleConfirmReservation}>{isConfirming ? <Loader height={"26"} width={"26"}/> : "Confirm"}</button>
             </div>
         </div>
     )

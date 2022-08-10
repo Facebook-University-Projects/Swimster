@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import  { useForm } from 'react-hook-form'
 import { useAuthContext } from '../contexts/auth'
+import { useNotification } from './useNotification'
 
 export const useLoginForm = () => {
     const { handlers: authHandlers, user } = useAuthContext()
-    const { register, handleSubmit } = useForm()
+    const { setError } = useNotification()
+    const { register, handleSubmit } = useForm({ reValidateMode: "onChange" })
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false)
-    const [error, setError] = useState({})
     const navigate = useNavigate()
 
     // if user is logged in, redirect them to Home
@@ -15,8 +16,15 @@ export const useLoginForm = () => {
         if (user?.email) navigate('/menu')
     }, [user, navigate])
 
-    const onSubmit = async (formData) => {
+    const onSubmit = async formData => {
         setIsSubmitProcessing(true)
+
+        // checks if email is valid
+        if (formData.email.indexOf('@') <= 0) {
+            setError("Invalid email.")
+            setIsSubmitProcessing(false)
+            return
+        }
 
         const formattedFormData = {
             email: formData.email,
@@ -29,7 +37,6 @@ export const useLoginForm = () => {
     }
 
     return {
-        error,
         isSubmitProcessing,
         register,
         handleSubmit,
