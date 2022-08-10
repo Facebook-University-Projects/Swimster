@@ -158,6 +158,7 @@ export const useCreatePoolForm = () => {
             if (imageError) setError(imageError)
             if (imageData?.images) {
                 setListings([...listings, data.listing])
+                setIsSubmitProcessing(false)
                 navigate('/menu')
                 setSuccess("Pool Listing Created!")
                 setTimeout(() => {
@@ -165,8 +166,6 @@ export const useCreatePoolForm = () => {
                 }, 3000)
             }
         }
-
-        setIsSubmitProcessing(false)
     }
 
     return {

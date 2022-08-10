@@ -4,9 +4,10 @@ import { AddressSearchInput } from '../AddressSearchInput/AddressSearchInput'
 import { RenderSelectedImages } from '../RenderSelectedImages/RenderSelectedImages'
 import { useImageUploadForm } from '../../hooks/useImageUploadForm'
 import { useAmenitiesDimensionsForm } from '../../hooks/useAmenitiesDimensionsForm'
+import { Loader } from '../Loader/Loader'
 import { style } from './style'
 
-const CreatePoolSteps = ({ step, nextStep, prevStep, setIsValidAddress, selectedImages, setSelectedImages, register, setValue, resetField }) => {
+const CreatePoolSteps = ({ step, nextStep, prevStep, isSubmitProcessing, setIsValidAddress, selectedImages, setSelectedImages, register, setValue, resetField }) => {
     const { selectedBlobs, setSelectedBlobs, handleImageSelect } = useImageUploadForm({ setSelectedImages })
     const { handleSelected, getSelected, amenitiesChosen } = useAmenitiesDimensionsForm({ step, resetField })
 
@@ -125,8 +126,9 @@ const CreatePoolSteps = ({ step, nextStep, prevStep, setIsValidAddress, selected
                     <button
                         type="submit"
                         className={style.formStepConfirmButton}
-                        onClick={() => setValue("amenities", amenitiesChosen)}>
-                        Begin Hosting
+                        onClick={() => setValue("amenities", amenitiesChosen)}
+                    >
+                        {isSubmitProcessing ? <Loader height={"26"} width={"26"}/> : "Begin Hosting"}
                     </button>
                 </>
             )

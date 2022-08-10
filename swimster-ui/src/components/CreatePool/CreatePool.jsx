@@ -43,6 +43,7 @@ const CreatePool = () => {
                         step={step}
                         nextStep={nextStep}
                         prevStep={prevStep}
+                        isSubmitProcessing={isSubmitProcessing}
                         setIsValidAddress={setIsValidAddress}
                         selectedImages={selectedImages}
                         setSelectedImages={setSelectedImages}
