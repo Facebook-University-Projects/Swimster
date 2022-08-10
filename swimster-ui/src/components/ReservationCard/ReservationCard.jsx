@@ -31,12 +31,11 @@ const ReservationCard = () => {
         setStartTime,
         endTime,
         setEndTime,
-        setGuests,
         reservedTimes,
         register,
         handleSubmit,
         handleReservation,
-    } = useReservationCard(listingId)
+    } = useReservationCard(listingId, listing.total_guests)
 
 
     return (
@@ -74,9 +73,7 @@ const ReservationCard = () => {
                             type="number"
                             placeholder='Guests'
                             className={style.reservationGuestsInput}
-                            {...register("reservationGuests", {
-                                onChange: (e) => setGuests(e.target.value)
-                            })}
+                            {...register("guests")}
                         />
                     </div>
                 </div>

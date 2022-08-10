@@ -16,8 +16,9 @@ const CreatePool = () => {
         step,
         nextStep,
         prevStep,
-        error,
+        setIsValidAddress,
         isSubmitProcessing,
+        selectedImages,
         setSelectedImages,
         register,
         setValue,
@@ -42,6 +43,8 @@ const CreatePool = () => {
                         step={step}
                         nextStep={nextStep}
                         prevStep={prevStep}
+                        setIsValidAddress={setIsValidAddress}
+                        selectedImages={selectedImages}
                         setSelectedImages={setSelectedImages}
                         register={register}
                         setValue={setValue}

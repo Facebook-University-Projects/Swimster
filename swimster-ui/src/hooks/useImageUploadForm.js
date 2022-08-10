@@ -10,7 +10,7 @@ export const useImageUploadForm = ({ setSelectedImages }) => {
             const selectedImagesArr = Array.from(e.target.files)
 
             setSelectedBlobs(prevImgs => prevImgs.concat(blobImagesArr))
-            setSelectedImages(selectedImagesArr)
+            setSelectedImages(prevImgs => prevImgs.concat(selectedImagesArr))
 
             // unmounts selected images from the browser
             Array.from(e.target.files).map(file => URL.revokeObjectURL(file))

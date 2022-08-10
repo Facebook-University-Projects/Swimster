@@ -4,6 +4,7 @@ import { useReservationsContext } from '../contexts/reservations'
 import { useImagesContext } from '../contexts/images'
 import apiClient from '../services/apiClient'
 import { useNavigate } from 'react-router-dom'
+import { useNotification } from './useNotification'
 
 // numbers chosen relative to Airbnb service fee, which is 14%
 const FEES_RATE = 0.08
@@ -14,8 +15,9 @@ export const useConfirmReservation = () => {
     const { reservation } = useReservationsContext()
     const { listing } = useListingsContext()
     const { mainImage } = useImagesContext()
+    const { setSuccess, setError } = useNotification()
+    const { isConfirming, setIsConfirming } = useState(false)
     const navigate = useNavigate()
-    const [error, setError] = useState({})
 
     const reservationDate = new Date(reservation.reservation_date)
 
@@ -70,12 +72,23 @@ export const useConfirmReservation = () => {
 
     // confirms the reservation in the backend
     const handleConfirmReservation = async () => {
+        setIsConfirming(true)
+
         const { data, error } = await apiClient.confirmReservation(reservation.id, listing.id)
-        if (error) setError(error)
-        if (data?.confirmedReservation) {
-            navigate('/menu')
-            window.location.reload()
+        if (error) {
+            setError(error)
+            setIsConfirming(false)
+            return
         }
+        if (data?.confirmedReservation) {
+            setSuccess("Successfully reserved listing!")
+            setTimeout(() => {
+                navigate('/menu')
+                window.location.reload()
+            }, 4000)
+        }
+
+        setIsConfirming(false)
     }
 
     return {

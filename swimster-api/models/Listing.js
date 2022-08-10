@@ -132,12 +132,12 @@ class Listing {
             FROM listings;
         `)
 
-
         const allListings = result.rows
 
         // attach image_url from main image to corresponding listing
-        allListings.forEach((listing, index) => {
-            listing.image_url = mainImages[index].image_url
+        allListings.forEach(listing => {
+            const mainImageFound = mainImages.find(image => image.listing_id === listing.id).image_url
+            listing.image_url = mainImageFound
         })
 
         return allListings

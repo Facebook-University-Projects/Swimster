@@ -5,7 +5,7 @@ import { AddressSearchInput } from '../AddressSearchInput/AddressSearchInput'
 import { style } from './style'
 
 const Register = () => {
-    const { error, isSubmitProcessing, register, setValue, handleSubmit, onSubmit } = useRegistrationForm()
+    const { setIsValidAddress, isSubmitProcessing, register, setValue, handleSubmit, onSubmit } = useRegistrationForm()
 
     return (
         <div className={style.register}>
@@ -16,13 +16,17 @@ const Register = () => {
                         className={style.inputElement}
                         type="text"
                         placeholder="First"
-                        {...register("firstName")}
+                        {...register("firstName", {
+                            required: true
+                        })}
                     />
                     <input
                         className={style.inputElement}
                         type="text"
                         placeholder="Last"
-                        {...register("lastName")}
+                        {...register("lastName", {
+                            required: true
+                        })}
                     />
                     <input
                         className={
@@ -30,24 +34,30 @@ const Register = () => {
                         }
                         type="email"
                         placeholder="Email"
-                        {...register("email")}
+                        {...register("email", {
+                            required: true
+                        })}
                     />
                     <AddressSearchInput
                     styling={`${style.inputElement} ${style.fullInput}`}
-                    register={register}
                     setValue={setValue}
+                    setIsValidAddress={setIsValidAddress}
                     />
                     <input
                         className={style.inputElement}
                         type="tel"
                         placeholder="Phone Number"
-                        {...register("phoneNumber")}
+                        {...register("phoneNumber", {
+                            required: true
+                        })}
                     />
                     <input
                         className={style.inputElement}
                         type="date"
                         placeholder="Date of Birth"
-                        {...register("dateOfBirth")}
+                        {...register("dateOfBirth", {
+                            required: true
+                        })}
                     />
                     <input
                         className={
@@ -55,7 +65,9 @@ const Register = () => {
                         }
                         type="password"
                         placeholder="Password"
-                        {...register("password")}
+                        {...register("password", {
+                            required: true
+                        })}
                     />
                     <input
                         className={
@@ -63,7 +75,9 @@ const Register = () => {
                         }
                         type="password"
                         placeholder="Confirm Password"
-                        {...register("confirmPassword")}
+                        {...register("confirmPassword", {
+                            required: true
+                        })}
                     />
                     <p className={style.toLogin}>
                         Already have an account? <Link to="/login"><span className={style.loginLink}>Log in.</span></Link>
