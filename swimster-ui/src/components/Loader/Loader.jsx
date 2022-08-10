@@ -6,8 +6,6 @@ const style = {
 }
 
 export const Loader = ({ height, width }) => {
-    console.log('width: ', width);
-    console.log('height: ', height);
     return (
         <TailSpin
             height={height}

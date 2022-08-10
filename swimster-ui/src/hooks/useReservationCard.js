@@ -104,11 +104,10 @@ export const useReservationCard = (listingId, total_guests) => {
             setReservation(data.reservation)
             setInfo("You won't be charged yet.")
             setTimeout(() => {
+                setIsReserving(false)
                 navigate('confirm')
             }, 1000)
         }
-
-        setIsReserving(false)
     }
 
     return {
@@ -118,6 +117,7 @@ export const useReservationCard = (listingId, total_guests) => {
         setStartTime,
         endTime,
         setEndTime,
+        isReserving,
         reservedTimes,
         toLocalTime,
         register,

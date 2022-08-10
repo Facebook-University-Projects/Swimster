@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import CalendarDatePicker from '../CalendarDatePicker/CalendarDatePicker'
 import CalendarTimePicker from '../CalendarTimePicker/CalendarTimePicker'
 import { useListingsContext } from '../../contexts/listings'
+import { Loader } from '../Loader/Loader'
 
 const style = {
     reservationCardContainer: 'col-span-1 px-4',
@@ -31,6 +32,7 @@ const ReservationCard = () => {
         setStartTime,
         endTime,
         setEndTime,
+        isReserving,
         reservedTimes,
         register,
         handleSubmit,
@@ -77,7 +79,7 @@ const ReservationCard = () => {
                         />
                     </div>
                 </div>
-                <button type="submit" form="hook-form" className={style.reserveButton}>Reserve Now</button>
+                <button type="submit" form="hook-form" className={style.reserveButton}>{isReserving ? <Loader height={"26"} width={"26"}/> : "Reserve Now"}</button>
             </div>
         </div>
     )

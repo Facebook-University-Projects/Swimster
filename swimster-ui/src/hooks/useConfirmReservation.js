@@ -16,7 +16,7 @@ export const useConfirmReservation = () => {
     const { listing } = useListingsContext()
     const { mainImage } = useImagesContext()
     const { setSuccess, setError } = useNotification()
-    const { isConfirming, setIsConfirming } = useState(false)
+    const [isConfirming, setIsConfirming] = useState(false)
     const navigate = useNavigate()
 
     const reservationDate = new Date(reservation.reservation_date)
@@ -83,15 +83,15 @@ export const useConfirmReservation = () => {
         if (data?.confirmedReservation) {
             setSuccess("Successfully reserved listing!")
             setTimeout(() => {
+                setIsConfirming(false)
                 navigate('/menu')
                 window.location.reload()
-            }, 4000)
+            }, 2500)
         }
-
-        setIsConfirming(false)
     }
 
     return {
+        isConfirming,
         formattedDate,
         formatTime,
         ReservationPaymentDetails,
