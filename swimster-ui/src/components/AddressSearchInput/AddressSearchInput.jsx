@@ -2,17 +2,20 @@ import * as React from 'react'
 import Autocomplete from 'react-google-autocomplete'
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 
-export const AddressSearchInput = ({ styling, setValue }) => {
-
+export const AddressSearchInput = ({ styling, setValue, setValidAddress }) => {
     const options = {
         types: ["address"],
-        fields: ["address_components", "formatted_address"],
+        fields: ["address_components", "geometry.viewport", "formatted_address"],
         componentRestrictions: {
             country: "us"
         }
     }
 
     const handleAddress = address => {
+        if (address.geometry.viewport) {
+            setValidAddress(true)
+        }
+
         geocodeByAddress(address.formatted_address)
         .then(res => getLatLng(res[0]))
         .then(({ lat, lng }) => {
@@ -28,6 +31,7 @@ export const AddressSearchInput = ({ styling, setValue }) => {
         <Autocomplete
             className={styling}
             placeholder="Address"
+            onInput={() => setValidAddress(false)}
             onPlaceSelected={place => handleAddress(place)}
             options={options}
         />

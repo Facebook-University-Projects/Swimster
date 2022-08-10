@@ -1,9 +1,9 @@
-import { useSnackbar } from "notistack"
+import { useSnackbar } from 'notistack'
 
 export const useNotification = () => {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
-    const setSuccess = (message) => {
+    const setSuccess = message => {
         enqueueSnackbar(message, {
             variant: "success",
             anchorOrigin: {
@@ -13,7 +13,7 @@ export const useNotification = () => {
         })
     }
 
-    const setError = (message) => {
+    const setError = message => {
         enqueueSnackbar(message, {
             variant: "error",
             anchorOrigin: {
