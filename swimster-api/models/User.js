@@ -12,6 +12,10 @@ class User {
             email: user.email,
             phoneNumber: user.phone_number,
             address: user.address,
+            city: user.city,
+            state: user.state,
+            lat: user.lat,
+            lng: user.lng,
             createdAt: user.created_at,
         }
     }
@@ -47,6 +51,8 @@ class User {
             "address",
             "city",
             "state",
+            "lat",
+            "lng",
             "dateOfBirth",
             "password"
         ]
@@ -78,11 +84,13 @@ class User {
                 address,
                 city,
                 state,
+                lat,
+                lng,
                 date_of_birth,
                 password
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-            RETURNING id, first_name, last_name, email, phone_number, address, city, state, date_of_birth, created_at;
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+            RETURNING id, first_name, last_name, email, phone_number, address, city, state, lat, lng, date_of_birth, created_at;
         `, [
             credentials.firstName,
             credentials.lastName,
@@ -91,6 +99,8 @@ class User {
             credentials.address,
             credentials.city,
             credentials.state,
+            credentials.lat,
+            credentials.lng,
             credentials.dateOfBirth,
             hashedPassword,
         ])

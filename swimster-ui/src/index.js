@@ -7,20 +7,24 @@ import { AuthContextProvider } from './contexts/auth'
 import { ListingsContextProvider } from './contexts/listings'
 import { ReservationsContextProvider } from './contexts/reservations'
 import { ImagesContextProvider } from './contexts/images'
+import { LoadScript } from '@react-google-maps/api'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <React.StrictMode>
-    <AuthContextProvider>
-      <ListingsContextProvider>
+  <AuthContextProvider>
+    <ListingsContextProvider>
+      <LoadScript
+        googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+        libraries={["places"]}
+      >
         <ReservationsContextProvider>
           <ImagesContextProvider>
             <App />
           </ImagesContextProvider>
         </ReservationsContextProvider>
-      </ListingsContextProvider>
-    </AuthContextProvider>
-  </React.StrictMode>
+      </LoadScript>
+    </ListingsContextProvider>
+  </AuthContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

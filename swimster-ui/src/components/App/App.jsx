@@ -8,6 +8,7 @@ import apiClient from '../../services/apiClient'
 import CreatePool from '../CreatePool/CreatePool'
 import ListingDetail from '../ListingDetail/ListingDetail'
 import ConfirmReservation from '../ConfirmReservation/ConfirmReservation'
+import { AuthWrapper } from '../AuthWrapper/AuthWrapper'
 import { useAuthContext, isUserAuthenticated } from '../../contexts/auth'
 import { useListingsContext } from '../../contexts/listings'
 import { style } from './style'
@@ -41,7 +42,8 @@ const App = () => {
       <main className={style.app}>
         <Navbar />
         <Routes>
-          <Route path='/' element={<Home />} />
+          <Route path='/' element={<AuthWrapper isAuthenticated={isAuthenticated} />}/>
+          <Route path='/menu' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/createpool' element={<CreatePool />} />

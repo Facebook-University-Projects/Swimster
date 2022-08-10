@@ -12,7 +12,7 @@ export const useRegistrationForm = () => {
 
     // if user is logged in, redirect them to Home
     useEffect(() => {
-        if (user?.email) navigate('/')
+        if (user?.email) navigate('/menu')
     }, [user, navigate])
 
     const onSubmit = async (formData) => {
@@ -31,6 +31,8 @@ export const useRegistrationForm = () => {
             address: formData.address,
             city: formData.city,
             state: formData.state,
+            lat: formData.lat,
+            lng: formData.lng,
             phoneNumber: formData.phoneNumber,
             dateOfBirth: formData.dateOfBirth,
             password: formData.password,

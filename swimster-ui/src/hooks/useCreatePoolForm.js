@@ -47,6 +47,8 @@ export const useCreatePoolForm = () => {
             address: formData.address,
             city: formData.city,
             state: formData.state,
+            lat: formData.lat,
+            lng: formData.lng,
             description: formData.description,
             price: formData.price,
             totalGuests: formData.totalGuests,
@@ -84,7 +86,8 @@ export const useCreatePoolForm = () => {
             if (imageError) setError(imageError)
             if (imageData?.images) {
                 setListings([...listings, data.listing])
-                navigate('/')
+                navigate('/menu')
+                window.location.reload()
             }
         }
 

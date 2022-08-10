@@ -18,7 +18,7 @@ const Navbar = () => {
 
     return (
         <div className={style.navbar}>
-            <Link to="/">
+            <Link to="/menu">
                 <div className={style.logoContainer}>
                     <img className={style.logoImg} src="https://www.kindpng.com/picc/m/156-1565640_transparent-pool-party-png-transparent-background-pool-float.png" alt="" />
                     <h1 className={style.logoTitle}>Swimster</h1>

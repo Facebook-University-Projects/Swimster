@@ -34,7 +34,7 @@ const ListingsGrid = () => {
             <ListingSearchInput mainImages={mainImages} setMainImages={setMainImages} listings={listings} setFilteredListings={setFilteredListings}/>
             {filteredListings?.map((listing, index) => {
                 return (
-                    <Link to={`listings/${listing.id}`} key={index}>
+                    <Link to={`/listings/${listing.id}`} key={index}>
                         <Listing listing={listing} />
                     </Link>
                 )
