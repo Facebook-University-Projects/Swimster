@@ -15,7 +15,7 @@ import { style } from './style'
 
 const App = () => {
   const { handlers: authHandlers, user, setInitialized, initialized } = useAuthContext()
-  const { handlers: listingsHandlers } = useListingsContext()
+  const { handlers: listingsHandlers, setListings } = useListingsContext()
 
   const isAuthenticated = isUserAuthenticated(user, initialized)
 
@@ -35,7 +35,7 @@ const App = () => {
 
     initApp()
     console.log("App is ready to go!")
-  }, [setInitialized, isAuthenticated])
+  }, [setListings, setInitialized, isAuthenticated])
 
   return (
     <BrowserRouter>
